@@ -39,7 +39,6 @@ public class Player : MonoBehaviour
 
         // Input
         action = new InputManager();
-        moveAction = action.PlayerActions.Move;
     }
 
     private void OnEnable()

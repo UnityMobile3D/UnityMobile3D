@@ -46,8 +46,6 @@ public class PlayerScript : MonoBehaviour
 
         // 입력 세팅
         action = new InputManager();
-        moveAction = action.PlayerActions.Move;
-        activeAction = action.PlayerActions.Active;
 
         activeAction.ChangeBinding(0).WithName("DefaultAttack");
         activeAction.ChangeBinding(1).WithName("Skill1");

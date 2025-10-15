@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "UIData/Catalog/Entry UI", fileName = "SOEntryUI")]
 public class SOEntryUI : ScriptableObject
 {
-    //ºñÆ®·Îµµ °¡´É
+    //ë¹„íŠ¸ë¡œë„ ê°€ëŠ¥
     public enum eUIType
     {
         None,
@@ -14,11 +14,11 @@ public class SOEntryUI : ScriptableObject
     }
 
 
-    [SerializeField] private int id;                 // °íÁ¤ Å°(¼öµ¿ ÀÔ·Â ±ÇÀå)
-    [SerializeField] private Sprite icon;               // ¾ÆÀÌÄÜ(¾ÆÆ²¶ó½º Æ÷ÇÔ)
+    [SerializeField] private int id;                    // ê³ ì • í‚¤
+    [SerializeField] private Sprite icon;               // ì•„ì´ì½˜
     [SerializeField] private eUIType type;
-    [SerializeField] private int sortKey = 0;           // Á¤·Ä ¿ì¼±¼øÀ§(ÀÛÀ»¼ö·Ï ¾Õ)
-    [SerializeField] private float cooldown;
+    [SerializeField] private int sortKey = 0;           // ì •ë ¬ ìš°ì„ ìˆœìœ„(ì‘ì„ìˆ˜ë¡ ì•)
+    [SerializeField] private float cooldown;            // ì¿¨íƒ€ì„
 
     protected uint hashCode = (uint)eUIType.None;
 

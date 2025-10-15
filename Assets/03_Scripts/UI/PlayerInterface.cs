@@ -5,8 +5,7 @@ using UnityEngine;
 using eSkillType = SOSkillUI.eSkillType;
 using eUIType = SOEntryUI.eUIType;
 
-public class PlayerInterface : SlotController
+public class PlayerInterface 
 {
-
-
+   
 }

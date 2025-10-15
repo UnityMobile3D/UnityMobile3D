@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SkillTree : BaseUI
+public class SkillTree : BaseUI, IContainer
 {
     private Canvas m_pSkillCanvas;
 
@@ -12,9 +12,9 @@ public class SkillTree : BaseUI
     [SerializeField] private ButtonUI m_pSeleteButton;
     [SerializeField] private Container m_pSkillContainer;
 
-    [SerializeField] private PlayerInterface m_pPlayerInterface;
+    [SerializeField] private SlotContainer m_pSlotContainer;
 
-    //±×³É static canvas¿¡¼­ slot °ü¸® ¿©±â¼­ slotManager¿¡ SO¸¦ ´øÁ®ÁÖ¸é °Å±â¼­ ÇØ´ç ½½·Ô SkillType¿¡ ¸Â´Â ½½·Ô È°¼ºÈ­
+    //ê·¸ëƒ¥ static canvasì—ì„œ slot ê´€ë¦¬ ì—¬ê¸°ì„œ slotManagerì— SOë¥¼ ë˜ì ¸ì£¼ë©´ ê±°ê¸°ì„œ í•´ë‹¹ ìŠ¬ë¡¯ SkillTypeì— ë§ëŠ” ìŠ¬ë¡¯ í™œì„±í™”
 
     protected override void Awake()
     {
@@ -22,10 +22,10 @@ public class SkillTree : BaseUI
 
         m_pSkillCanvas = GetComponent<Canvas>();
 
-        //close selete ÇÔ¼ö ¹ÙÀÎµù
+        //close selete í•¨ìˆ˜ ë°”ì¸ë”©
         m_pCloseButton.OnUpEvt += close_tap;
 
-        //ÄÁÅ×ÀÌ³Ê¿¡¼­ ½ºÅ³ ´­·È´Ù¸é °¡Á®¿Ã ¼ö ÀÖ°Ô
+        //ì»¨í…Œì´ë„ˆì—ì„œ ìŠ¤í‚¬ ëˆŒë ¸ë‹¤ë©´ ê°€ì ¸ì˜¬ ìˆ˜ ìˆê²Œ
         m_pSkillContainer.OnSelectEvt += select_skill;
 
     }
@@ -41,22 +41,41 @@ public class SkillTree : BaseUI
     }
     private void close_tap()
     {
-        //·¹ÀÌ±îÁö Á¦°ÅÇÏ±â À§ÇØ¼­
+        //ë ˆì´ê¹Œì§€ ì œê±°í•˜ê¸° ìœ„í•´ì„œ
         gameObject.SetActive(false);
         
     }
     private void select_skill()
     {
+        SlotView pTargetView = m_pSkillContainer.GetTargetSlot();
+        if(pTargetView.SOEntryUI == null) 
+            return;
 
-        SlotView pTargetSlot = m_pSkillContainer.GetTargetSlot();
-        m_pPlayerInterface.ActiveSkillSlot(pTargetSlot.SOEntryUI);
+        //ë°ì´í„° ì„œë¹„ìŠ¤ì—ì„œ ì§€ê¸ˆ ëˆŒë¦° ë°ì´í„° ì°¸ì¡°
+        DataService.Instance.StartPickData(this, pTargetView.SOEntryUI, pTargetView.SlotIdx, 1);
 
+        //ì¸í„°í˜ì´ìŠ¤ ë§¤ë‹ˆì €ë¥¼ ë§Œë“¤ì–´ì„œ í•´ë‹¹ í´ë˜ìŠ¤ì—ê²Œ ìš”ì²­í•˜ëŠ” ì‹ìœ¼ë¡œ ë³€ê²½
+        m_pSlotContainer.ActiveSlot(pTargetView.SOEntryUI.GetUIHashCode());
     }
-    private void deselete_skill()
+
+    //IContainer êµ¬í˜„
+    public void SelectData(int _iDataIdx) {}
+
+    public SOEntryUI GetData(int _iDataIdx) { return null; }
+    public int GetDataAmount(int _iDataIdx) { return -1; }
+    public int GetDataAmount(SOEntryUI _pSoData) { return -1; }
+
+    public bool AddData(IContainer _IOtherContainer, int _iDataIdx, SOEntryUI _pSOData, int _iAmount) { return false; }
+    public bool Consume(int _iDataIdx, int _iAmount) { return false; }
+    public bool DeleteData(int _iDataIdx)
     {
+        //ê¸°ì¡´ ìŠ¤í‚¬ì°½ì—ì„œ ìŠ¤í‚¬ì´ ì§€ì›Œì§€ëŠ” ì¼ì€ ì—†ìŒ
+        m_pSkillContainer.ClearTarget();
+        return true;
     }
 
- 
+    public bool FindData(SOEntryUI _pData) { return false; }
+    public bool FindData(int _iDataIdx) { return false; }
 
-    
+
 }

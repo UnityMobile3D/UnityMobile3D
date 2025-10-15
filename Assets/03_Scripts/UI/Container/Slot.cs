@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,18 +10,21 @@ using static System.Net.Mime.MediaTypeNames;
 using eSkillType = SOSkillUI.eSkillType;
 using eUIType = SOEntryUI.eUIType;
 using Image = UnityEngine.UI.Image;
+
+
+//(ì‚¬ìš© ë²„íŠ¼)
 public class Slot : ButtonUI
 {
     protected SOEntryUI m_pSOTarget = null;
     public SOEntryUI SOTarget { get => m_pSOTarget; }
 
-    private SlotController m_pOwner = null;
-    [SerializeField] private ButtonUI m_pCheckUI = null;
+    protected IContainer m_pOwner = null;
+    [SerializeField] protected ButtonUI m_pCheckUI = null;
 
-    private Image m_pCheckUIImage = null;
+    protected Image m_pCheckUIImage = null;
     [SerializeField] private Image m_pIcon = null;
 
-    private CoolDownView m_pCoolDownView = null;
+    protected CoolDownView m_pCoolDownView = null;
 
     [Header("Slot Type")]
     [SerializeField] private eUIType m_eUIType = eUIType.None;
@@ -31,18 +36,19 @@ public class Slot : ButtonUI
     protected bool m_bCanUse = true;
     public bool IsCanUse { get => m_bCanUse;}
 
-    //»©±â ¹öÆ° Ç×»ó ³Ö¾îµÎ°í +¹öÆ° ¾øÀÌ ±×³É ½ºÅ³ ´©¸£°í ºó ½½·Ô¿¡ ³Ö¾îÁÖ´Â Çü½ÄÀ¸·Î
+    [SerializeField] protected int m_iSlotIdx;
+    public int SlotIdx { get => m_iSlotIdx; }
+
+    //ë¹¼ê¸° ë²„íŠ¼ í•­ìƒ ë„£ì–´ë‘ê³  +ë²„íŠ¼ ì—†ì´ ê·¸ëƒ¥ ìŠ¤í‚¬ ëˆ„ë¥´ê³  ë¹ˆ ìŠ¬ë¡¯ì— ë„£ì–´ì£¼ëŠ” í˜•ì‹ìœ¼ë¡œ
     override protected void Awake()
     {
         base.Awake();
-
-        m_pCheckUI.OnClickEvt += select_slot;
 
         m_pCheckUI.SetRaycast(false);
         m_pCheckUIImage = m_pCheckUI.GetComponent<Image>();
         m_pCheckUIImage.enabled = false;
 
-        m_pOwner = GetComponentInParent<SlotController>();
+        m_pOwner = GetComponentInParent<IContainer>();
 
         m_iUIType = (uint)m_eUIType;
     }
@@ -79,23 +85,19 @@ public class Slot : ButtonUI
         return m_iUIType;
     }
 
-    private void select_slot()
-    {
-        m_pOwner?.SelectSlot(this);
-    }
 
     public override void OnPointerClick(PointerEventData e)
     {
-        if(m_pSOTarget != null && m_bCanUse == true)
+        if(m_pSOTarget != null && m_bCanUse != false)
         {
-            //¿©±â¼­ ½ºÅ³, ¾ÆÀÌÅÛ »ç¿ë
+            //ì—¬ê¸°ì„œ ìŠ¤í‚¬, ì•„ì´í…œ ì‚¬ìš©
             Using();
         }
     }
 
     public virtual void Using()
     {
-        //¿©±â¼­ Effect µ¥ÀÌÅÍ¸¦ ¸Å´ÏÀú¿¡ ´øÁö±â 
+        //ì—¬ê¸°ì„œ Effect ë°ì´í„°ë¥¼ ë§¤ë‹ˆì €ì— ë˜ì§€ê¸° , í˜¹ì€ ìŠ¤í‚¬ì´ë¼ë©´ skillslotì—ì„œ skillManagerì—ê²Œ ë˜ì§€ê¸°
     }
 
 
@@ -121,7 +123,11 @@ public class Slot : ButtonUI
         else
             m_pIcon.color = Color.white;
     }
-    
+
+   
+
+    public void SetSlotIdx(int _iIdx){m_iSlotIdx = _iIdx;}  
+        
 
 }
 

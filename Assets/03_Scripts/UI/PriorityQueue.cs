@@ -43,11 +43,11 @@ public class PriorityQueue<T>
         T root = _heap[0];
         int last = _heap.Count - 1;
 
-        //ÃÖ»óÀ§ °ª ¸Ç ¸¶Áö¸·À¸·Î(O(1) »èÁ¦ À§ÇØ)
+        //ìµœìƒìœ„ ê°’ ë§¨ ë§ˆì§€ë§‰ìœ¼ë¡œ(O(1) ì‚­ì œ ìœ„í•´)
         _heap[0] = _heap[last];
         _heap.RemoveAt(last);
 
-        //0¹ø ³ëµå ¸Â´Â À§Ä¡±îÁö ³»¸®±â
+        //0ë²ˆ ë…¸ë“œ ë§ëŠ” ìœ„ì¹˜ê¹Œì§€ ë‚´ë¦¬ê¸°
         if (_heap.Count > 0) 
             SiftDown(0);
 
@@ -58,7 +58,7 @@ public class PriorityQueue<T>
     {
         while (idx > 0)
         {
-            //³» ºÎ¸ğ ³ëµå¿Í ºñ±³ÈÄ Å©°Å³ª °°À¸¸é ¿Ã¸®±â
+            //ë‚´ ë¶€ëª¨ ë…¸ë“œì™€ ë¹„êµí›„ í¬ê±°ë‚˜ ê°™ìœ¼ë©´ ì˜¬ë¦¬ê¸°
             int parent = (idx - 1) / 2;
             if (_comparer.Compare(_heap[idx], _heap[parent]) >= 0) 
                 break;
@@ -68,6 +68,7 @@ public class PriorityQueue<T>
         }
     }
 
+ 
     //O(log n)
     private void SiftDown(int idx)
     {
@@ -79,13 +80,13 @@ public class PriorityQueue<T>
 
             int smallest = idx;
 
-            //³» ÀÚ½Ä ³ëµåµé°ú ºñ±³ÈÄ ´õ ÀÛÀº ÀÚ½Ä°ú ±³Ã¼
+            //ë‚´ ìì‹ ë…¸ë“œë“¤ê³¼ ë¹„êµí›„ ë” ì‘ì€ ìì‹ê³¼ êµì²´
             if (left < n && _comparer.Compare(_heap[left], _heap[smallest]) < 0) 
                 smallest = left;
             if (right < n && _comparer.Compare(_heap[right], _heap[smallest]) < 0) 
                 smallest = right;
 
-            //´õ ÀÛÀº°Ô ¾ø´Ù¸é ÇöÀç À§Ä¡¿¡ ±â·Ï
+            //ë” ì‘ì€ê²Œ ì—†ë‹¤ë©´ í˜„ì¬ ìœ„ì¹˜ì— ê¸°ë¡
             if (smallest == idx) 
                 break;
 
@@ -93,6 +94,8 @@ public class PriorityQueue<T>
             idx = smallest;
         }
     }
+
+
 
     private void Swap(int a, int b)
     {

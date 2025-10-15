@@ -15,6 +15,8 @@ public class SkillSlot : Slot
     protected override void Awake()
     {
         base.Awake();
+        
+        m_pCheckUI.OnClickEvt += select_skill_slot;
 
         m_iUIType |= (uint)m_eSkillType << 8;
     }
@@ -31,5 +33,10 @@ public class SkillSlot : Slot
     public override void Using()
     {
         m_bCanUse = false;
+    }
+
+    private void select_skill_slot()
+    {
+        DataService.Instance.TryDropData(m_pOwner, SlotIdx);
     }
 }

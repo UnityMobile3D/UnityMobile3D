@@ -16,13 +16,8 @@ public class Container : ButtonUI
     //view담당 (고정된 슬롯을 렌더링하게 슬롯이 100개면 보이는구간만 렌더링되게)
     //data 담당 (SO를 활용해서 초기 데이터 저장)
     //controll은 UGUI pointer에서 담당
+    private IContainer m_IOwner;
 
-    //잘라낼 클리핑 영역
-    /*
-    RectMask2D가 Viewport 사각형을 기준으로 자른다
-    시각적으로 잘릴 뿐, 바깥의 셀도 그려지긴 하므로(제출됨) 진짜 비용 절감은 가상화로 한다
-    마스크 영역 밖은 레이캐스트도 차단된다(입력도 안 잡힘).
-    */
 
     [Header("CONTANIER")]
     private RectMask2D m_pRectMask;
@@ -30,8 +25,10 @@ public class Container : ButtonUI
     [SerializeField] private RectTransform m_pContainerView; // 프레임(마스크) Rect
     [SerializeField] private RectTransform m_pContentView;  // 셀들이 붙는 부모 Rect
 
-    [SerializeField] private List<SOEntryUI> m_listData = new List<SOEntryUI>();
+    [SerializeField] private List<SOEntryUI> m_listData = new List<SOEntryUI>(); //실세 데이터
     private List<SlotView> m_listView = new List<SlotView>();
+
+    public List<SOEntryUI> ListData { get => m_listData; }
 
     [SerializeField] private SlotView m_pSlotPrefab; //셀 프리팹
     [SerializeField] private Vector2 m_vStep; //셀 사이 간격(x=열 간, y=행 간)
@@ -61,24 +58,31 @@ public class Container : ButtonUI
     private int m_iCurRow = 0;
 
     [Header("DRAG")]
-    private Vector2 m_vDragCurPosition = Vector2.zero;
+    private Vector2 m_vDragCurPosition = Vector2.zero; //저번 프레임과 이번 프레임의 차이를 구하기 위해
 
     private Vector2 m_vContainerDragPosition = Vector2.zero;
     private Vector2 m_vViewCurDrageLine = Vector2.zero;//현재 드래그 라인
-
     private Vector2 m_vContaninerSize = Vector2.zero; //전체 컨테이너 크기
 
-    //가장 높은 인덱스에 순차적으로 넣기 위해서 내림차순
-    PriorityQueue<uint> m_pqSlotIdx = new PriorityQueue<uint>(Comparer<uint>.Create((a,b)=> b.CompareTo(a)));
 
+    //가장 높은 인덱스에 순차적으로 넣기 위해서 내림차순
+    //PriorityQueue<uint> m_pqSlotIdx = new PriorityQueue<uint>()/*(Comparer<uint>.Create((a,b)=> b.CompareTo(a)))*/;
+
+    [SerializeField] private bool m_bCanDuplication = true; //중복 허용할지(장비 템 창, 스킬 창)
+    private HashSet<SOEntryUI> m_setData = null; //중복 확인을 위한 해쉬
+    public bool IsCanDuplication { get => m_bCanDuplication;}
+    public int m_iCurrentRemnantData = 0;
+    public bool IsFull => m_iCurrentRemnantData <= 0;
+
+    //빌드 전용
     public bool Run = false;
     protected override void Awake()
     {
-
         base.Awake();
 
-        Build();
+        m_IOwner = GetComponentInParent<IContainer>();
 
+        Build();
         if(m_pSelectFramePrefab != null)
         {
             GameObject pFrameObejct = Instantiate(m_pSelectFramePrefab, m_pContentView);
@@ -88,6 +92,7 @@ public class Container : ButtonUI
             m_pFrameRectTrasnform = pFrameObejct?.GetComponent<RectTransform>();
         }
     }
+
 
 #if UNITY_EDITOR
     private void OnValidate()
@@ -116,50 +121,65 @@ public class Container : ButtonUI
 #endif
 
 
-    private int find_data_idx(SOEntryUI _pDataUI)
+    private SOEntryUI find_data_idx(int _iDataIdx)
     {
-        for (int i = 0; i < m_listData.Count; ++i)
-        {
-            if (m_listData[i] == _pDataUI)
-                return i;
-        }
-
-        return -1;
+        return m_listData[_iDataIdx];
     }
 
-    public bool DeleteData(SOEntryUI _pSOEntryUI)
+    public bool DeleteData(int _iDataIdx)
     {
-        int iIdx = find_data_idx(_pSOEntryUI);
-        if (iIdx == -1)
+        if (m_listData[_iDataIdx] == null)
             return false;
 
-        m_listData[iIdx] = null;
-        m_pqSlotIdx.Enqueue((uint)iIdx);
+        //중복 허용이 안된다면 set에서도 제거
+        if (m_bCanDuplication == false)
+            m_setData.Remove(m_listData[_iDataIdx]);
+
+        m_listData[_iDataIdx] = null;
+        ++m_iCurrentRemnantData;
 
         //데이터 새로 바인딩
-        bind_data();
+        BindData();
 
         return true;
     }
 
-    private bool AddData(SOEntryUI _pSOEntryUI)
+    public bool AddData(SOEntryUI _pSOEntryUI , int _iIdx = -1)
     {
-        if (m_pqSlotIdx.IsEmpty())
+        if (IsFull)
             return false;
 
-        int iFindIdx = find_data_idx(_pSOEntryUI);
-        //이미 존재
-        if (iFindIdx != -1)
+        //중복 허용되고 내 리스트에 이미 해당 데이터가 있다면
+        if(m_bCanDuplication== false && m_setData.Contains(_pSOEntryUI))
             return false;
 
-        //첫번째 자리
-        uint iFirstIdx = m_pqSlotIdx.Dequeue();
-        m_listData[(int)iFirstIdx] = _pSOEntryUI;
+        if(_iIdx == -1)
+        {
+            //남는 자리
+            int iRemIdx = GetRemnantDataIdx();
+            if(iRemIdx == -1)
+                return false;
 
+            m_listData[iRemIdx] = _pSOEntryUI;
+        }
+        else
+        {
+            //지정된 자리
+            if (m_listData[_iIdx] != null)
+                return false;
+
+            m_listData[_iIdx] = _pSOEntryUI;
+        }
+     
+        if(m_bCanDuplication == false)
+            m_setData.Add(_pSOEntryUI);
+
+        BindData();
+
+        --m_iCurrentRemnantData;
         return true;
     }
-
-
+  
 
     private void Build()
     {
@@ -214,14 +234,43 @@ public class Container : ButtonUI
         m_vContaninerSize.x = vStep.x * m_iColCount;
         m_vContaninerSize.y = vStep.y * iRowSize;
 
-        //슬롯 바인딩
-        bind_data();
+        if(m_bCanDuplication == false)
+        {
+            //중복 허용이 안된다면 중복된 데이터는 삭제
+            HashSet<SOEntryUI> setData = new HashSet<SOEntryUI>();
+            for(int i = 0; i<m_listData.Count; ++i)
+            {
+                if (m_listData[i] == null)
+                    continue;
 
+                if (setData.Contains(m_listData[i]))
+                    m_listData[i] = null;
+                else
+                    setData.Add(m_listData[i]);
+            }
+        }
+
+        if(m_bCanDuplication == false)
+        {
+            m_setData = new HashSet<SOEntryUI>();
+            for(int i = 0; i<m_listData.Count; ++i)
+            {
+                if (m_listData[i] != null)
+                    m_setData.Add(m_listData[i]);
+                else
+                    m_listData[i] = null;
+            }
+        }
+
+        //슬롯 바인딩
+        BindData();
+
+        m_iCurrentRemnantData = 0;
         //남은 슬롯 수 체크
-        for(int i = 0; i<m_listData.Count; ++i)
+        for (int i = 0; i<m_listData.Count; ++i)
         {
             if (m_listData[i] == null)
-                m_pqSlotIdx.Enqueue((uint)i);
+                ++m_iCurrentRemnantData;
         }
 
     }
@@ -248,7 +297,7 @@ public class Container : ButtonUI
             m_iSlotRowCount = iMaxRows;
     }    
 
-    private void bind_data()
+    public void BindData()
     {
         //보이는 구간 업데이트
         int iStartIdx = m_iCurRow * m_iColCount;
@@ -259,7 +308,7 @@ public class Container : ButtonUI
                 return;
 
             int iDataIdx = iStartIdx + i;
-            m_listView[i].Bind(m_listData[iDataIdx]);
+            m_listView[i].Bind(m_listData[iDataIdx], iDataIdx);
         }
     }
     //셀 사이즈 + 양끝 시작 끝 간격 + 셀 사이 간격
@@ -278,7 +327,7 @@ public class Container : ButtonUI
        
         m_vDragCurPosition = e.position;
 
-        m_vViewCurDrageLine += new Vector2(0, vPositionDelta.y); //view 입장에서 위치
+        m_vViewCurDrageLine += new Vector2(0, vPositionDelta.y);      //view 입장에서 위치
         m_vContainerDragPosition += new Vector2(0, vPositionDelta.y); //컨테이너 전체 입장에서 위치
             
         //스탭 오류 수정
@@ -302,11 +351,14 @@ public class Container : ButtonUI
         if(m_iCurRow != iRow)
         {
             m_iCurRow = iRow;
-            bind_data();
+            BindData();
         }
     }
     public void SetTargetSlot(SlotView _pTargetSlot)
     {
+        if(_pTargetSlot.SOEntryUI == null)
+            return;
+
         //해당 슬롯에 프레임 장착
         if (m_pFrameImage != null)
         {
@@ -333,12 +385,50 @@ public class Container : ButtonUI
         m_pFrameRectTrasnform.SetAsLastSibling(); // 항상 위로
     }
 
+    public void ClearTarget()
+    {
+        if (m_pFrameImage != null)
+            m_pFrameImage.enabled = false;
+
+        m_pTargetSlot = null;
+    }
+
     private void clear_data()
     {
         //기존 리스트 삭제 (에디터 버전 오브젝트 삭제)
         for (int i = m_pContentView.childCount - 1; i >= 0; --i)
             Undo.DestroyObjectImmediate(m_pContentView.GetChild(i).gameObject);
+
         m_listView.Clear();
+    }
+    
+    //우선순위 큐 보다 빠름 (캐시 친화적)
+    public int GetRemnantDataIdx()
+    {
+        for(int i = 0; i<m_listData.Count; ++i)
+        {
+            if (m_listData[i] == null)
+                return i;
+        }
+
+        return -1;
+    }
+
+    public SOEntryUI GetDataIdx(int _iDataIdx)
+    {
+        if (m_listData[_iDataIdx] == null)
+            return null;
+
+        return m_listData[_iDataIdx];
+    }
+
+    public int GetCount(int _iDataIdx)
+    {
+        if (m_IOwner == null)
+            return -1;
+
+        int iAmount = m_IOwner.GetDataAmount(_iDataIdx);
+        return iAmount;
     }
 
 }

@@ -43,12 +43,12 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
-        moveAction.Enable();
+        //moveAction.Enable();
     }
 
     private void OnDisable()
     {
-        moveAction.Disable();
+        //moveAction.Disable();
     }
 
     // Start is called before the first frame update
@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MOVE();
+        //MOVE();
     }
 
     private void MOVE()

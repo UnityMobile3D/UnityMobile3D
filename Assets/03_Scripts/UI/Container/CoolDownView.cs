@@ -4,17 +4,11 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-//Ondestory´Â ¿¡µğÅÍ¿¡¼­ ¾ÈµÊ ExecuteAlways¸¦ ºÙ¿©¾ßÇÔ
+//OndestoryëŠ” ì—ë””í„°ì—ì„œ ì•ˆë¨ ExecuteAlwaysë¥¼ ë¶™ì—¬ì•¼í•¨
 
 //[ExecuteAlways]
 public class CoolDownView : MonoBehaviour
 {
-
-    /*
-[   SerializeField] private GameObject m_pOverlayObject;
-    ÇÏÁö¸¸ new GameObject()·Î ·±Å¸ÀÓ¿¡ ¸¸µç °Ç ÀúÀåÀÌ ¾È µÇ´Ï °á±¹ null µÊ
-     */
-
     [SerializeField] private Slot m_pOwner; 
     private Image m_pOverlayImage;
     private GameObject m_pOverlayObject;
@@ -35,7 +29,7 @@ public class CoolDownView : MonoBehaviour
         }
     }
 
-    //ÄÄÆ÷³ÍÆ® ºÎÂø½Ã ½ÇÇà
+    //ì»´í¬ë„ŒíŠ¸ ë¶€ì°©ì‹œ ì‹¤í–‰
     private void Reset()
     {
         if (m_pOwner == null)
@@ -58,11 +52,13 @@ public class CoolDownView : MonoBehaviour
 
     private void Update()
     {
+        //GCê°€ ëŒì•„ê°€ì§€ ì•Šê²Œ ì½”ë£¨í‹´ì„ ì“°ì§€ì•Šê³  
+        //ë”°ë¡œ ìŠ¤í‚¬ ë§¤ë‹ˆì €ì—ì„œ í˜„ì¬ ì¿¨íƒ€ì„ì„ ë„˜ê²¨ì£¼ì§€ ì•ŠëŠ”ë‹¤ë©´ ì—¬ê¸°ì„œ ì¿¨íƒ€ì„ì„ ê³„ì‚°
+        //ë§Œì•½ ë„˜ê²¨ì¤€ë‹¤ë©´ UpdateCoolTimeì—ì„œ ë°›ê¸°
         if(m_pOwner.IsCanUse == false)
         {
             m_fCurCoolTime += Time.deltaTime;
-            float m_fRatio = m_fCurCoolTime / m_fMaxCoolTime;
-            UpdateCoolTime(m_fRatio);
+            UpdateCoolTime(m_fCurCoolTime);
         }
     }
 
@@ -76,18 +72,18 @@ public class CoolDownView : MonoBehaviour
         }
         else
         {
-            //RectTr, Image °¡Áø ¿À¹ö·¹ÀÌ ÀÌ¹ÌÁö »ı¼ºÈÄ ÀÚ½ÄÀ¸·Î 
+            //RectTr, Image ê°€ì§„ ì˜¤ë²„ë ˆì´ ì´ë¯¸ì§€ ìƒì„±í›„ ìì‹ìœ¼ë¡œ 
             m_pOverlayObject = new GameObject(m_sOverlayName, typeof(RectTransform), typeof(Image));
             m_pOverlayObject.transform.SetParent(transform);
             m_pOverlayImage = m_pOverlayObject.GetComponent<Image>();
 
-            //ÀÌ¹ÌÁö ¼Ó¼º 
+            //ì´ë¯¸ì§€ ì†ì„± 
             m_pOverlayImage.sprite = GetComponent<Image>().sprite;
             m_pOverlayImage.type = Image.Type.Filled;
             m_pOverlayImage.fillMethod = Image.FillMethod.Vertical;
-            m_pOverlayImage.fillOrigin = (int)Image.OriginVertical.Bottom; //¾Æ·¡¼­ À§·Î Ã¤¿öÁö°Ô
+            m_pOverlayImage.fillOrigin = (int)Image.OriginVertical.Bottom; //ì•„ë˜ì„œ ìœ„ë¡œ ì±„ì›Œì§€ê²Œ
             m_pOverlayImage.fillAmount = 0f;
-            m_pOverlayImage.color = new Vector4(0.5f, 0.5f, 0.5f, 0.5f); //È¸»ö
+            m_pOverlayImage.color = new Vector4(0.5f, 0.5f, 0.5f, 0.5f); 
             m_pOverlayImage.raycastTarget = false;
 
             RectTransform pRect = m_pOverlayObject.GetComponent<RectTransform>();
@@ -99,9 +95,11 @@ public class CoolDownView : MonoBehaviour
         }
     }
 
-    public void UpdateCoolTime(float _fCoolTimeRatio)
+    public void UpdateCoolTime(float _fCoolTime)
     {
-        m_pOverlayImage.fillAmount = 1.0f - _fCoolTimeRatio;
+        float m_fRatio = m_fCurCoolTime / m_fMaxCoolTime;
+
+        m_pOverlayImage.fillAmount = 1.0f - m_fRatio;
         if (m_pOverlayImage.fillAmount <= 0.0f)
         {
             m_fCurCoolTime = 0.0f;

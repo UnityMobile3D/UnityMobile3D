@@ -11,6 +11,7 @@ public class SOHealEffect : SOItemEffect
         if(pTarget != null)
         {
             //해당 오브젝트에 IHeal 인터페이스 접근
+
         }
     }
 }

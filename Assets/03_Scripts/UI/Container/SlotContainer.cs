@@ -30,8 +30,8 @@ public class SlotContainer : MonoBehaviour, IContainer
     {
         for(int i = 0; i<m_listSlot.Count; ++i)
         {
-            m_listSlot[i].SetRaycast(true);
-            m_listSlot[i].UnActiveSlot();
+            m_listSlot[i]?.SetRaycast(true);
+            m_listSlot[i]?.UnActiveSlot();
         }
     }
 
@@ -58,7 +58,15 @@ public class SlotContainer : MonoBehaviour, IContainer
 
         return iAmount;
     }
-    public int GetDataAmount(SOEntryUI _pSoData) { return -1; }
+    public int GetDataAmount(SOEntryUI _pSoData)
+    {
+        int iAmount = 0;
+        if (m_hashItemCount.TryGetValue(_pSoData.Id, out iAmount) == false)
+            return 0;
+
+        return iAmount;
+    }
+
 
     public bool AddData(IContainer _IOtherContainer, int _iDataIdx, SOEntryUI _pSOData, int _iAmount) 
     {
@@ -80,7 +88,19 @@ public class SlotContainer : MonoBehaviour, IContainer
 
         return true;
     }
-    public bool Consume(int _iDataIdx, int _iAmount) { return false; }
+    public bool Consume(int _iDataIdx, int _iAmount)
+    {
+        if (m_listSlot[_iDataIdx].SOTarget == null)
+            return false;
+
+        int iDataId = m_listSlot[_iDataIdx].SOTarget.Id;
+        m_hashItemCount[iDataId] -= _iAmount;
+
+        if (m_hashItemCount[iDataId] <= 0)
+            return false;
+
+        return true;
+    }
     public bool DeleteData(int _iDataIdx)
     {
         SOEntryUI pData = GetData(_iDataIdx);

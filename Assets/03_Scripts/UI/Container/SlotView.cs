@@ -39,7 +39,6 @@ public class SlotView : ButtonUI
 
             m_pIcon.sprite = _pEntryUI.Icon;
             m_pIcon.enabled = true;
-            m_pCountBadge.enabled = true;
 
             m_iID = _pEntryUI.Id;
         }
@@ -47,7 +46,7 @@ public class SlotView : ButtonUI
         {
             m_pTargetSO = null;
             m_pIcon.enabled = false;
-            m_pCountBadge.enabled = false;
+
             m_iID = -1;
         }
 
@@ -88,10 +87,12 @@ public class SlotView : ButtonUI
 
         bool bShow = iCount > 1; // 1개 이하면 보통 표기 안 함
         if (bShow)
-            m_pCountBadge.enabled = bShow;
-
-        if (bShow)
+        {
+            m_pCountBadge.enabled = true;
             m_pCountBadge.text = iCount.ToString();
-        
+        }
+        else
+            m_pCountBadge.enabled = false;
+
     }
 }

@@ -83,6 +83,7 @@ public class Container : ButtonUI
         m_IOwner = GetComponentInParent<IContainer>();
 
         Build();
+        
         if(m_pSelectFramePrefab != null)
         {
             GameObject pFrameObejct = Instantiate(m_pSelectFramePrefab, m_pContentView);
@@ -191,82 +192,13 @@ public class Container : ButtonUI
         //슬롯 최대치 보정
         clamp_slot();
 
-        //부드럽게 이동을 위한 뒤에 버퍼까지 계산
-        m_iRowCount = m_iSlotRowCount > 0 ? m_iSlotRowCount + 1 : 0;
-        m_iColCount = m_iSlotColCount;
-
-        //슬롯 프리팹 생성
-        var prefabRT = (RectTransform)m_pSlotPrefab.transform;
-        Vector2 vPadding = m_vPadding;
-
-        vPadding.x = m_vSlotSize.x /2.0f + m_vPadding.x;
-        vPadding.y = m_vSlotSize.y /2.0f  + m_vPadding.y;
-
-        Vector2 vStep = m_vSlotSize + m_vStep;
-
-        for (int i = 0; i < m_iRowCount; ++i)
-        {
-            for (int j = 0; j < m_iColCount; ++j)
-            {
-                SlotView pSlot = Instantiate(m_pSlotPrefab, m_pContentView);
-                pSlot.Init(this);
-
-                var pRect = (RectTransform)pSlot.transform;
-
-                pRect.anchoredPosition = new Vector2(
-                    vPadding.x + vStep.x * j,
-                    -vPadding.y - vStep.y * i
-                );
-
-                pRect.sizeDelta = m_vSlotSize;
-                m_listView.Add(pSlot);
-            }
-        }
-
-        //실제 크기는 슬롯 수가 아닌, 데이터 수에 따라
-        int iRowSize = m_listData.Count >= m_listView.Count ? 
-            (m_listData.Count / m_iColCount) : m_iRowCount;
-
-        iRowSize -= m_iSlotRowCount;
-        if(iRowSize < 0)
-            iRowSize = 0;
-
-        m_vContaninerSize.x = vStep.x * m_iColCount;
-        m_vContaninerSize.y = vStep.y * iRowSize;
-
-        if(m_bCanDuplication == false)
-        {
-            //중복 허용이 안된다면 중복된 데이터는 삭제
-            HashSet<SOEntryUI> setData = new HashSet<SOEntryUI>();
-            for(int i = 0; i<m_listData.Count; ++i)
-            {
-                if (m_listData[i] == null)
-                    continue;
-
-                if (setData.Contains(m_listData[i]))
-                    m_listData[i] = null;
-                else
-                    setData.Add(m_listData[i]);
-            }
-        }
-
-        if(m_bCanDuplication == false)
-        {
-            m_setData = new HashSet<SOEntryUI>();
-            for(int i = 0; i<m_listData.Count; ++i)
-            {
-                if (m_listData[i] != null)
-                    m_setData.Add(m_listData[i]);
-                else
-                    m_listData[i] = null;
-            }
-        }
-
+        sort_data();
+        
         //슬롯 바인딩
         BindData();
 
-        m_iCurrentRemnantData = 0;
         //남은 슬롯 수 체크
+        m_iCurrentRemnantData = 0;
         for (int i = 0; i<m_listData.Count; ++i)
         {
             if (m_listData[i] == null)
@@ -296,6 +228,81 @@ public class Container : ButtonUI
         if (m_iSlotRowCount > iMaxRows) 
             m_iSlotRowCount = iMaxRows;
     }    
+
+    public void sort_data()
+    {
+        //부드럽게 이동을 위한 뒤에 버퍼까지 계산
+        m_iRowCount = m_iSlotRowCount > 0 ? m_iSlotRowCount + 1 : 0;
+        m_iColCount = m_iSlotColCount;
+
+        //슬롯 프리팹 생성
+        var prefabRT = (RectTransform)m_pSlotPrefab.transform;
+        Vector2 vPadding = m_vPadding;
+
+        vPadding.x = m_vSlotSize.x / 2.0f + m_vPadding.x;
+        vPadding.y = m_vSlotSize.y / 2.0f + m_vPadding.y;
+
+        Vector2 vStep = m_vSlotSize + m_vStep;
+
+        for (int i = 0; i < m_iRowCount; ++i)
+        {
+            for (int j = 0; j < m_iColCount; ++j)
+            {
+                SlotView pSlot = Instantiate(m_pSlotPrefab, m_pContentView);
+                pSlot.Init(this);
+
+                var pRect = (RectTransform)pSlot.transform;
+
+                pRect.anchoredPosition = new Vector2(
+                    vPadding.x + vStep.x * j,
+                    -vPadding.y - vStep.y * i
+                );
+
+                pRect.sizeDelta = m_vSlotSize;
+                m_listView.Add(pSlot);
+            }
+        }
+
+        //실제 크기는 슬롯 수가 아닌, 데이터 수에 따라
+        int iRowSize = m_listData.Count >= m_listView.Count ?
+            (m_listData.Count / m_iColCount) : m_iRowCount;
+
+        iRowSize -= m_iSlotRowCount;
+        if (iRowSize < 0)
+            iRowSize = 0;
+
+        m_vContaninerSize.x = vStep.x * m_iColCount;
+        m_vContaninerSize.y = vStep.y * iRowSize;
+
+        if (m_bCanDuplication == false)
+        {
+            //중복 허용이 안된다면 중복된 데이터는 삭제
+            HashSet<SOEntryUI> setData = new HashSet<SOEntryUI>();
+            for (int i = 0; i < m_listData.Count; ++i)
+            {
+                if (m_listData[i] == null)
+                    continue;
+
+                if (setData.Contains(m_listData[i]))
+                    m_listData[i] = null;
+                else
+                    setData.Add(m_listData[i]);
+            }
+        }
+
+        if (m_bCanDuplication == false)
+        {
+            m_setData = new HashSet<SOEntryUI>();
+            for (int i = 0; i < m_listData.Count; ++i)
+            {
+                if (m_listData[i] != null)
+                    m_setData.Add(m_listData[i]);
+                else
+                    m_listData[i] = null;
+            }
+        }
+
+    }
 
     public void BindData()
     {
@@ -431,4 +438,5 @@ public class Container : ButtonUI
         return iAmount;
     }
 
+    
 }

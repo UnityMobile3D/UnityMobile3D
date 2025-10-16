@@ -30,11 +30,17 @@ public class ItemSlot : Slot
     {
         base.Bind(_pSOTarget);
 
-        m_pSOItem = _pSOTarget as SOItemUI;
-
-        SetCoolTime(m_pSOItem.Cooldown);
-
-        update_count();
+        if (_pSOTarget != null)
+        {
+            m_pSOItem = _pSOTarget as SOItemUI;
+            SetCoolTime(m_pSOItem.Cooldown);
+            update_count();
+        } 
+        else
+        {
+            m_pSOTarget = null;
+            SetCoolTime(0.0f);
+        }
     }
 
     public override void Using()
@@ -42,8 +48,17 @@ public class ItemSlot : Slot
         m_bCanUse = false;
 
         //Target을 여기서 셋팅
+        int iConsumeCount = 1;
 
-        ItemEffectRunner.UsingItem(m_pSOItem, null, null,m_listEffect);
+        //데이터 사용 후 인덱스 업데이트
+        if (m_pOwner?.Consume(m_iSlotIdx, iConsumeCount) == false)
+        {
+            Bind(null);
+        }
+
+        update_count();
+
+        ItemEffectRunner.UsingItem(m_pSOItem, null, null, m_listEffect);
     }
     private void selete_item_slot()
     {
@@ -52,21 +67,21 @@ public class ItemSlot : Slot
 
     private void update_count()
     {
-        //데이터 사용 후 인덱스 업데이트
-        m_pOwner?.Consume(m_iSlotIdx,1);
-
-        int iCount = m_pOwner?.GetDataAmount(m_iSlotIdx) ?? 0;
-        if(iCount == 0)
-        {
-            //삭제
-        }
-
+        int iCount = m_pOwner?.GetDataAmount(m_pSOTarget) ?? 0;
+     
         bool bShow = iCount > 1; // 1개 이하면 보통 표기 안 함
         if (bShow)
-            m_pCountBadge.enabled = bShow;
-
-        if (bShow)
+        {
+            m_pCountBadge.enabled = true;
             m_pCountBadge.text = iCount.ToString();
+        }
+        else
+            m_pCountBadge.enabled = false;
+
+    }
+
+    private void update_count(int _iCount)
+    {
 
     }
 }

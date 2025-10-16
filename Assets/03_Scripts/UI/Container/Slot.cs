@@ -65,7 +65,15 @@ public class Slot : ButtonUI
     public virtual void Bind(SOEntryUI _pSOTarget)
     {
         m_pSOTarget = _pSOTarget;
-        m_pIcon.sprite = _pSOTarget.Icon;
+
+        if(m_pSOTarget == null)
+            m_pIcon.enabled = false;
+        else
+        {
+            m_pIcon.enabled = true;
+            m_pIcon.sprite = _pSOTarget.Icon;
+        }
+
         m_pIcon.color = Color.white;
     }
     public void ActiveSlot()

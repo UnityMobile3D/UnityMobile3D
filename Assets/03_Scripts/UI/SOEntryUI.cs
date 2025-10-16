@@ -13,7 +13,7 @@ public class SOEntryUI : ScriptableObject
         Item,
     }
 
-
+    [SerializeField] private string name;
     [SerializeField] private int id;                    // 고정 키
     [SerializeField] private Sprite icon;               // 아이콘
     [SerializeField] private eUIType type;
@@ -22,6 +22,7 @@ public class SOEntryUI : ScriptableObject
 
     protected uint hashCode = (uint)eUIType.None;
 
+    public string Name => name;
     public int Id => id;
     public Sprite Icon => icon;
     public eUIType Type => type;

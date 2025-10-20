@@ -8,6 +8,29 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+[System.Serializable]
+public class CategoryData
+{
+    public List<SOEntryUI> m_ListData = new List<SOEntryUI>();
+
+    [SerializeField] private bool m_bCanDuplication = true; //중복 허용할지(장비 템 창, 스킬 창)
+    
+    public HashSet<SOEntryUI> m_setData = null; //중복 확인을 위한 해쉬
+    public bool IsCanDuplication { get => m_bCanDuplication; }
+    public int m_iCurrentRemnantData = 0;
+    public bool IsFull => m_iCurrentRemnantData <= 0;
+
+    public int GetRemnantDataIdx()
+    {
+        for (int i = 0; i < m_ListData.Count; ++i)
+        {
+            if (m_ListData[i] == null)
+                return i;
+        }
+
+        return -1;
+    }
+}
 
 public class Container : ButtonUI
 {
@@ -16,8 +39,10 @@ public class Container : ButtonUI
     //view담당 (고정된 슬롯을 렌더링하게 슬롯이 100개면 보이는구간만 렌더링되게)
     //data 담당 (SO를 활용해서 초기 데이터 저장)
     //controll은 UGUI pointer에서 담당
-    private IContainer m_IOwner;
+    //카테고리별로 슬롯뷰는 동일하되 데이터는 따로 보여줄 수 있게 
 
+
+    private IContainer m_IOwner;
 
     [Header("CONTANIER")]
     private RectMask2D m_pRectMask;
@@ -25,10 +50,15 @@ public class Container : ButtonUI
     [SerializeField] private RectTransform m_pContainerView; // 프레임(마스크) Rect
     [SerializeField] private RectTransform m_pContentView;  // 셀들이 붙는 부모 Rect
 
-    [SerializeField] private List<SOEntryUI> m_listData = new List<SOEntryUI>(); //실세 데이터
+    //[SerializeField] private List<SOEntryUI> m_listData = new List<SOEntryUI>(); //실세 데이터
+    [SerializeField] private List<CategoryData> m_listCategoryData = new List<CategoryData>();
     private List<SlotView> m_listView = new List<SlotView>();
+    [SerializeField] private int m_iCurrentCategoryIdx = 0;
+    public int CurrentCategoryIdx { get=> m_iCurrentCategoryIdx;}
 
-    public List<SOEntryUI> ListData { get => m_listData; }
+    [SerializeField] private int m_iCategoryCount = 0;
+    public int CategoryCount { get => m_iCategoryCount; }
+    //public List<SOEntryUI> ListData { get => m_listData; }
 
     [SerializeField] private SlotView m_pSlotPrefab; //셀 프리팹
     [SerializeField] private Vector2 m_vStep; //셀 사이 간격(x=열 간, y=행 간)
@@ -68,11 +98,12 @@ public class Container : ButtonUI
     //가장 높은 인덱스에 순차적으로 넣기 위해서 내림차순
     //PriorityQueue<uint> m_pqSlotIdx = new PriorityQueue<uint>()/*(Comparer<uint>.Create((a,b)=> b.CompareTo(a)))*/;
 
-    [SerializeField] private bool m_bCanDuplication = true; //중복 허용할지(장비 템 창, 스킬 창)
-    private HashSet<SOEntryUI> m_setData = null; //중복 확인을 위한 해쉬
-    public bool IsCanDuplication { get => m_bCanDuplication;}
-    public int m_iCurrentRemnantData = 0;
-    public bool IsFull => m_iCurrentRemnantData <= 0;
+    //[SerializeField] private bool m_bCanDuplication = true; //중복 허용할지(장비 템 창, 스킬 창)
+    //private HashSet<SOEntryUI> m_setData = null; //중복 확인을 위한 해쉬
+    //public bool IsCanDuplication { get => m_bCanDuplication;}
+    //public int m_iCurrentRemnantData = 0;
+    //public bool IsFull => m_iCurrentRemnantData <= 0;
+
 
     //빌드 전용
     public bool Run = false;
@@ -122,62 +153,74 @@ public class Container : ButtonUI
 #endif
 
 
-    private SOEntryUI find_data_idx(int _iDataIdx)
+    private SOEntryUI find_data_idx(int _iDataIdx, int _iCategoryIdx = 0)
     {
-        return m_listData[_iDataIdx];
+        CategoryData pCategoryData = GetCategoryData(_iCategoryIdx);
+
+        if(pCategoryData == null)
+            return null;
+
+        return pCategoryData.m_ListData[_iDataIdx];
     }
 
-    public bool DeleteData(int _iDataIdx)
+    public bool DeleteData(int _iDataIdx, int _iCategoryIdx = 0)
     {
-        if (m_listData[_iDataIdx] == null)
+        CategoryData pCategoryData = GetCategoryData(_iCategoryIdx);
+        if (pCategoryData == null || pCategoryData.m_ListData[_iDataIdx] == null)
             return false;
 
+        SOEntryUI pDeleteData = pCategoryData.m_ListData[_iDataIdx];
         //중복 허용이 안된다면 set에서도 제거
-        if (m_bCanDuplication == false)
-            m_setData.Remove(m_listData[_iDataIdx]);
+        if (pCategoryData.IsCanDuplication == false)
+            pCategoryData.m_setData.Remove(pDeleteData);
 
-        m_listData[_iDataIdx] = null;
-        ++m_iCurrentRemnantData;
+        pCategoryData.m_ListData[_iDataIdx] = null;
+        ++pCategoryData.m_iCurrentRemnantData;
 
         //데이터 새로 바인딩
-        BindData();
+        BindData(_iCategoryIdx);
 
         return true;
     }
 
-    public bool AddData(SOEntryUI _pSOEntryUI , int _iIdx = -1)
+    //-1이면 남는 데이터 인덱스에 넣기 , 0이면 기본 데이터 리스트에 넣기
+    public bool AddData(SOEntryUI _pSOEntryUI , int _iIdx = -1, int _iCategoryIdx = 0)
     {
-        if (IsFull)
+        CategoryData pCategoryData = GetCategoryData(_iCategoryIdx);
+
+        if (pCategoryData == null || pCategoryData.IsFull == true)
             return false;
+       
 
         //중복 허용되고 내 리스트에 이미 해당 데이터가 있다면
-        if(m_bCanDuplication== false && m_setData.Contains(_pSOEntryUI))
+        if(pCategoryData.IsCanDuplication == false && pCategoryData.m_setData.Contains(_pSOEntryUI))
             return false;
 
         if(_iIdx == -1)
         {
             //남는 자리
-            int iRemIdx = GetRemnantDataIdx();
+            int iRemIdx = pCategoryData.GetRemnantDataIdx();
             if(iRemIdx == -1)
                 return false;
 
-            m_listData[iRemIdx] = _pSOEntryUI;
+            pCategoryData.m_ListData[iRemIdx] = _pSOEntryUI;
         }
         else
         {
             //지정된 자리
-            if (m_listData[_iIdx] != null)
+            if (pCategoryData.m_ListData[_iIdx] != null)
                 return false;
 
-            m_listData[_iIdx] = _pSOEntryUI;
+            pCategoryData.m_ListData[_iIdx] = _pSOEntryUI;
         }
      
-        if(m_bCanDuplication == false)
-            m_setData.Add(_pSOEntryUI);
+        if(pCategoryData.IsCanDuplication == false)
+            pCategoryData.m_setData.Add(_pSOEntryUI);
 
-        BindData();
+        BindData(_iCategoryIdx);
 
-        --m_iCurrentRemnantData;
+        --pCategoryData.m_iCurrentRemnantData;
+
         return true;
     }
   
@@ -193,18 +236,24 @@ public class Container : ButtonUI
         clamp_slot();
 
         sort_data();
-        
-        //슬롯 바인딩
-        BindData();
+
+        m_iCategoryCount = m_listCategoryData.Count;
 
         //남은 슬롯 수 체크
-        m_iCurrentRemnantData = 0;
-        for (int i = 0; i<m_listData.Count; ++i)
+        for (int i = 0; i < m_listCategoryData.Count; ++i)
         {
-            if (m_listData[i] == null)
-                ++m_iCurrentRemnantData;
-        }
+            //슬롯 바인딩
+            BindData(i);
 
+            int iRemnantData = 0;
+            for (int j = 0; j < m_listCategoryData[i].m_ListData.Count; ++j)
+            {
+                if (m_listCategoryData[i].m_ListData[j] == null)
+                    ++iRemnantData;
+            }
+            m_listCategoryData[i].m_iCurrentRemnantData = iRemnantData;
+        }
+     
     }
 
     //슬롯 최대 계수 지정 어차피 보여질 부분만 만들기 때문에 불필요하게 더 늘리지 않기
@@ -263,9 +312,13 @@ public class Container : ButtonUI
             }
         }
 
+        //모든 데이터는 0번을 기준을 값은 데이터 크기를 가진다
+        CategoryData pBaseCategoryData = m_listCategoryData[0];
+        List<SOEntryUI> pListData= pBaseCategoryData.m_ListData;
+
         //실제 크기는 슬롯 수가 아닌, 데이터 수에 따라
-        int iRowSize = m_listData.Count >= m_listView.Count ?
-            (m_listData.Count / m_iColCount) : m_iRowCount;
+        int iRowSize = pListData.Count >= m_listView.Count ?
+            (pListData.Count / m_iColCount) : m_iRowCount;
 
         iRowSize -= m_iSlotRowCount;
         if (iRowSize < 0)
@@ -274,48 +327,48 @@ public class Container : ButtonUI
         m_vContaninerSize.x = vStep.x * m_iColCount;
         m_vContaninerSize.y = vStep.y * iRowSize;
 
-        if (m_bCanDuplication == false)
+        for(int i = 0; i<m_listCategoryData.Count; ++i)
         {
-            //중복 허용이 안된다면 중복된 데이터는 삭제
-            HashSet<SOEntryUI> setData = new HashSet<SOEntryUI>();
-            for (int i = 0; i < m_listData.Count; ++i)
-            {
-                if (m_listData[i] == null)
-                    continue;
+            CategoryData pCategoryDate = m_listCategoryData[i];
+            pListData = pCategoryDate.m_ListData;
 
-                if (setData.Contains(m_listData[i]))
-                    m_listData[i] = null;
-                else
-                    setData.Add(m_listData[i]);
-            }
-        }
-
-        if (m_bCanDuplication == false)
-        {
-            m_setData = new HashSet<SOEntryUI>();
-            for (int i = 0; i < m_listData.Count; ++i)
+            if (pCategoryDate.IsCanDuplication == false)
             {
-                if (m_listData[i] != null)
-                    m_setData.Add(m_listData[i]);
-                else
-                    m_listData[i] = null;
+                //중복 허용이 안된다면 중복된 데이터는 삭제
+                pCategoryDate.m_setData = new HashSet<SOEntryUI>();
+                for (int j = 0; j < pListData.Count; ++j)
+                {
+                    if (pListData[j] == null)
+                        continue;
+
+                    if (pCategoryDate.m_setData.Contains(pListData[j]))
+                        pListData[j] = null;
+                    else
+                        pCategoryDate.m_setData.Add(pListData[j]);
+                }
             }
+
         }
 
     }
 
-    public void BindData()
+    public void BindData(int _iCategoryIdx)
     {
+        List<SOEntryUI> pListData = GetListData(_iCategoryIdx);
+        if (pListData == null)
+            return;
+
         //보이는 구간 업데이트
         int iStartIdx = m_iCurRow * m_iColCount;
 
+       
         for(int i = 0; i<m_listView.Count; ++i)
         {
-            if (iStartIdx + i >= m_listData.Count)
+            if (iStartIdx + i >= pListData.Count)
                 return;
 
             int iDataIdx = iStartIdx + i;
-            m_listView[i].Bind(m_listData[iDataIdx], iDataIdx);
+            m_listView[i].Bind(pListData[iDataIdx], iDataIdx);
         }
     }
     //셀 사이즈 + 양끝 시작 끝 간격 + 셀 사이 간격
@@ -358,7 +411,7 @@ public class Container : ButtonUI
         if(m_iCurRow != iRow)
         {
             m_iCurRow = iRow;
-            BindData();
+            BindData(m_iCurrentCategoryIdx);
         }
     }
     public void SetTargetSlot(SlotView _pTargetSlot)
@@ -408,25 +461,44 @@ public class Container : ButtonUI
 
         m_listView.Clear();
     }
-    
-    //우선순위 큐 보다 빠름 (캐시 친화적)
-    public int GetRemnantDataIdx()
-    {
-        for(int i = 0; i<m_listData.Count; ++i)
-        {
-            if (m_listData[i] == null)
-                return i;
-        }
 
-        return -1;
-    }
-
-    public SOEntryUI GetDataIdx(int _iDataIdx)
+    public List<SOEntryUI> GetListData(int _iCategoryIdx)
     {
-        if (m_listData[_iDataIdx] == null)
+
+        CategoryData pCategoryData = GetCategoryData(_iCategoryIdx);
+        if (pCategoryData == null)
             return null;
 
-        return m_listData[_iDataIdx];
+        if(pCategoryData.m_ListData ==null || _iCategoryIdx >= pCategoryData.m_ListData.Count)
+            return null;
+
+        return pCategoryData.m_ListData;
+    }
+
+    public CategoryData GetCategoryData(int _iCategoryIdx)
+    {
+        if (_iCategoryIdx >= m_listCategoryData.Count)
+            return null;
+
+        return m_listCategoryData[_iCategoryIdx];
+    }
+
+    public SOEntryUI GetDataIdx(int _iDataIdx, int _iCategoryIdx)
+    {
+        List<SOEntryUI> pListData = GetListData(_iCategoryIdx);
+        if (pListData == null || pListData[_iDataIdx] == null)
+            return null;
+
+        return pListData[_iDataIdx];
+    }
+
+    public bool IsCanDuplication(int _iCategoryIdx)
+    {
+        CategoryData pCategoryData = GetCategoryData(_iCategoryIdx);
+        if(pCategoryData == null) 
+            return false;
+
+        return pCategoryData.IsCanDuplication;
     }
 
     public int GetCount(int _iDataIdx)

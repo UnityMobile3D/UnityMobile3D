@@ -10,8 +10,7 @@ using UnityEngine.UI;
 public class SlotView : ButtonUI
 {
     //하이라이트도 나중에 추가
-
-    private Image m_pIcon = null;
+    [SerializeField] private Image m_pIcon = null;
     private RectTransform m_pRectTransform = null;
     private int m_iID = -1; //SOID(현재는 사용하지 않음)
     private int m_iSlotIdx = -1; //내 컨테이너에서 몇번째 슬롯인지
@@ -27,7 +26,9 @@ public class SlotView : ButtonUI
     {
         m_pContainer = _pContainer;
         m_pRectTransform = GetComponent<RectTransform>();
-        m_pIcon = GetComponent<Image>();
+
+        if(m_pIcon == null)
+            m_pIcon = GetComponentInChildren<Image>();
     }
 
     public void Bind(SOEntryUI _pEntryUI, int _iSlotIdx)

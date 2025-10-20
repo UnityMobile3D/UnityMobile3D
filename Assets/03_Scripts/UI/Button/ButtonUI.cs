@@ -2,8 +2,10 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.LowLevel;
+using eActionID = InputManager.eActionID;
 
-// Inspector¿¡¼­ PointerEventData¸¦ ³Ñ±æ ¼ö ÀÖ°Ô ÇÏ´Â UnityEvent
+// Inspectorì—ì„œ PointerEventDataë¥¼ ë„˜ê¸¸ ìˆ˜ ìˆê²Œ í•˜ëŠ” UnityEvent
 [Serializable] public class PED : UnityEvent { }
 
 public class ButtonUI : BaseUI,
@@ -12,7 +14,15 @@ public class ButtonUI : BaseUI,
     IBeginDragHandler, IDragHandler, IEndDragHandler, 
     IPointerClickHandler
 {
-    //ÄÚµå ¹ÙÀÎµù¿ë µ¨¸®°ÔÀÌÆ®(¿øÇÏ¸é »ç¿ë) 
+    //UGUI í¬ì¸í„° ì´ë²¤íŠ¸ëŠ” Monobehaviour updateì „ì— ì´ë²¤íŠ¸ ë°œìƒ
+
+    //ë§Œì•½ InputManagerì™€ ë³‘í•©í•œë‹¤ë©´
+    [SerializeField] private eActionID m_eActionID = eActionID.None;
+    public eActionID ActionID { get => m_eActionID; }
+    bool m_bIsBindingInputAction = false;
+    public bool IsBindingInputAction { get => m_bIsBindingInputAction; }
+
+    //ì½”ë“œ ë°”ì¸ë”©ìš© ë¸ë¦¬ê²Œì´íŠ¸(ì›í•˜ë©´ ì‚¬ìš©) 
     public event Action OnEnterEvt;
     public event Action OnExitEvt;
     public event Action OnDownEvt;
@@ -22,7 +32,7 @@ public class ButtonUI : BaseUI,
     public event Action OnEndDragEvt;
     public event Action OnClickEvt;
 
-    // ÀÎ½ºÆåÅÍ ¹ÙÀÎµù¿ë 
+    // ì¸ìŠ¤í™í„° ë°”ì¸ë”©ìš© 
     [SerializeField] private PED onEnter;
     [SerializeField] private PED onExit;
     [SerializeField] private PED onDown;
@@ -31,6 +41,14 @@ public class ButtonUI : BaseUI,
     [SerializeField] private PED onDrag;
     [SerializeField] private PED onEndDrag;
     [SerializeField] private PED onClick;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        if (m_eActionID != eActionID.None)
+            m_bIsBindingInputAction = true;
+    }
 
     virtual public void OnPointerEnter(PointerEventData e)
     {
@@ -75,6 +93,7 @@ public class ButtonUI : BaseUI,
     }
     virtual public void OnPointerClick(PointerEventData e)
     {
+      
         onClick?.Invoke();
         OnClickEvt?.Invoke();
         //Debug.Log("Button Clicked");

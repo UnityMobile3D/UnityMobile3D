@@ -67,11 +67,15 @@ public class Slot : ButtonUI
         m_pSOTarget = _pSOTarget;
 
         if(m_pSOTarget == null)
+        {
             m_pIcon.enabled = false;
+            m_pIcon.color = new Color(255.0f, 255.0f, 255.0f, 0.0f);
+        }
         else
         {
             m_pIcon.enabled = true;
             m_pIcon.sprite = _pSOTarget.Icon;
+            m_pIcon.color = new Color(255.0f, 255.0f, 255.0f, 255.0f);
         }
 
         m_pIcon.color = Color.white;

@@ -37,16 +37,16 @@ public class SlotContainer : MonoBehaviour, IContainer
 
 
     //IContainer 구현
-    public void SelectData(int _iDataIdx) { }
+    public void SelectData(int _iDataIdx, int _iCategoryIdx = 0) { }
 
-    public SOEntryUI GetData(int _iDataIdx)
+    public SOEntryUI GetData(int _iDataIdx, int _iCategoryIdx = 0)
     {
         if (m_listSlot[_iDataIdx] == null)
             return null;
 
         return m_listSlot[_iDataIdx].SOTarget;
     }
-    public int GetDataAmount(int _iDataIdx)
+    public int GetDataAmount(int _iDataIdx, int _iCategoryIdx = 0)
     {
         SOEntryUI pData = GetData(_iDataIdx);
         if (pData == null)
@@ -58,7 +58,7 @@ public class SlotContainer : MonoBehaviour, IContainer
 
         return iAmount;
     }
-    public int GetDataAmount(SOEntryUI _pSoData)
+    public int GetDataAmount(SOEntryUI _pSoData, int _iCategoryIdx = 0)
     {
         int iAmount = 0;
         if (m_hashItemCount.TryGetValue(_pSoData.Id, out iAmount) == false)
@@ -68,7 +68,7 @@ public class SlotContainer : MonoBehaviour, IContainer
     }
 
 
-    public bool AddData(IContainer _IOtherContainer, int _iDataIdx, SOEntryUI _pSOData, int _iAmount) 
+    public bool AddData(int _iDataIdx, SOEntryUI _pSOData, int _iAmount, int _iCategoryIdx = 0) 
     {
         //기존에 누른 데이터
         if (_pSOData == null)
@@ -88,7 +88,7 @@ public class SlotContainer : MonoBehaviour, IContainer
 
         return true;
     }
-    public bool Consume(int _iDataIdx, int _iAmount)
+    public bool Consume(int _iDataIdx, int _iAmount, int _iCategoryIdx = 0)
     {
         if (m_listSlot[_iDataIdx].SOTarget == null)
             return false;
@@ -101,7 +101,7 @@ public class SlotContainer : MonoBehaviour, IContainer
 
         return true;
     }
-    public bool DeleteData(int _iDataIdx)
+    public bool DeleteData(int _iDataIdx, int _iCategoryIdx = 0)
     {
         SOEntryUI pData = GetData(_iDataIdx);
         if (pData == null)
@@ -111,6 +111,6 @@ public class SlotContainer : MonoBehaviour, IContainer
         return true;
     }
 
-    public bool FindData(SOEntryUI _pData) { return false; }
-    public bool FindData(int _iDataIdx) { return false; }
+    public bool FindData(SOEntryUI _pData, int _iCategoryIdx = 0) { return false; }
+    public bool FindData(int _iDataIdx, int _iCategoryIdx = 0) { return false; }
 }

@@ -59,23 +59,23 @@ public class SkillTree : BaseUI, IContainer
     }
 
     //IContainer 구현
-    public void SelectData(int _iDataIdx) {}
+    public void SelectData(int _iDataIdx, int _iCategoryIdx = 0) {}
 
-    public SOEntryUI GetData(int _iDataIdx) { return null; }
-    public int GetDataAmount(int _iDataIdx) { return -1; }
-    public int GetDataAmount(SOEntryUI _pSoData) { return -1; }
+    public SOEntryUI GetData(int _iDataIdx, int _iCategoryIdx = 0) { return null; }
+    public int GetDataAmount(int _iDataIdx, int _iCategoryIdx = 0) { return -1; }
+    public int GetDataAmount(SOEntryUI _pSoData, int _iCategoryIdx = 0) { return -1; }
 
-    public bool AddData(IContainer _IOtherContainer, int _iDataIdx, SOEntryUI _pSOData, int _iAmount) { return false; }
-    public bool Consume(int _iDataIdx, int _iAmount) { return false; }
-    public bool DeleteData(int _iDataIdx)
+    public bool AddData(int _iDataIdx, SOEntryUI _pSOData, int _iAmount, int _iCategoryIdx = 0) { return false; }
+    public bool Consume(int _iDataIdx, int _iAmount, int _iCategoryIdx = 0) { return false; }
+    public bool DeleteData(int _iDataIdx, int _iCategoryIdx = 0)
     {
         //기존 스킬창에서 스킬이 지워지는 일은 없음
         m_pSkillContainer.ClearTarget();
         return true;
     }
 
-    public bool FindData(SOEntryUI _pData) { return false; }
-    public bool FindData(int _iDataIdx) { return false; }
+    public bool FindData(SOEntryUI _pData, int _iCategoryIdx) { return false; }
+    public bool FindData(int _iDataIdx, int _iCategoryIdx) { return false; }
 
 
 }

@@ -45,8 +45,9 @@ public class ItemSlot : Slot
 
     public override void Using()
     {
-        m_bCanUse = false;
+        InputManager.m_Instance.BindUGUIButtonBoolean(ActionID, true);
 
+        m_bCanUse = false;
         //Target을 여기서 셋팅
         int iConsumeCount = 1;
 

@@ -24,16 +24,20 @@ public class Inventory : BaseUI, IContainer
     protected void Start()
     {
         //현재 인벤토리에서 아이템들 수 확인
-        var ListData = m_pInevenContainer.ListData;
-        for(int i = 0; i<ListData.Count; ++i)
+        for(int i = 0; i<m_pInevenContainer.CategoryCount; ++i)
         {
-            if (ListData[i] == null)
-                continue;
+            CategoryData pCategoryData = m_pInevenContainer.GetCategoryData(i);
+            List<SOEntryUI> ListData = pCategoryData.m_ListData;
 
-            m_hashItemCount.Add((uint)ListData[i].Id, 3);
+            for (int j = 0; j < ListData.Count; ++j)
+            {
+                if (ListData[j] == null)
+                    continue;
+
+                m_hashItemCount.Add((uint)ListData[j].Id, 3);
+            }
+            m_pInevenContainer.BindData(i);
         }
-
-        m_pInevenContainer.BindData();
     }
 
     public void Update()
@@ -47,7 +51,7 @@ public class Inventory : BaseUI, IContainer
 
     private void OnDisable()
     {
-        m_pSlotContainer.UnActiveSlot();
+        m_pSlotContainer?.UnActiveSlot();
     }
     private void close_tap()
     {
@@ -61,10 +65,8 @@ public class Inventory : BaseUI, IContainer
         if ((iID & (uint)eUIType.Item) == (uint)eUIType.Item)
         {
             m_pInevenContainer.AddData(_pSOItem);
-        }
-        
+        }   
     }
-
 
     private void select_item()
     {
@@ -75,8 +77,9 @@ public class Inventory : BaseUI, IContainer
         //현재 데이터 갯수 만큼 인터페이스 넘겨주기
         //중복 허용하지 않는다면 무조건 1
         int iCount = 1;
-      
-        if (m_pInevenContainer.IsCanDuplication == false)
+
+        int iCurInvenIdx = m_pInevenContainer.CurrentCategoryIdx;
+        if (m_pInevenContainer.IsCanDuplication(iCurInvenIdx) == false)
         { 
             if (m_hashItemCount.TryGetValue((uint)pTargetView.SOEntryUI.Id, out iCount) == false)
                 return;
@@ -90,13 +93,13 @@ public class Inventory : BaseUI, IContainer
     }
 
     //IContainer 구현
-    public void SelectData(int _iDataIdx) { }
+    public void SelectData(int _iDataIdx, int _iCategoryIdx = 0) { }
 
-    public SOEntryUI GetData(int _iDataIdx)
+    public SOEntryUI GetData(int _iDataIdx, int _iCategoryIdx = 0)
     {
-        return m_pInevenContainer.GetDataIdx(_iDataIdx);
+        return m_pInevenContainer.GetDataIdx(_iDataIdx, _iCategoryIdx);
     }
-    public int GetDataAmount(int _iDataIdx)
+    public int GetDataAmount(int _iDataIdx, int _iCategoryIdx = 0)
     {
         SOEntryUI pEntryData = GetData(_iDataIdx);
         if (pEntryData == null)
@@ -107,14 +110,14 @@ public class Inventory : BaseUI, IContainer
             return 0;
 
         //인벤토리창에 아이템 부분은 중복이 혀용 안됨 단 장비는 가능
-        if (m_pInevenContainer.IsCanDuplication == true)
+        if (m_pInevenContainer.IsCanDuplication(_iCategoryIdx) == true)
             iAmount = 1;
 
         return iAmount;
     }
-    public int GetDataAmount(SOEntryUI _pSoData) { return -1; }
+    public int GetDataAmount(SOEntryUI _pSoData, int _iCategoryIdx = 0) { return -1; }
 
-    public bool AddData(IContainer _IOtherContainer, int _iDataIdx, SOEntryUI _pSOData, int _iAmount)
+    public bool AddData(int _iDataIdx, SOEntryUI _pSOData, int _iAmount, int _iCategoryIdx = 0)
     {
         if (_pSOData.Type != eUIType.Item)
             return false;
@@ -130,9 +133,11 @@ public class Inventory : BaseUI, IContainer
 
         return true;
     }
-    public bool Consume(int _iDataIdx, int _iAmount) { return false; }
 
-    public bool DeleteData(int _iDataIdx)
+
+    public bool Consume(int _iDataIdx, int _iAmount, int _iCategoryIdx = 0) { return false; }
+
+    public bool DeleteData(int _iDataIdx, int _iCategoryIdx = 0)
     {
         //1.만약 바꾸는거라면 슬롯에 있는 데이터를 다시 인벤토리에 넣어야함
         //2.컨테이너에서 중복으로 감시하기 때문에 거기서 반환 값을 통해서 감시하기 굳이 인벤토리에서도 있는지 체크하지말기
@@ -144,6 +149,6 @@ public class Inventory : BaseUI, IContainer
         return true;
     }
 
-    public bool FindData(SOEntryUI _pData) { return false; }
-    public bool FindData(int _iDataIdx) { return false; }
+    public bool FindData(SOEntryUI _pData, int _iCategoryIdx = 0) { return false; }
+    public bool FindData(int _iDataIdx, int _iCategoryIdx = 0) { return false; }
 }

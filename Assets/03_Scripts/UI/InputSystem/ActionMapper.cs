@@ -1,42 +1,121 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine;
 
+using eActionID = InputManager.eActionID;
 using tTouchEvent = InputManager.tTouchEvent;
+using static InputManager;
 public class ActionMapper 
 {
-    public sealed class ActionState
+   
+    public sealed class PointerInputState
     {
-        public Vector2 vMove;      // ÀÌµ¿ º¤ÅÍ(Á¤±ÔÈ­/Å¬·¥ÇÁ)
-        public Vector2 vSwipeDelta; // ½º¿ÍÀÌÇÁ º¤ÅÍ(ÇÁ·¹ÀÓ ÀÌµ¿·®)
+        public Vector2 vMove;      // ì´ë™ ë²¡í„°(ì •ê·œí™”/í´ë¨í”„)
+        public Vector2 vSwipeDelta; // ìŠ¤ì™€ì´í”„ ë²¡í„°(í”„ë ˆì„ ì´ë™ëŸ‰)
 
-        public float fZoomDelta;   // ÇÉÄ¡·Î ÀÎÇÑ ÁÜ º¯È­·® ´©Àû
-        public float fRotateDelta; // µÎ ¼Õ°¡¶ô È¸Àü °¢ º¯È­·® ´©Àû(µµ ´ÜÀ§)
+        public float fZoomDelta;   // í•€ì¹˜ë¡œ ì¸í•œ ì¤Œ ë³€í™”ëŸ‰ ëˆ„ì 
+        public float fRotateDelta; // ë‘ ì†ê°€ë½ íšŒì „ ê° ë³€í™”ëŸ‰ ëˆ„ì (ë„ ë‹¨ìœ„)
 
-        public bool bFireDown;     // ´­¸² ½ÃÀÛ Æ®¸®°Å(ÇÑ ÇÁ·¹ÀÓ)
-        public bool bFireHeld;     // (¿¬¼Ó)
-        public bool bFireUp;       // ÇØÁ¦ Æ®¸®°Å(ÇÑ ÇÁ·¹ÀÓ)
+        public bool bFireDown;     // ëˆŒë¦¼ ì‹œì‘ íŠ¸ë¦¬ê±°(í•œ í”„ë ˆì„)
+        public bool bFireHeld;     // (ì—°ì†)
+        public bool bFireUp;       // í•´ì œ íŠ¸ë¦¬ê±°(í•œ í”„ë ˆì„)
 
-        public ActionState(){}
+        public PointerInputState(){}
        
         public void ClearAction() { bFireDown = bFireUp = false; fZoomDelta = 0; fRotateDelta = 0; }
     }
-
-    private Rect m_tLeft;
-    private Rect m_tRight;
-
-    private void calculate_rect()
+    public sealed class ActionState
     {
-        m_tLeft = new Rect(0, 0, Screen.width * 0.45f, Screen.height);                      // ¿ŞÂÊ 45%: ÀÌµ¿
-        m_tRight = new Rect(Screen.width * 0.55f, 0, Screen.width * 0.45f, Screen.height);  //¿À¸¥ÂÊ 45%: ¿¡ÀÓ/»ç°İ
+        public bool bSkillDefault;
+        public bool bSkill1;
+        public bool bSkill2;
+        public bool bSubSkill;
+        public bool bItem;
+        public Vector2 vDirection;
+
+        public void CopyFrom(in ActionState other)
+        {
+            bSkillDefault = other.bSkillDefault;
+            bSkill1 = other.bSkill1;
+            bSkill2 = other.bSkill2;
+            bSubSkill = other.bSubSkill;
+            bItem = other.bItem;
+            vDirection = other.vDirection;
+        }
+        public void SetBoolean(eActionID _eActionID, bool _bValue)
+        {
+            switch(_eActionID)
+            {
+                case eActionID.SkillDefault:
+                    bSkillDefault = _bValue;
+                    break;
+
+                case eActionID.Skill1:
+                    bSkill1 = _bValue;
+                    break;
+
+                case eActionID.Skill2:
+                    bSkill2 = _bValue;
+                    break;
+
+                case eActionID.SubSkill:
+                    bSubSkill = _bValue;
+                    break;
+
+                case eActionID.Item:
+                    bItem = _bValue;
+                    break;
+            }
+        }
+        public void SetVector2D(eActionID _eActionID, in Vector2 _vValue)
+        {
+            switch (_eActionID)
+            {
+                case eActionID.Move:
+                    vDirection = _vValue;
+                    break;
+            }
+        }
+
+        public bool GetBoolean(eActionID _eActionID)
+        {
+            return _eActionID switch
+            {
+                eActionID.SkillDefault => bSkillDefault,
+                eActionID.Skill1 => bSkill1,
+                eActionID.Skill2 => bSkill2,
+                eActionID.SubSkill => bSkill1,
+                eActionID.Item => bItem,
+                _ => false,
+            };
+        }
+
+        public Vector2 GetVector2D(eActionID _eActionID)
+        {
+            return _eActionID switch
+            {
+                eActionID.Move => vDirection,
+                _ => Vector2.zero,
+            };
+        }
+
+        public void Clear()
+        {
+            bSkillDefault = false;
+            bSkill1 = false;
+            bSkill2 = false;
+            bSubSkill = false;
+            bItem = false;
+            vDirection = Vector2.zero;
+        }
     }
 
-
-    public void Map(List<tTouchEvent> _listTouchEvent, ActionState _pState)
+    
+    //ë‹¤ë¥¸ ë””ë°”ì´ìŠ¤ì™€ ë§µí•‘
+    public void MapPointer(List<tTouchEvent> _listTouchEvent, PointerInputState _pState)
     {
-        //if (m_tLeft.width + m_tRight.width < Screen.width * 0.9f)
-        //    calculate_rect();
-
         _pState.ClearAction();
 
         foreach(var tEve in _listTouchEvent)
@@ -48,12 +127,12 @@ public class ActionMapper
             {
                 case "drag":
                     //if(m_tLeft.Contains(tEve.vPos))
-                    //_pState.vMove += tEve.vDelta / 100.0f;  // ¿ŞÂÊ: ÀÌµ¿ º¤ÅÍ
-                    _pState.vMove = Vector2.ClampMagnitude(_pState.vMove, 1.0f); // ÀÌµ¿ º¤ÅÍ Á¤±ÔÈ­
+                    //_pState.vMove += tEve.vDelta / 100.0f;  // ì™¼ìª½: ì´ë™ ë²¡í„°
+                    _pState.vMove = Vector2.ClampMagnitude(_pState.vMove, 1.0f); // ì´ë™ ë²¡í„° ì •ê·œí™”
                     break;
 
                 case "swipe":
-                    _pState.vSwipeDelta += Vector2.ClampMagnitude(_pState.vMove, 1.0f); // ½º¿ÍÀÌÇÁ º¤ÅÍ ´©Àû
+                    _pState.vSwipeDelta += Vector2.ClampMagnitude(_pState.vMove, 1.0f); // ìŠ¤ì™€ì´í”„ ë²¡í„° ëˆ„ì 
                     break;
 
                 case "tap":
@@ -63,19 +142,68 @@ public class ActionMapper
 
                 case "stay":
                     //if (m_tRight.Contains(tEve.vPos))
-                     _pState.bFireHeld = true;  // ·ÕÇÁ·¹½º À¯Áö
+                     _pState.bFireHeld = true;  // ë¡±í”„ë ˆìŠ¤ ìœ ì§€
                     break;
 
                 case "pinch":
-                    _pState.fZoomDelta += tEve.fValue; // µÎ ¼Õ°¡¶ô È¸Àü °¢µµ º¯È­·®
+                    _pState.fZoomDelta += tEve.fValue; // ë‘ ì†ê°€ë½ íšŒì „ ê°ë„ ë³€í™”ëŸ‰
                     break;
 
                 case "rotate":
-                    _pState.fRotateDelta += tEve.fValue; // µÎ ¼Õ°¡¶ô È¸Àü °¢µµ º¯È­·®
+                    _pState.fRotateDelta += tEve.fValue; // ë‘ ì†ê°€ë½ íšŒì „ ê°ë„ ë³€í™”ëŸ‰
                     break;
 
             }
         }
+    }
+    public void MapDevice(ActionState _pState, List<ActionBinding> _listActionBindg)
+    {
+       
+        for(int i = 0; i<_listActionBindg.Count; ++i)
+        {
+            var pActionRef = _listActionBindg[i];
+            for(int j = 0; j< pActionRef.listAction.Count; ++j)
+            {
+                if (set_value(_pState, pActionRef,j) == true)
+                    break;
+            }
+        }
+    }
+
+   
+    private bool set_value(ActionState _pState , ActionBinding _pAction, int _idx)
+    {
+        bool bResult = false;
+
+        eActionID eID = _pAction.ID;
+        var pAction = _pAction.listAction[_idx];
+
+        switch (pAction.action.type)
+        {
+            case InputActionType.Button:
+
+                if (_pState.GetBoolean(eID) == true)
+                    return true;
+
+                bool bPressed = pAction.action.IsPressed();
+                _pState.SetBoolean(eID, bPressed);
+
+                bResult = bPressed;
+                break;
+
+            case InputActionType.Value:
+
+                if (_pState.GetVector2D(eID) != Vector2.zero)
+                    return true;
+
+                var pVector2 = pAction.action.ReadValue<Vector2>();
+                _pState.SetVector2D(eID, pVector2);
+
+                bResult = pVector2 != Vector2.zero;
+                break;
+        }
+
+        return bResult;
     }
 }
 

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
+using PointerInputState = ActionMapper.PointerInputState;
 using ActionState = ActionMapper.ActionState;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 using UnityEditor.PackageManager;
@@ -17,12 +18,38 @@ using UnityEngine.Assertions;
 
 public class InputManager : MonoBehaviour
 {
+    //í‚¤ë³´ë“œ ê°’ê³¼ ë§µí•‘í•˜ê¸° ìœ„í•´ì„œ 
+    [System.Serializable]
+    public enum eActionID
+    {
+        None,
+        //Boolean
+        SkillDefault,
+        Skill1,
+        Skill2,
+        SubSkill,
+        Item,
+
+        //Vector2D
+        Move,
+
+
+        End,
+    }
+
+    [System.Serializable]
+    public class ActionBinding
+    {
+        public eActionID ID;
+        public List<InputActionReference> listAction = new(); // <- ì¸ìŠ¤í™í„°ì—ì„œ ì„ íƒ ê°€ëŠ¥
+    }
+
     public struct tTouchEvent
     {
-        public string strType;     // "tap","stay","swipe","drag","pinch","rotate" µî ÀÌº¥Æ® Å¸ÀÔ
-        public Vector2 vDelta;     // ÇÁ·¹ÀÓ ÀÌµ¿·®(µå·¡±×/½º¿ÍÀÌÇÁ µî)
-        public float fValue;       // ÇÉÄ¡ ½ºÄÉÀÏ º¯È­/È¸Àü °¢µµ/·ÕÇÁ·¹½º Áö¼Ó½Ã°£ µî Ãß°¡ °ª
-        public bool bOverUI;       // ½ÃÀÛ ½Ã UI À§¿´´ÂÁö(Á¤Ã¥: ½ÃÀÛ UI¸é ³¡±îÁö UI)
+        public string strType;     // "tap","stay","swipe","drag","pinch","rotate" ë“± ì´ë²¤íŠ¸ íƒ€ì…
+        public Vector2 vDelta;     // í”„ë ˆì„ ì´ë™ëŸ‰(ë“œë˜ê·¸/ìŠ¤ì™€ì´í”„ ë“±)
+        public float fValue;       // í•€ì¹˜ ìŠ¤ì¼€ì¼ ë³€í™”/íšŒì „ ê°ë„/ë¡±í”„ë ˆìŠ¤ ì§€ì†ì‹œê°„ ë“± ì¶”ê°€ ê°’
+        public bool bOverUI;       // ì‹œì‘ ì‹œ UI ìœ„ì˜€ëŠ”ì§€(ì •ì±…: ì‹œì‘ UIë©´ ëê¹Œì§€ UI)
     }
 
     public static InputManager m_Instance = null;
@@ -30,16 +57,21 @@ public class InputManager : MonoBehaviour
     private TouchTracker m_pTouchTracker;
     private ActionMapper m_pActionMapper;
 
-    private readonly List<tTouchEvent> m_listTouchEvent = new(10);//ÇÁ·¹ÀÓ ¹öÆÛ
+   
+    [SerializeField] private List<ActionBinding> m_listActions = new();
 
-    private readonly ActionState m_pActionState = new ActionState(); //ÇÊµå¿¡ ´Ù¸¥ ÀÎ½ºÅÏ½º¸¦ ´Ù½Ã ´ëÀÔ ¸ø ÇÑ´Ù¡±
-
-    public ActionState State => m_pActionState; //¿ÜºÎ ÂüÁ¶¿ë eadonly ÇÊµå + get-only ÇÁ·ÎÆÛÆ¼
+    private readonly List<tTouchEvent> m_listTouchEvent = new(10);//í”„ë ˆì„ ë²„í¼
+    private readonly PointerInputState m_pPointerState = new PointerInputState(); 
+    private readonly ActionState m_pActionState = new ActionState();
+    //UGUI ì´ë²¤íŠ¸ ì‹œìŠ¤í…œê³¼ ë‚´ InputManagerì— ë°ì´í„°ë¥¼ ë™ê¸°í™”í•˜ê¸° ìœ„í•œ ì„ì‹œ ë°ì´í„°
+    private ActionState m_pUGUIActionState = new ActionState();
+    
+    public PointerInputState PointerState => m_pPointerState; //ì™¸ë¶€ ì°¸ì¡°ìš© eadonly í•„ë“œ + get-only í”„ë¡œí¼í‹°
     //Test
     private InputAction m_pMoveAction;
     
-    [SerializeField] private EventSystem m_pEventSystem;             // UGUI EventSystem ÂüÁ¶
-    [SerializeField] private List<GraphicRaycaster> m_pUIRay;        // »óÈ£ÀÛ¿ë CanvasÀÇ GraphicRaycaster ¸ñ·Ï
+    [SerializeField] private EventSystem m_pEventSystem;             // UGUI EventSystem ì°¸ì¡°
+    [SerializeField] private List<GraphicRaycaster> m_pUIRay;        // ìƒí˜¸ì‘ìš© Canvasì˜ GraphicRaycaster ëª©ë¡
 
     private void Awake()
     {
@@ -52,26 +84,66 @@ public class InputManager : MonoBehaviour
         m_pTouchTracker = new TouchTracker();
         m_pActionMapper = new ActionMapper();
 
-       
-        m_pMoveAction = new("Move", InputActionType.Value);
-        m_pMoveAction.AddCompositeBinding("2DVector")
-            .With("Up", "<Keyboard>/upArrow").With("Down", "<Keyboard>/downArrow")
-            .With("Left", "<Keyboard>/leftArrow").With("Right", "<Keyboard>/rightArrow");
-        m_pMoveAction.AddBinding("<Gamepad>/leftStick");
-        m_pMoveAction.Enable();
 
+        for(int i = 0; i<m_listActions.Count; ++i)
+        {
+            var pActionRef = m_listActions[i];
+            if (pActionRef == null)
+                continue;
 
+            for(int j = 0; j< pActionRef.listAction.Count; ++j)
+            {
+                pActionRef.listAction[j].action.Enable();
+            }
+        }
     }
 
     private void Update()
     { 
+        //íŒ¨ë“œë‘ ê´€ë ¨ ì—†ëŠ” ë°”íƒ•, ê·¸ë˜ë“œ ê´€ë ¨ëœ ì•¡ì…˜ë“¤
         var listActiveTouch = Touch.activeTouches;
         if (listActiveTouch.Count> 0)
         {
             m_pTouchTracker.UpdateTouchPhase(ref listActiveTouch, m_listTouchEvent, m_pUIRayCaster);
-            m_pActionMapper.Map(m_listTouchEvent, m_pActionState);
+            m_pActionMapper.MapPointer(m_listTouchEvent, m_pPointerState);
         }
+
+        //UGUIì™€ ì—°ë™ëœ ì•¡ì…˜
+        m_pActionState.Clear();
+
+        m_pActionState.CopyFrom(m_pUGUIActionState);
+
+        //UGUIë‚˜ ë‹¤ë¥¸ ë‹¤ë°”ì´ìŠ¤ ê¸°ê¸°ì™€ ì—°ë™ëœ ìºë¦­í„° ì¸í’‹ ê´€ë ¨ëœ ì•¡ì…˜ë“¤
+        m_pActionMapper.MapDevice(m_pActionState, m_listActions);
+
+        m_pUGUIActionState.Clear();
     }
 
-  
+    public void BindUGUIButtonBoolean(eActionID _eID, bool _bValue)
+    {
+        m_pUGUIActionState.SetBoolean(_eID, _bValue);
+    }
+
+    public void BindUGUIButtonVector2D(eActionID _eID, in Vector2 _vValue)
+    {
+        m_pUGUIActionState.SetVector2D(_eID, _vValue);
+    }
+
+    public bool GetBooleanValue(eActionID _eActionID)
+    {
+        if ((int)_eActionID >= (int)eActionID.Move)
+            return false;
+
+        return m_pActionState.GetBoolean(_eActionID);
+    }
+
+    public Vector2 GetVector2DValue(eActionID _eActionID)
+    {
+        if ((int)_eActionID < (int)eActionID.Move)
+            return Vector2.zero;
+
+        return m_pActionState.GetVector2D(_eActionID);
+    }
+
+
 }

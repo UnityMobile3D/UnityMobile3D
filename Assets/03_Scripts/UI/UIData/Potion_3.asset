@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 569485499479cd64e8720a2ff8b608bf, type: 3}
   m_Name: Potion_3
   m_EditorClassIdentifier: 
+  name: 
   id: 55
-  icon: {fileID: 21300000, guid: 1f97848f18817cc43ba66da5a2d0ccfa, type: 3}
+  icon: {fileID: 21300000, guid: f68c285fd24bc4e469921eb67d4aa979, type: 3}
   type: 2
   sortKey: 56
   cooldown: 2

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: 
   id: 54
-  icon: {fileID: 21300000, guid: 7dc8110e8bf286041a85cc08bd27c8cc, type: 3}
-  type: 2
+  icon: {fileID: 21300000, guid: f65023889763c7644b5579f0b019da6b, type: 3}
+  type: 16
   sortKey: 56
   cooldown: 2
   level: 0

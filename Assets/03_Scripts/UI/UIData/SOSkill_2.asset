@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2bbfecefaeb9bd4ba3e0694e72d3767, type: 3}
   m_Name: SOSkill_2
   m_EditorClassIdentifier: 
+  name: 
   id: 57
   icon: {fileID: 21300000, guid: c7983f142b364304a82bb8158574b413, type: 3}
-  type: 1
+  type: 8
   sortKey: 51
   cooldown: 3
   level: 0

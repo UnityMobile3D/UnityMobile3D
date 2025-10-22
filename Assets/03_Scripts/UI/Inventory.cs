@@ -24,8 +24,10 @@ public class Inventory : BaseUI, IContainer
     protected void Start()
     {
         //현재 인벤토리에서 아이템들 수 확인
+        int testValue = -1;
         for(int i = 0; i<m_pInevenContainer.CategoryCount; ++i)
         {
+            testValue += 2;
             CategoryData pCategoryData = m_pInevenContainer.GetCategoryData(i);
             List<SOEntryUI> ListData = pCategoryData.m_ListData;
 
@@ -34,10 +36,10 @@ public class Inventory : BaseUI, IContainer
                 if (ListData[j] == null)
                     continue;
 
-                m_hashItemCount.Add((uint)ListData[j].Id, 3);
+                m_hashItemCount.Add((uint)ListData[j].Id, testValue);
             }
-            m_pInevenContainer.BindData(i);
         }
+        m_pInevenContainer.BindData(0);
     }
 
     public void Update()
@@ -119,8 +121,8 @@ public class Inventory : BaseUI, IContainer
 
     public bool AddData(int _iDataIdx, SOEntryUI _pSOData, int _iAmount, int _iCategoryIdx = 0)
     {
-        if (_pSOData.Type != eUIType.Item)
-            return false;
+        //if (_pSOData.Type != eUIType.Item)
+        //    return false;
         
         uint iID = (uint)_pSOData.Id;
 

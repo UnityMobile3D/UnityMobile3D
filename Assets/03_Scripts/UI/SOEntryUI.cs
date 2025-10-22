@@ -8,9 +8,10 @@ public class SOEntryUI : ScriptableObject
     //비트로도 가능
     public enum eUIType
     {
-        None,
-        Skill,
-        Item,
+        None = 0,
+        Skill = 8,
+        Item = 16,
+        Equip = 24,
     }
 
     [SerializeField] private string name;

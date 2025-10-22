@@ -111,8 +111,6 @@ public class Container : ButtonUI
     {
         base.Awake();
 
-        m_IOwner = GetComponentInParent<IContainer>();
-
         Build();
         
         if(m_pSelectFramePrefab != null)
@@ -227,6 +225,8 @@ public class Container : ButtonUI
 
     private void Build()
     {
+        m_IOwner = GetComponentInParent<IContainer>();
+
         clear_data();
 
         m_pRectMask = GetComponent<RectMask2D>();
@@ -242,9 +242,6 @@ public class Container : ButtonUI
         //남은 슬롯 수 체크
         for (int i = 0; i < m_listCategoryData.Count; ++i)
         {
-            //슬롯 바인딩
-            BindData(i);
-
             int iRemnantData = 0;
             for (int j = 0; j < m_listCategoryData[i].m_ListData.Count; ++j)
             {
@@ -253,7 +250,9 @@ public class Container : ButtonUI
             }
             m_listCategoryData[i].m_iCurrentRemnantData = iRemnantData;
         }
-     
+
+        //슬롯 바인딩
+        BindData(m_iCurrentCategoryIdx);
     }
 
     //슬롯 최대 계수 지정 어차피 보여질 부분만 만들기 때문에 불필요하게 더 늘리지 않기
@@ -469,7 +468,7 @@ public class Container : ButtonUI
         if (pCategoryData == null)
             return null;
 
-        if(pCategoryData.m_ListData ==null || _iCategoryIdx >= pCategoryData.m_ListData.Count)
+        if(pCategoryData.m_ListData ==null)
             return null;
 
         return pCategoryData.m_ListData;
@@ -506,7 +505,7 @@ public class Container : ButtonUI
         if (m_IOwner == null)
             return -1;
 
-        int iAmount = m_IOwner.GetDataAmount(_iDataIdx);
+        int iAmount = m_IOwner.GetDataAmount(_iDataIdx, m_iCurrentCategoryIdx);
         return iAmount;
     }
 

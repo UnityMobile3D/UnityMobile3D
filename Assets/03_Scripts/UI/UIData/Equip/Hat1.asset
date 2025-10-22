@@ -9,15 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 569485499479cd64e8720a2ff8b608bf, type: 3}
+  m_Script: {fileID: 11500000, guid: f915fa26efd7d454f9ddc08690f63e68, type: 3}
   m_Name: Hat1
   m_EditorClassIdentifier: 
   name: 
   id: 59
-  icon: {fileID: 21300000, guid: 69b6fac54bf33d94f8b56a037beeb7bf, type: 3}
-  type: 2
+  icon: {fileID: 21300000, guid: b53db54545fcd5747b7ba5e450c07baf, type: 3}
+  type: 24
   sortKey: 0
   cooldown: 0
-  level: 0
-  itemtype: 2
-  effects: []
+  level: 5
+  equiptype: 1

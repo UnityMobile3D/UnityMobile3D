@@ -9,6 +9,9 @@ public class BaseUI : MonoBehaviour
     virtual protected void Awake()
     {
         Graphic pGraphic = GetComponent<Graphic>();
+        if (pGraphic == null)
+            return;
+
         pGraphic.raycastTarget = m_bRaycast;
     }
 
@@ -16,6 +19,9 @@ public class BaseUI : MonoBehaviour
     {
         m_bRaycast = _bRaycast;
         Graphic pGraphic = GetComponent<Graphic>();
+        if (pGraphic == null)
+            return;
+
         pGraphic.raycastTarget = m_bRaycast;
     }
 

@@ -25,7 +25,7 @@ public class SOSkillUI : SOEntryUI
     public override uint GetUIHashCode()
     {
         uint iHashCode = base.GetUIHashCode();
-        iHashCode |= (uint)skilltype << 8;
+        iHashCode |= (uint)skilltype << (int)SOEntryUI.eUIType.Skill;
 
         return iHashCode;
     }

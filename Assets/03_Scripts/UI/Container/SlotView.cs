@@ -21,6 +21,7 @@ public class SlotView : ButtonUI
 
     public SOEntryUI SOEntryUI { get => m_pTargetSO; }
     public int SlotIdx { get => m_iSlotIdx; }
+    
 
     public void Init(Container _pContainer)
     {
@@ -28,7 +29,7 @@ public class SlotView : ButtonUI
         m_pRectTransform = GetComponent<RectTransform>();
 
         if(m_pIcon == null)
-            m_pIcon = GetComponentInChildren<Image>();
+             m_pIcon = GetComponent<Image>();
     }
 
     public void Bind(SOEntryUI _pEntryUI, int _iSlotIdx)

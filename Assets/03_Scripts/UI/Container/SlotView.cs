@@ -54,7 +54,7 @@ public class SlotView : ButtonUI
 
         m_iSlotIdx = _iSlotIdx;
 
-        update_count();
+        update_count(_pEntryUI);
     }
 
     override public void OnBeginDrag(PointerEventData e)
@@ -83,9 +83,9 @@ public class SlotView : ButtonUI
         }
     }
 
-    private void update_count()
+    private void update_count(SOEntryUI _pEntryUI)
     {
-        int iCount = m_pContainer?.GetCount(m_iSlotIdx) ?? 0;
+        int iCount = m_pContainer?.GetCount(_pEntryUI) ?? 0;
 
         bool bShow = iCount > 1; // 1개 이하면 보통 표기 안 함
         if (bShow)

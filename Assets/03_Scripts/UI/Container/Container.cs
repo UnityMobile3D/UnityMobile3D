@@ -19,7 +19,7 @@ public class CategoryData
     public bool IsCanDuplication { get => m_bCanDuplication; }
     public int m_iCurrentRemnantData = 0;
     public bool IsFull => m_iCurrentRemnantData <= 0;
-
+    public int m_iCategoryIdx = 0;
     public int GetRemnantDataIdx()
     {
         for (int i = 0; i < m_ListData.Count; ++i)
@@ -150,6 +150,9 @@ public class Container : ButtonUI
     }
 #endif
 
+    /*/////////////////////////////////////
+                    Conatiner
+     *////////////////////////////////////
 
     private SOEntryUI find_data_idx(int _iDataIdx, int _iCategoryIdx = 0)
     {
@@ -182,7 +185,7 @@ public class Container : ButtonUI
     }
 
     //-1이면 남는 데이터 인덱스에 넣기 , 0이면 기본 데이터 리스트에 넣기
-    public bool AddData(SOEntryUI _pSOEntryUI , int _iIdx = -1, int _iCategoryIdx = 0)
+    public bool AddData(SOEntryUI _pSOEntryUI , int _iCategoryIdx = 0, int _iIdx = -1)
     {
         CategoryData pCategoryData = GetCategoryData(_iCategoryIdx);
 
@@ -249,6 +252,7 @@ public class Container : ButtonUI
                     ++iRemnantData;
             }
             m_listCategoryData[i].m_iCurrentRemnantData = iRemnantData;
+            m_listCategoryData[i].m_iCategoryIdx = i;
         }
 
         //슬롯 바인딩
@@ -370,7 +374,12 @@ public class Container : ButtonUI
             m_listView[i].Bind(pListData[iDataIdx], iDataIdx);
         }
     }
-    //셀 사이즈 + 양끝 시작 끝 간격 + 셀 사이 간격
+  
+
+
+    /*/////////////////////////////////////
+                  Input 
+   *////////////////////////////////////
 
     public override void OnBeginDrag(PointerEventData e)
     {
@@ -444,6 +453,8 @@ public class Container : ButtonUI
         m_pFrameRectTrasnform.SetAsLastSibling(); // 항상 위로
     }
 
+    
+
     public void ClearTarget()
     {
         if (m_pFrameImage != null)
@@ -461,6 +472,10 @@ public class Container : ButtonUI
         m_listView.Clear();
     }
 
+    /*/////////////////////////////////////
+                  Data Category
+    *////////////////////////////////////
+
     public List<SOEntryUI> GetListData(int _iCategoryIdx)
     {
 
@@ -474,6 +489,7 @@ public class Container : ButtonUI
         return pCategoryData.m_ListData;
     }
 
+  
     public CategoryData GetCategoryData(int _iCategoryIdx)
     {
         if (_iCategoryIdx >= m_listCategoryData.Count)
@@ -491,6 +507,15 @@ public class Container : ButtonUI
         return pListData[_iDataIdx];
     }
 
+    public void ChanageCategory(int _iCategoryIdx)
+    {
+        if (m_iCategoryCount <= _iCategoryIdx)
+            return;
+
+        m_iCurrentCategoryIdx = _iCategoryIdx;
+        BindData(m_iCurrentCategoryIdx);
+    }
+
     public bool IsCanDuplication(int _iCategoryIdx)
     {
         CategoryData pCategoryData = GetCategoryData(_iCategoryIdx);
@@ -506,6 +531,12 @@ public class Container : ButtonUI
             return -1;
 
         int iAmount = m_IOwner.GetDataAmount(_iDataIdx, m_iCurrentCategoryIdx);
+        return iAmount;
+    }
+
+    public int GetCount(SOEntryUI _pEntryUI)
+    {
+        int iAmount = m_IOwner.GetDataAmount(_pEntryUI, m_iCurrentCategoryIdx);
         return iAmount;
     }
 

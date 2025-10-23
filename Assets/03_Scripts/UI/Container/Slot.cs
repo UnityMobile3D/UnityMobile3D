@@ -28,6 +28,7 @@ public class Slot : ButtonUI
 
     [Header("Slot Type")]
     [SerializeField] private eUIType m_eUIType = eUIType.None;
+    public eUIType eUIType { get => m_eUIType; }
 
     protected uint m_iUIType = 0;
     protected bool m_bSlotActive = true;
@@ -44,7 +45,7 @@ public class Slot : ButtonUI
     {
         base.Awake();
 
-        m_pCheckUI.SetRaycast(false);
+        //m_pCheckUI.SetRaycast(false);
         m_pCheckUIImage = m_pCheckUI.GetComponent<Image>();
         m_pCheckUIImage.enabled = false;
 
@@ -82,13 +83,13 @@ public class Slot : ButtonUI
     }
     public void ActiveSlot()
     {
-        m_pCheckUI.SetRaycast(true);
+        //m_pCheckUI.SetRaycast(true);
         m_pCheckUIImage.enabled = true;
     }
 
     public void UnActiveSlot()
     {
-        m_pCheckUI.SetRaycast(false);
+        //m_pCheckUI.SetRaycast(false);
         m_pCheckUIImage.enabled = false;
     }
 

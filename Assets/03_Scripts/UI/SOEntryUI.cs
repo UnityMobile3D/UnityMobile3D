@@ -6,6 +6,7 @@ using UnityEngine;
 public class SOEntryUI : ScriptableObject
 {
     //비트로도 가능
+    [System.Serializable]
     public enum eUIType
     {
         None = 0,
@@ -32,6 +33,12 @@ public class SOEntryUI : ScriptableObject
     public float Cooldown => cooldown;
 
     public virtual uint GetUIHashCode()
+    {
+        uint iHashCode = (uint)type;
+        return iHashCode;
+    }
+
+    public uint GetUITypeCode()
     {
         uint iHashCode = (uint)type;
         return iHashCode;

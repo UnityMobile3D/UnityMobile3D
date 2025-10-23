@@ -3,14 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using static SOEntryUI;
 
+
 public class Inventory : BaseUI, IContainer
 {
-    [SerializeField] private SlotContainer m_pSlotContainer;
+    [SerializeField] private SlotContainer m_pInterfaceSlotContainer;
+    [SerializeField] private SlotContainer m_pEquipSlotContainer;
+
     [SerializeField] private Container m_pInevenContainer;
     [SerializeField] private ButtonUI m_pCloseButton;
- 
+
+    [SerializeField] private List<eUIType> m_listCategoryType;
+    [SerializeField] private List<ButtonUI> m_listCategoryButton;
+    
     //인벤에서 인터페이스 , 장비창
     Dictionary<uint, int> m_hashItemCount = new Dictionary<uint, int>();
+    Dictionary<uint, CategoryData> m_hashCategoryData = new Dictionary<uint, CategoryData>();
+
     //Test
     [SerializeField] private SOEntryUI[] m_arrTestData;
     protected override void Awake()
@@ -18,8 +26,24 @@ public class Inventory : BaseUI, IContainer
         base.Awake();
 
         m_pCloseButton.OnDownEvt += close_tap;
-        m_pInevenContainer.OnSelectEvt += select_item;
+        m_pInevenContainer.OnSelectEvt += select;
 
+        for(int i = 0; i<m_listCategoryType.Count; ++i)
+        {
+            CategoryData pCategoryData = m_pInevenContainer.GetCategoryData(i);
+            if (pCategoryData == null)
+                break;
+
+            m_hashCategoryData.Add((uint)m_listCategoryType[i], pCategoryData);
+
+            int idx = i; // ← 캡처용 복사본
+            //버튼
+            m_listCategoryButton[i].OnClickEvt += () =>
+            {
+                m_pInevenContainer.ChanageCategory(idx);
+            };
+        }
+     
     }
     protected void Start()
     {
@@ -36,7 +60,10 @@ public class Inventory : BaseUI, IContainer
                 if (ListData[j] == null)
                     continue;
 
-                m_hashItemCount.Add((uint)ListData[j].Id, testValue);
+                if(m_hashItemCount.TryGetValue((uint)ListData[j].Id, out int iCurCount))
+                    m_hashItemCount[(uint)ListData[j].Id] += testValue;
+                else
+                    m_hashItemCount.Add((uint)ListData[j].Id, testValue);
             }
         }
         m_pInevenContainer.BindData(0);
@@ -53,12 +80,29 @@ public class Inventory : BaseUI, IContainer
 
     private void OnDisable()
     {
-        m_pSlotContainer?.UnActiveSlot();
+        m_pEquipSlotContainer?.UnActiveSlot();
+    }
+
+
+    public int GetCategoryIdx(eUIType _eUIType)
+    {
+        for (int i = 0; i < m_listCategoryType.Count; ++i)
+        {
+            if (m_listCategoryType[i] == _eUIType)
+                return i;
+        }
+        return -1;
     }
     private void close_tap()
     {
         //레이까지 제거하기 위해서
         gameObject.SetActive(false);
+    }
+
+    public void AddDataInventroy(SOEntryUI _pData, int _iAmount)
+    {
+        uint iUITypeCode = _pData.GetUITypeCode();
+        ;
     }
 
     public void AddItem(SOEntryUI _pSOItem)
@@ -70,29 +114,60 @@ public class Inventory : BaseUI, IContainer
         }   
     }
 
-    private void select_item()
+    private void select()
     {
         SlotView pTargetView = m_pInevenContainer.GetTargetSlot();
         if (pTargetView.SOEntryUI == null)
             return;
 
-        //현재 데이터 갯수 만큼 인터페이스 넘겨주기
+        //해당 아이템 별 분기처리
+        switch(pTargetView.SOEntryUI.Type)
+        {
+            case eUIType.Item:
+                select_item();
+                break;
+            case eUIType.Equip:
+                select_equip();
+                break;
+            default:
+                return;
+        }
+    }
+
+    private void select_item()
+    {
+        //전송할 데이터 예약
+        SlotView pTargetView = m_pInevenContainer.GetTargetSlot();
+        int iAmount = m_hashItemCount[(uint)pTargetView.SOEntryUI.Id];
+        DataService.Instance.StartPickData(this, pTargetView.SOEntryUI, pTargetView.SlotIdx, iAmount, GetCategoryIdx(eUIType.Item));
+
+
+        //인터페이스로 해당 내 아이템 전송 요청
+        int iItemIdx= m_pInterfaceSlotContainer.GetSlotIdx(eUIType.Item);
+        m_pInterfaceSlotContainer.ActiveSlotAndAddData(pTargetView.SOEntryUI.GetUIHashCode(), iItemIdx);   
+    }
+
+    private void select_equip()
+    {
+        SlotView pTargetView = m_pInevenContainer.GetTargetSlot();
+       
         //중복 허용하지 않는다면 무조건 1
         int iCount = 1;
-
         int iCurInvenIdx = m_pInevenContainer.CurrentCategoryIdx;
         if (m_pInevenContainer.IsCanDuplication(iCurInvenIdx) == false)
-        { 
+        {
             if (m_hashItemCount.TryGetValue((uint)pTargetView.SOEntryUI.Id, out iCount) == false)
                 return;
         }
-      
+
         //데이터 서비스에서 지금 눌린 데이터 참조
         DataService.Instance.StartPickData(this, pTargetView.SOEntryUI, pTargetView.SlotIdx, iCount);
 
         //인터페이스 매니저를 만들어서 해당 클래스에게 요청하는 식으로 변경
-        m_pSlotContainer.ActiveSlot(pTargetView.SOEntryUI.GetUIHashCode());
+        m_pEquipSlotContainer.ActiveSlot(pTargetView.SOEntryUI.GetUIHashCode());
     }
+
+
 
     //IContainer 구현
     public void SelectData(int _iDataIdx, int _iCategoryIdx = 0) { }
@@ -103,7 +178,7 @@ public class Inventory : BaseUI, IContainer
     }
     public int GetDataAmount(int _iDataIdx, int _iCategoryIdx = 0)
     {
-        SOEntryUI pEntryData = GetData(_iDataIdx);
+        SOEntryUI pEntryData = GetData(_iDataIdx, _iCategoryIdx);
         if (pEntryData == null)
             return 0;
 
@@ -111,19 +186,28 @@ public class Inventory : BaseUI, IContainer
         if (m_hashItemCount.TryGetValue((uint)pEntryData.Id, out iAmount) == false)
             return 0;
 
-        //인벤토리창에 아이템 부분은 중복이 혀용 안됨 단 장비는 가능
         if (m_pInevenContainer.IsCanDuplication(_iCategoryIdx) == true)
             iAmount = 1;
 
         return iAmount;
     }
-    public int GetDataAmount(SOEntryUI _pSoData, int _iCategoryIdx = 0) { return -1; }
+    public int GetDataAmount(SOEntryUI _pSoData, int _iCategoryIdx = 0)
+    {
+        if (_pSoData == null)
+            return 0;
+
+        if (m_hashItemCount.TryGetValue((uint)_pSoData.Id, out int iAmount) == false)
+            return 0;
+
+        if (m_pInevenContainer.IsCanDuplication(_iCategoryIdx) == true)
+            iAmount = 1;
+        return iAmount;
+    }
 
     public bool AddData(int _iDataIdx, SOEntryUI _pSOData, int _iAmount, int _iCategoryIdx = 0)
     {
         //if (_pSOData.Type != eUIType.Item)
         //    return false;
-        
         uint iID = (uint)_pSOData.Id;
 
         if (m_hashItemCount.TryGetValue(iID, out int iCount) == true)
@@ -131,7 +215,7 @@ public class Inventory : BaseUI, IContainer
         else
             m_hashItemCount.Add(iID, _iAmount);
 
-        m_pInevenContainer.AddData(_pSOData, _iDataIdx);
+        m_pInevenContainer.AddData(_pSOData, _iCategoryIdx, _iDataIdx);
 
         return true;
     }
@@ -146,7 +230,7 @@ public class Inventory : BaseUI, IContainer
         int iDataId = m_pInevenContainer.GetTargetSlot().SOEntryUI.Id;
         m_hashItemCount.Remove((uint)iDataId);
 
-        m_pInevenContainer.DeleteData(_iDataIdx);
+        m_pInevenContainer.DeleteData(_iDataIdx, _iCategoryIdx);
         m_pInevenContainer.ClearTarget();
         return true;
     }

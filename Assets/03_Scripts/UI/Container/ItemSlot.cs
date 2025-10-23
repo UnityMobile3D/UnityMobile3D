@@ -48,6 +48,7 @@ public class ItemSlot : Slot
         InputManager.m_Instance.BindUGUIButtonBoolean(ActionID, true);
 
         m_bCanUse = false;
+
         //Target을 여기서 셋팅
         int iConsumeCount = 1;
 

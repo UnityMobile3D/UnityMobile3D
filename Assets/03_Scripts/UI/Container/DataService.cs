@@ -115,7 +115,7 @@ public class DataService : MonoBehaviour
     }
 
     //인벤 -> 슬롯 , 인벤-> 슬롯(중복)
-    public bool TryDropDataAndSwap(IContainer _pTo, int _iToIdx)
+    public bool TryDropDataAndSwap(IContainer _pTo, int _iToIdx, int _iToCategoryIdx = 0)
     {
         if (m_pTargetSlot == null)
             return false;
@@ -133,12 +133,12 @@ public class DataService : MonoBehaviour
 
         SlotRef pTargetData = m_pTargetSlot.Value;
         //어떤 컨테이너에서 지정한 인덱스(상대 컨테이너)로 어떤 데이터를 얼마만큼 보낼지
-        if (_pTo.AddData(_iToIdx, pTargetData.Data, pTargetData.Amount, pTargetData.CategoryIdx) == false)
+        if (_pTo.AddData(_iToIdx, pTargetData.Data, pTargetData.Amount, _iToCategoryIdx) == false)
         {
             m_pTargetSlot = null;
             return false;
         }
-        pTargetData.Container.DeleteData(pTargetData.DataIdx);
+        pTargetData.Container.DeleteData(pTargetData.DataIdx, pTargetData.CategoryIdx);
 
         //기존 데이터 넘겨주기
         if (pEntryUI != null)

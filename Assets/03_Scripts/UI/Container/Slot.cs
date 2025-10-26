@@ -101,16 +101,15 @@ public class Slot : ButtonUI
 
     public override void OnPointerClick(PointerEventData e)
     {
-        if(m_pSOTarget != null && m_bCanUse != false)
-        {
-            //여기서 스킬, 아이템 사용
-            Using();
-        }
+        if (m_pSOTarget == null)
+            return;
+
+        InputManager.m_Instance.BindUGUIButtonBoolean(ActionID, true);
     }
 
     public virtual void Using()
     {
-        //여기서 Effect 데이터를 매니저에 던지기 , 혹은 스킬이라면 skillslot에서 skillManager에게 던지기
+        
     }
 
 

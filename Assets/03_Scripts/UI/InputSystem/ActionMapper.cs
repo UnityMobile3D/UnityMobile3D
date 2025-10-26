@@ -165,7 +165,12 @@ public class ActionMapper
             for(int j = 0; j< pActionRef.listAction.Count; ++j)
             {
                 if (set_value(_pState, pActionRef,j) == true)
+                {
+                    if(pActionRef.InputFunction != null)
+                        pActionRef.InputFunction.Invoke();
+
                     break;
+                }
             }
         }
     }
@@ -196,10 +201,11 @@ public class ActionMapper
                 if (_pState.GetVector2D(eID) != Vector2.zero)
                     return true;
 
-                var pVector2 = pAction.action.ReadValue<Vector2>();
-                _pState.SetVector2D(eID, pVector2);
+                var tVector2 = pAction.action.ReadValue<Vector2>();
+                if(tVector2 != Vector2.zero)
+                    _pState.SetVector2D(eID, tVector2);
 
-                bResult = pVector2 != Vector2.zero;
+                bResult = tVector2 != Vector2.zero;
                 break;
         }
 

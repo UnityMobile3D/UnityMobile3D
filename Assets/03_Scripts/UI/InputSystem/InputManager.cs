@@ -14,6 +14,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.UIElements;
 using UnityEngine.Assertions;
+using System;
 
 
 public class InputManager : MonoBehaviour
@@ -33,14 +34,14 @@ public class InputManager : MonoBehaviour
         //Vector2D
         Move,
 
-
         End,
     }
 
     [System.Serializable]
     public class ActionBinding
     {
-        public eActionID ID;
+        public eActionID ID = eActionID.None;
+        public PED InputFunction = null;
         public List<InputActionReference> listAction = new(); // <- 인스펙터에서 선택 가능
     }
 
@@ -63,12 +64,12 @@ public class InputManager : MonoBehaviour
     private readonly List<tTouchEvent> m_listTouchEvent = new(10);//프레임 버퍼
     private readonly PointerInputState m_pPointerState = new PointerInputState(); 
     private readonly ActionState m_pActionState = new ActionState();
+
     //UGUI 이벤트 시스템과 내 InputManager에 데이터를 동기화하기 위한 임시 데이터
     private ActionState m_pUGUIActionState = new ActionState();
     
     public PointerInputState PointerState => m_pPointerState; //외부 참조용 eadonly 필드 + get-only 프로퍼티
-    //Test
-    private InputAction m_pMoveAction;
+    public ActionState ActionState => m_pActionState;
     
     [SerializeField] private EventSystem m_pEventSystem;             // UGUI EventSystem 참조
     [SerializeField] private List<GraphicRaycaster> m_pUIRay;        // 상호작용 Canvas의 GraphicRaycaster 목록
@@ -117,6 +118,15 @@ public class InputManager : MonoBehaviour
         m_pActionMapper.MapDevice(m_pActionState, m_listActions);
 
         m_pUGUIActionState.Clear();
+
+
+
+    }
+
+    private void LateUpdate()
+    {
+
+        //디바이스 전체를 순회해서 
     }
 
     public void BindUGUIButtonBoolean(eActionID _eID, bool _bValue)
@@ -128,22 +138,5 @@ public class InputManager : MonoBehaviour
     {
         m_pUGUIActionState.SetVector2D(_eID, _vValue);
     }
-
-    public bool GetBooleanValue(eActionID _eActionID)
-    {
-        if ((int)_eActionID >= (int)eActionID.Move)
-            return false;
-
-        return m_pActionState.GetBoolean(_eActionID);
-    }
-
-    public Vector2 GetVector2DValue(eActionID _eActionID)
-    {
-        if ((int)_eActionID < (int)eActionID.Move)
-            return Vector2.zero;
-
-        return m_pActionState.GetVector2D(_eActionID);
-    }
-
 
 }

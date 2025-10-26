@@ -56,9 +56,13 @@ public class Container : ButtonUI
     [SerializeField] private int m_iCurrentCategoryIdx = 0;
     public int CurrentCategoryIdx { get=> m_iCurrentCategoryIdx;}
 
+
+
     [SerializeField] private int m_iCategoryCount = 0;
     public int CategoryCount { get => m_iCategoryCount; }
-    //public List<SOEntryUI> ListData { get => m_listData; }
+
+    [SerializeField] private bool m_bOnSelect = false;
+    public bool IsOnSelect { get => m_bOnSelect; }
 
     [SerializeField] private SlotView m_pSlotPrefab; //셀 프리팹
     [SerializeField] private Vector2 m_vStep; //셀 사이 간격(x=열 간, y=행 간)
@@ -93,16 +97,6 @@ public class Container : ButtonUI
     private Vector2 m_vContainerDragPosition = Vector2.zero;
     private Vector2 m_vViewCurDrageLine = Vector2.zero;//현재 드래그 라인
     private Vector2 m_vContaninerSize = Vector2.zero; //전체 컨테이너 크기
-
-
-    //가장 높은 인덱스에 순차적으로 넣기 위해서 내림차순
-    //PriorityQueue<uint> m_pqSlotIdx = new PriorityQueue<uint>()/*(Comparer<uint>.Create((a,b)=> b.CompareTo(a)))*/;
-
-    //[SerializeField] private bool m_bCanDuplication = true; //중복 허용할지(장비 템 창, 스킬 창)
-    //private HashSet<SOEntryUI> m_setData = null; //중복 확인을 위한 해쉬
-    //public bool IsCanDuplication { get => m_bCanDuplication;}
-    //public int m_iCurrentRemnantData = 0;
-    //public bool IsFull => m_iCurrentRemnantData <= 0;
 
 
     //빌드 전용
@@ -287,6 +281,9 @@ public class Container : ButtonUI
         m_iRowCount = m_iSlotRowCount > 0 ? m_iSlotRowCount + 1 : 0;
         m_iColCount = m_iSlotColCount;
 
+        if (m_iRowCount * m_iColCount > m_listCategoryData[0].m_ListData.Count)
+            m_iRowCount = Mathf.CeilToInt((float)m_listCategoryData[0].m_ListData.Count / m_iColCount);
+
         //슬롯 프리팹 생성
         var prefabRT = (RectTransform)m_pSlotPrefab.transform;
         Vector2 vPadding = m_vPadding;
@@ -323,7 +320,12 @@ public class Container : ButtonUI
         int iRowSize = pListData.Count >= m_listView.Count ?
             (pListData.Count / m_iColCount) : m_iRowCount;
 
-        iRowSize -= m_iSlotRowCount;
+        //딱맞게 떨어졌다면
+        if (m_iRowCount * m_iColCount == m_listCategoryData[0].m_ListData.Count)
+            iRowSize = 0;
+        else
+           iRowSize -= (m_iRowCount -1);
+
         if (iRowSize < 0)
             iRowSize = 0;
 
@@ -375,7 +377,10 @@ public class Container : ButtonUI
         }
     }
   
-
+    public void ChanageSelect()
+    {
+        m_bOnSelect = !m_bOnSelect;
+    }
 
     /*/////////////////////////////////////
                   Input 
@@ -383,6 +388,7 @@ public class Container : ButtonUI
 
     public override void OnBeginDrag(PointerEventData e)
     {
+      
         if (m_pFrameImage != null)
             m_pFrameImage.enabled = false;
 
@@ -391,6 +397,9 @@ public class Container : ButtonUI
 
     public override void OnDrag(PointerEventData e)
     {
+        if (m_bOnSelect == true)
+            return;
+
         Vector2 vPositionDelta =  e.position - m_vDragCurPosition;
        
         m_vDragCurPosition = e.position;

@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class SkillTree : BaseUI, IContainer
 {
-    private Canvas m_pSkillCanvas;
 
     [SerializeField] private ButtonUI m_pCloseButton;
     [SerializeField] private ButtonUI m_pSeleteButton;
@@ -15,12 +14,11 @@ public class SkillTree : BaseUI, IContainer
     [SerializeField] private SlotContainer m_pSlotContainer;
 
     //그냥 static canvas에서 slot 관리 여기서 slotManager에 SO를 던져주면 거기서 해당 슬롯 SkillType에 맞는 슬롯 활성화
-
+    [SerializeField] private eContainerType m_eContainerType = eContainerType.SkillTree; // ← 인스펙터에 드롭다운으로 보임
+    public eContainerType ContainerType { get => m_eContainerType; }
     protected override void Awake()
     {
         base.Awake();
-
-        m_pSkillCanvas = GetComponent<Canvas>();
 
         //close selete 함수 바인딩
         m_pCloseButton.OnUpEvt += close_tap;

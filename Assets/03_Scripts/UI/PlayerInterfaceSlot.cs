@@ -4,11 +4,13 @@ using UnityEngine;
 
 
 
-public class PlayerInterfaceSlot : MonoBehaviour, IContainer
+public class PlayerInterfaceSlot : BaseUI, IContainer
 {
     [SerializeField] private SlotContainer m_pSlotContainer = null;
     Dictionary<int, int> m_hashItemCount = new Dictionary<int, int>();
 
+    [SerializeField] private eContainerType m_eContainerType = eContainerType.Interface; // ← 인스펙터에 드롭다운으로 보임
+    public eContainerType ContainerType { get => m_eContainerType; }
     private void Awake()
     {
         

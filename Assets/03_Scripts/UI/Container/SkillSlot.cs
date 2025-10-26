@@ -32,9 +32,6 @@ public class SkillSlot : Slot
 
     public override void Using()
     {
-        if(IsBindingInputAction == true)
-            InputManager.m_Instance.BindUGUIButtonBoolean(ActionID, true);
-
         m_bCanUse = false;
     }
 

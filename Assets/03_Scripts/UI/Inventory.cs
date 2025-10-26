@@ -1,11 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using static SOEntryUI;
 
 
 public class Inventory : BaseUI, IContainer
 {
+    enum eInventoryButton
+    {
+        //장착
+        None,
+        Equippped,
+        AutoEquipped,
+        End,
+    }
+
+    [SerializeField] private eContainerType m_eContainerType = eContainerType.Inventory; // ← 인스펙터에 드롭다운으로 보임
+    public eContainerType ContainerType { get => m_eContainerType; }
+
     [SerializeField] private SlotContainer m_pInterfaceSlotContainer;
     [SerializeField] private SlotContainer m_pEquipSlotContainer;
 
@@ -14,13 +27,17 @@ public class Inventory : BaseUI, IContainer
 
     [SerializeField] private List<eUIType> m_listCategoryType;
     [SerializeField] private List<ButtonUI> m_listCategoryButton;
-    
+    [SerializeField] private List<ButtonUI> m_listOptionButton = new List<ButtonUI>();
+
     //인벤에서 인터페이스 , 장비창
     Dictionary<uint, int> m_hashItemCount = new Dictionary<uint, int>();
     Dictionary<uint, CategoryData> m_hashCategoryData = new Dictionary<uint, CategoryData>();
 
     //Test
     [SerializeField] private SOEntryUI[] m_arrTestData;
+
+    [SerializeField] private Color m_pBaseColor;
+
     protected override void Awake()
     {
         base.Awake();
@@ -28,22 +45,9 @@ public class Inventory : BaseUI, IContainer
         m_pCloseButton.OnDownEvt += close_tap;
         m_pInevenContainer.OnSelectEvt += select;
 
-        for(int i = 0; i<m_listCategoryType.Count; ++i)
-        {
-            CategoryData pCategoryData = m_pInevenContainer.GetCategoryData(i);
-            if (pCategoryData == null)
-                break;
 
-            m_hashCategoryData.Add((uint)m_listCategoryType[i], pCategoryData);
-
-            int idx = i; // ← 캡처용 복사본
-            //버튼
-            m_listCategoryButton[i].OnClickEvt += () =>
-            {
-                m_pInevenContainer.ChanageCategory(idx);
-            };
-        }
-     
+        button_option();
+      
     }
     protected void Start()
     {
@@ -102,7 +106,6 @@ public class Inventory : BaseUI, IContainer
     public void AddDataInventroy(SOEntryUI _pData, int _iAmount)
     {
         uint iUITypeCode = _pData.GetUITypeCode();
-        ;
     }
 
     public void AddItem(SOEntryUI _pSOItem)
@@ -167,7 +170,58 @@ public class Inventory : BaseUI, IContainer
         m_pEquipSlotContainer.ActiveSlot(pTargetView.SOEntryUI.GetUIHashCode());
     }
 
+    private void equipped()
+    {
+        m_pInevenContainer.ChanageSelect();
 
+        ButtonUI pButton =  m_listOptionButton[(int)eInventoryButton.Equippped];
+        if (m_pInevenContainer.IsOnSelect)
+            pButton.m_pTextMeshProUGUI.color = Color.yellow;
+        else
+            pButton.m_pTextMeshProUGUI.color = m_pBaseColor;
+    }
+
+    private void auto_equipped()
+    {
+
+    }
+
+    private void button_option()
+    {
+        //기존 텍스쳐 색상 캐싱
+        TextMeshProUGUI pTextMeshPro = m_listCategoryButton[0].GetComponentInChildren<TextMeshProUGUI>();
+        Color TextColor = pTextMeshPro.color;
+        pTextMeshPro.color = Color.yellow;
+
+        //카테고리 버튼
+        for (int i = 0; i < m_listCategoryType.Count; ++i)
+        {
+            CategoryData pCategoryData = m_pInevenContainer.GetCategoryData(i);
+            if (pCategoryData == null)
+                break;
+
+            m_hashCategoryData.Add((uint)m_listCategoryType[i], pCategoryData);
+
+            int idx = i; //캡처용 복사본
+            m_listCategoryButton[i].OnClickEvt += () =>
+            {
+                //색상 변경
+                for (int j = 0; j < m_listCategoryButton.Count; ++j)
+                {
+                    if (j == idx)
+                        m_listCategoryButton[j].m_pTextMeshProUGUI.color = Color.yellow;
+                    else
+                        m_listCategoryButton[j].m_pTextMeshProUGUI.color = TextColor;
+                }
+
+                m_pInevenContainer.ChanageCategory(idx);
+            };
+        }
+
+        //인벤토리 옵션 버튼
+        m_listOptionButton[(int)eInventoryButton.Equippped].OnClickEvt += equipped;
+        m_listOptionButton[(int)eInventoryButton.AutoEquipped].OnClickEvt += auto_equipped;
+    }
 
     //IContainer 구현
     public void SelectData(int _iDataIdx, int _iCategoryIdx = 0) { }
@@ -237,4 +291,6 @@ public class Inventory : BaseUI, IContainer
 
     public bool FindData(SOEntryUI _pData, int _iCategoryIdx = 0) { return false; }
     public bool FindData(int _iDataIdx, int _iCategoryIdx = 0) { return false; }
+
+
 }

@@ -2,16 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EquipmentInventory : MonoBehaviour , IContainer
+public class EquipmentInventory : BaseUI , IContainer
 {
     [SerializeField] private SlotContainer m_pEquipSlotContainer = null;
 
     Dictionary<int, int> m_hashItemCount = new Dictionary<int, int>();
 
-    private void Awake()
-    {
-
-    }
+    [SerializeField] private eContainerType m_eContainerType = eContainerType.Equipment; // ← 인스펙터에 드롭다운으로 보임
+    public eContainerType ContainerType { get => m_eContainerType; }
+    
 
     //IContainer 구현
     public void SelectData(int _iDataIdx, int _iCategoryIdx = 0) { }

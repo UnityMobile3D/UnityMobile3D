@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -7,6 +8,7 @@ using eActionID = InputManager.eActionID;
 
 // Inspector에서 PointerEventData를 넘길 수 있게 하는 UnityEvent
 [Serializable] public class PED : UnityEvent { }
+
 
 public class ButtonUI : BaseUI,
     IPointerEnterHandler, IPointerExitHandler,
@@ -21,6 +23,8 @@ public class ButtonUI : BaseUI,
     public eActionID ActionID { get => m_eActionID; }
     bool m_bIsBindingInputAction = false;
     public bool IsBindingInputAction { get => m_bIsBindingInputAction; }
+
+    public TextMeshProUGUI m_pTextMeshProUGUI;
 
     //코드 바인딩용 델리게이트(원하면 사용) 
     public event Action OnEnterEvt;
@@ -48,8 +52,10 @@ public class ButtonUI : BaseUI,
 
         if (m_eActionID != eActionID.None)
             m_bIsBindingInputAction = true;
-    }
 
+        m_pTextMeshProUGUI = GetComponentInChildren<TextMeshProUGUI>();
+    }
+   
     virtual public void OnPointerEnter(PointerEventData e)
     {
         onEnter?.Invoke();

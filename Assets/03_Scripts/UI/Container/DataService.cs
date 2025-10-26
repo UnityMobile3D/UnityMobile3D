@@ -1,15 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
-
-public enum ContainerType
+public enum eContainerType
 {
-    None,
-    Inventory,
-    Equipment,
-    End,
+    Inventory = 0,
+    Equipment = 1,
+    Interface = 2,
+    SkillTree = 3,
+    Store = 4,
 }
 
 public interface IContainer
@@ -28,7 +30,8 @@ public interface IContainer
 
     public bool Consume(int _iDataIdx, int _iAmount, int _iCategoryIdx = 0);
 
-
+    //무조건 타입을 가질 수 있도록
+    public eContainerType ContainerType { get; }
 }
 
 public struct SlotRef
@@ -47,8 +50,9 @@ public class DataService : MonoBehaviour
     //3. 데이터 검색(아이템, 스킬)
 
     private static DataService m_instance = null;
-    [SerializeField] List<IContainer> m_listEventTory = new((int)ContainerType.End);
-
+    [SerializeField] private List<BaseUI> m_listContainerObj;
+    private List<IContainer> m_listContainer = new List<IContainer>();
+   
     //아이엠 등록 (null가능 유니티 인스펙터에서 확인 불가)
     private SlotRef? m_pTargetSlot = null;
 
@@ -56,8 +60,12 @@ public class DataService : MonoBehaviour
     //등동된 데이터 Container로 가져오기
     //public void BringData()
 
-
     public static DataService Instance { get; private set; }
+
+    private static int CompareByType(IContainer a, IContainer b)
+    {
+        return a.ContainerType.CompareTo(b.ContainerType);
+    }
 
     private void Awake()
     {
@@ -71,8 +79,28 @@ public class DataService : MonoBehaviour
         // 최초 인스턴스 등록
         Instance = this;
         DontDestroyOnLoad(gameObject); // 선택: 씬 전환에도 유지
+
+        //정적 메서드 + 캐시된 델리게이트: 1회만 할당,
+        m_listContainer.Sort(CompareByType);
+
     }
 
+    private void OnValidate()
+    {
+        m_listContainer.Clear();
+
+        for (int i = 0; i< m_listContainerObj.Count; ++i)
+        {
+            if (m_listContainerObj[i] == null)
+                continue;
+
+            IContainer IContain = m_listContainerObj[i].GetComponent<IContainer>();
+            if (IContain == null)
+                Undo.DestroyObjectImmediate(m_listContainerObj[i]);
+            else
+                m_listContainer.Add(IContain);
+        }
+    }
 
     public bool StartPickData(IContainer _pFrom, SOEntryUI _pEntryUI, int _iFromIdx, int _iAmount, int _iCategoryIdx = 0)
     {
@@ -115,6 +143,19 @@ public class DataService : MonoBehaviour
     }
 
     //인벤 -> 슬롯 , 인벤-> 슬롯(중복)
+    private IContainer GetContainer(eContainerType _eType)
+    {
+        return m_listContainer[(int)_eType];
+    }
+
+    public bool TryDropDataAndSwap(eContainerType _eToType, int _iToIdx, int _iToCategoryIdx = 0)
+    {
+        IContainer pTo = GetContainer(_eToType);
+        if(pTo == null)
+            return false;
+
+        return TryDropDataAndSwap(pTo, _iToIdx, _iToCategoryIdx);
+    }
     public bool TryDropDataAndSwap(IContainer _pTo, int _iToIdx, int _iToCategoryIdx = 0)
     {
         if (m_pTargetSlot == null)
@@ -128,7 +169,7 @@ public class DataService : MonoBehaviour
         {
             //해당 데이터 미리 보관 후 삭제
             iAmount = _pTo.GetDataAmount(_iToIdx);
-            _pTo.DeleteData(_iToIdx);
+            _pTo.DeleteData(_iToIdx, _iToCategoryIdx);
         }
 
         SlotRef pTargetData = m_pTargetSlot.Value;

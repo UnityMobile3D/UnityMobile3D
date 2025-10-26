@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5fe0fbc7400f1e4bb9eadcb6751d489, type: 3}
+  m_Name: ShapTop1
+  m_EditorClassIdentifier: 
+  name: Read Postion1
+  id: 0
+  icon: {fileID: 21300000, guid: 7b3876a2b72c44540a4bbd5aaba9e506, type: 3}
+  type: 0
+  sortKey: 50
+  cooldown: 0
+  itemui: {fileID: 11400000, guid: ffa2756bf1d698748a40fbacdf876a84, type: 2}
+  coin: 1200

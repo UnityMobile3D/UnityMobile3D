@@ -10,7 +10,8 @@ public class SOHealEffect : SOItemEffect
         GameObject pTarget = _tEffectCnt.pTarget;
         if(pTarget != null)
         {
-            //ÇØ´ç ¿ÀºêÁ§Æ®¿¡ IHeal ÀÎÅÍÆäÀÌ½º Á¢±Ù
+            //í•´ë‹¹ ì˜¤ë¸Œì íŠ¸ì— IHeal ì¸í„°í˜ì´ìŠ¤ ì ‘ê·¼
+
         }
     }
 }

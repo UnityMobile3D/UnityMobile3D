@@ -6,9 +6,8 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     // Context
-    InputManager action;
-    InputAction moveAction;
-
+    //InputManager action;
+    
     private Rigidbody _rigidbody;
     private Animator _animator;
 
@@ -38,17 +37,17 @@ public class Player : MonoBehaviour
         _animator = GetComponentInChildren<Animator>();
 
         // Input
-        action = new InputManager();
+        //action = new InputManager();
     }
 
     private void OnEnable()
     {
-        moveAction.Enable();
+        //moveAction.Enable();
     }
 
     private void OnDisable()
     {
-        moveAction.Disable();
+        //moveAction.Disable();
     }
 
     // Start is called before the first frame update
@@ -66,7 +65,9 @@ public class Player : MonoBehaviour
     private void MOVE()
     {
         // 1) 입력
-        Vector2 input = moveAction.ReadValue<Vector2>();
+        Vector2 input = InputManager.m_Instance.ActionState.vDirection;
+
+        //Vector2 input = moveAction.ReadValue<Vector2>();
 
         // 2) 평면 방향
         Vector3 moveDir = new Vector3(input.x, 0f, input.y);

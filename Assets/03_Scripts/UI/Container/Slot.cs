@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,21 +10,25 @@ using static System.Net.Mime.MediaTypeNames;
 using eSkillType = SOSkillUI.eSkillType;
 using eUIType = SOEntryUI.eUIType;
 using Image = UnityEngine.UI.Image;
+
+
+//(ÏÇ¨Ïö© Î≤ÑÌäº)
 public class Slot : ButtonUI
 {
     protected SOEntryUI m_pSOTarget = null;
     public SOEntryUI SOTarget { get => m_pSOTarget; }
 
-    private SlotController m_pOwner = null;
-    [SerializeField] private ButtonUI m_pCheckUI = null;
+    protected IContainer m_pOwner = null;
+    [SerializeField] protected ButtonUI m_pCheckUI = null;
 
-    private Image m_pCheckUIImage = null;
+    protected Image m_pCheckUIImage = null;
     [SerializeField] private Image m_pIcon = null;
 
-    private CoolDownView m_pCoolDownView = null;
+    protected CoolDownView m_pCoolDownView = null;
 
     [Header("Slot Type")]
     [SerializeField] private eUIType m_eUIType = eUIType.None;
+    public eUIType eUIType { get => m_eUIType; }
 
     protected uint m_iUIType = 0;
     protected bool m_bSlotActive = true;
@@ -31,18 +37,19 @@ public class Slot : ButtonUI
     protected bool m_bCanUse = true;
     public bool IsCanUse { get => m_bCanUse;}
 
-    //ª©±‚ πˆ∆∞ «◊ªÛ ≥÷æÓµŒ∞Ì +πˆ∆∞ æ¯¿Ã ±◊≥… Ω∫≈≥ ¥©∏£∞Ì ∫Û ΩΩ∑‘ø° ≥÷æÓ¡÷¥¬ «¸Ωƒ¿∏∑Œ
+    [SerializeField] protected int m_iSlotIdx;
+    public int SlotIdx { get => m_iSlotIdx; }
+
+    //ÎπºÍ∏∞ Î≤ÑÌäº Ìï≠ÏÉÅ ÎÑ£Ïñ¥ÎëêÍ≥† +Î≤ÑÌäº ÏóÜÏù¥ Í∑∏ÎÉ• Ïä§ÌÇ¨ ÎàÑÎ•¥Í≥† Îπà Ïä¨Î°ØÏóê ÎÑ£Ïñ¥Ï£ºÎäî ÌòïÏãùÏúºÎ°ú
     override protected void Awake()
     {
         base.Awake();
 
-        m_pCheckUI.OnClickEvt += select_slot;
-
-        m_pCheckUI.SetRaycast(false);
+        //m_pCheckUI.SetRaycast(false);
         m_pCheckUIImage = m_pCheckUI.GetComponent<Image>();
         m_pCheckUIImage.enabled = false;
 
-        m_pOwner = GetComponentInParent<SlotController>();
+        m_pOwner = GetComponentInParent<IContainer>();
 
         m_iUIType = (uint)m_eUIType;
     }
@@ -59,18 +66,30 @@ public class Slot : ButtonUI
     public virtual void Bind(SOEntryUI _pSOTarget)
     {
         m_pSOTarget = _pSOTarget;
-        m_pIcon.sprite = _pSOTarget.Icon;
+
+        if(m_pSOTarget == null)
+        {
+            m_pIcon.enabled = false;
+            m_pIcon.color = new Color(255.0f, 255.0f, 255.0f, 0.0f);
+        }
+        else
+        {
+            m_pIcon.enabled = true;
+            m_pIcon.sprite = _pSOTarget.Icon;
+            m_pIcon.color = new Color(255.0f, 255.0f, 255.0f, 255.0f);
+        }
+
         m_pIcon.color = Color.white;
     }
     public void ActiveSlot()
     {
-        m_pCheckUI.SetRaycast(true);
+        //m_pCheckUI.SetRaycast(true);
         m_pCheckUIImage.enabled = true;
     }
 
     public void UnActiveSlot()
     {
-        m_pCheckUI.SetRaycast(false);
+        //m_pCheckUI.SetRaycast(false);
         m_pCheckUIImage.enabled = false;
     }
 
@@ -79,23 +98,18 @@ public class Slot : ButtonUI
         return m_iUIType;
     }
 
-    private void select_slot()
-    {
-        m_pOwner?.SelectSlot(this);
-    }
 
     public override void OnPointerClick(PointerEventData e)
     {
-        if(m_pSOTarget != null && m_bCanUse == true)
-        {
-            //ø©±‚º≠ Ω∫≈≥, æ∆¿Ã≈€ ªÁøÎ
-            Using();
-        }
+        if (m_pSOTarget == null)
+            return;
+
+        InputManager.m_Instance.BindUGUIButtonBoolean(ActionID, true);
     }
 
     public virtual void Using()
     {
-        //ø©±‚º≠ Effect µ•¿Ã≈Õ∏¶ ∏≈¥œ¿˙ø° ¥¯¡ˆ±‚ 
+        
     }
 
 
@@ -121,7 +135,11 @@ public class Slot : ButtonUI
         else
             m_pIcon.color = Color.white;
     }
-    
+
+   
+
+    public void SetSlotIdx(int _iIdx){m_iSlotIdx = _iIdx;}  
+        
 
 }
 

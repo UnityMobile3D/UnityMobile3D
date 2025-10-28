@@ -1,32 +1,77 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+//(이벤토리 슬롯)
 public class SlotView : ButtonUI
 {
-    //���̶���Ʈ�� ���߿� �߰�
+    //하이라이트도 나중에 추가
+    [SerializeField] protected Image m_pIcon = null;
+    [SerializeField] protected TextMeshProUGUI m_pCountBadgeText = null;
+  
+    
+    protected int m_iID = -1;
+    protected int m_iSlotIdx = -1; //내 컨테이너에서 몇번째 슬롯인지
+    protected SOEntryUI m_pTargetSO = null;
 
-    private Image m_pIcon;
-    private RectTransform m_pRectTransform;
-    private int m_iID;
-    private SOEntryUI m_pTargetSO;
+    protected Container m_pContainer = null;
 
-    private Container m_pOwner;
 
     public SOEntryUI SOEntryUI { get => m_pTargetSO; }
-    public void Init(Container _pOwner)
+    public int SlotIdx { get => m_iSlotIdx; }
+
+    public void Init(Container _pContainer)
     {
-        m_pOwner = _pOwner;
-        m_pRectTransform = GetComponent<RectTransform>();
-        m_pIcon = GetComponent<Image>();
+        m_pContainer = _pContainer;
+
+        //만약 Icon이 없다면 터트리게
+        if(m_pIcon == null)
+             m_pIcon = GetComponent<Image>();
     }
 
-    public void Bind(SOEntryUI _pEntryUI)
+    public virtual void Bind(SOEntryUI _pEntryUI, int _iSlotIdx)
     {
-        //������ ���ε�
+        BindData(_pEntryUI, _iSlotIdx);
+
+        update_count(_pEntryUI);
+    }
+
+    override public void OnBeginDrag(PointerEventData e)
+    {
+        base.OnBeginDrag(e);
+        m_pContainer.OnBeginDrag(e);
+    }
+
+    override public void OnDrag(PointerEventData e)
+    {
+        base.OnDrag(e);
+        m_pContainer.OnDrag(e);
+    }
+
+    override public void OnEndDrag(PointerEventData e)
+    {
+        base.OnEndDrag(e);
+        m_pContainer.OnEndDrag(e);
+    }
+
+    public override void OnPointerClick(PointerEventData e)
+    {
+        if (m_pContainer.IsOnSelect == false)
+            return;
+
+        if(m_pContainer != null)
+        {
+            m_pContainer.SetTargetSlot(this);
+        }
+    }
+
+    protected void BindData(SOEntryUI _pEntryUI, int _iSlotIdx)
+    {
+        //데이터 바인딩
         if (_pEntryUI != null)
         {
             m_pTargetSO = _pEntryUI;
@@ -40,34 +85,29 @@ public class SlotView : ButtonUI
         {
             m_pTargetSO = null;
             m_pIcon.enabled = false;
+
             m_iID = -1;
         }
-    }
 
-    override public void OnBeginDrag(PointerEventData e)
-    {
-        base.OnBeginDrag(e);
-        m_pOwner.OnBeginDrag(e);
+        m_iSlotIdx = _iSlotIdx;
     }
-
-    override public void OnDrag(PointerEventData e)
+    private void update_count(SOEntryUI _pEntryUI)
     {
-        base.OnDrag(e);
-        m_pOwner.OnDrag(e);
-    }
+        if (m_pCountBadgeText == null)
+            return;
 
-    override public void OnEndDrag(PointerEventData e)
-    {
-        base.OnEndDrag(e);
-        m_pOwner.OnEndDrag(e);
-    }
+        int iCount = m_pContainer?.GetCount(_pEntryUI) ?? 0;
 
-    public override void OnPointerClick(PointerEventData e)
-    {
-        if(m_pOwner != null)
+        bool bShow = iCount > 1; // 1개 이하면 보통 표기 안 함
+        if (bShow)
         {
-            m_pOwner.SetTargetSlot(this);
+            m_pCountBadgeText.enabled = true;
+            m_pCountBadgeText.text = iCount.ToString();
         }
+        else
+            m_pCountBadgeText.enabled = false;
     }
 
+
+    
 }

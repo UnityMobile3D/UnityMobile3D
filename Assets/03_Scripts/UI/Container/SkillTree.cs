@@ -16,6 +16,16 @@ public class SkillTree : BaseUI, IContainer
     //그냥 static canvas에서 slot 관리 여기서 slotManager에 SO를 던져주면 거기서 해당 슬롯 SkillType에 맞는 슬롯 활성화
     [SerializeField] private eContainerType m_eContainerType = eContainerType.SkillTree; // ← 인스펙터에 드롭다운으로 보임
     public eContainerType ContainerType { get => m_eContainerType; }
+
+    public void Init()
+    {
+        m_pSkillContainer.Build();
+    }
+
+    public void SetVisible(bool _bOn)
+    {
+        gameObject.SetActive(_bOn);
+    }
     protected override void Awake()
     {
         base.Awake();
@@ -50,7 +60,7 @@ public class SkillTree : BaseUI, IContainer
             return;
 
         //데이터 서비스에서 지금 눌린 데이터 참조
-        DataService.Instance.StartPickData(this, pTargetView.SOEntryUI, pTargetView.SlotIdx, 1);
+        DataService.m_Instance.StartPickData(this, pTargetView.SOEntryUI, pTargetView.SlotIdx, 1);
 
         //인터페이스 매니저를 만들어서 해당 클래스에게 요청하는 식으로 변경
         m_pSlotContainer.ActiveSlot(pTargetView.SOEntryUI.GetUIHashCode());
@@ -62,6 +72,11 @@ public class SkillTree : BaseUI, IContainer
     public SOEntryUI GetData(int _iDataIdx, int _iCategoryIdx = 0) { return null; }
     public int GetDataAmount(int _iDataIdx, int _iCategoryIdx = 0) { return -1; }
     public int GetDataAmount(SOEntryUI _pSoData, int _iCategoryIdx = 0) { return -1; }
+
+    public bool AddData(SOEntryUI _pSOData, int _iAmount, int _iCategoryIdx = 0)
+    {
+        return false;
+    }
 
     public bool AddData(int _iDataIdx, SOEntryUI _pSOData, int _iAmount, int _iCategoryIdx = 0) { return false; }
     public bool Consume(int _iDataIdx, int _iAmount, int _iCategoryIdx = 0) { return false; }

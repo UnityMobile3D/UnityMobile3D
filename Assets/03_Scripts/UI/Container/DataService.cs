@@ -16,6 +16,9 @@ public enum eContainerType
 
 public interface IContainer
 {
+    public void Init();
+
+    public void SetVisible(bool _bOn);
     public void SelectData(int _iDataIdx, int _iCategoryIdx = 0);
     public SOEntryUI GetData(int _iDataIdx, int _iCategoryIdx = 0);
     public int GetDataAmount(int _iDataIdx, int _iCategoryIdx = 0);
@@ -23,6 +26,8 @@ public interface IContainer
 
     //데이터를 넣을 슬롯에 이미 데이터가 있는지 확인 후 있다면 기존 슬롯 데이터 정보를 반환
     public bool AddData(int _iDataIdx, SOEntryUI _pSOData, int _iAmount, int _iCategoryIdx = 0);
+    //비어있는칸으로 넣기
+    public bool AddData(SOEntryUI _pSOData, int _iAmount, int _iCategoryIdx = 0);
     public bool DeleteData(int _iDataIdx, int _iCategoryIdx = 0);
 
     public bool FindData(SOEntryUI _pData, int _iCategoryIdx = 0);
@@ -52,7 +57,8 @@ public class DataService : MonoBehaviour
     private static DataService m_instance = null;
     [SerializeField] private List<BaseUI> m_listContainerObj;
     private List<IContainer> m_listContainer = new List<IContainer>();
-   
+
+    [SerializeField] private GameObject m_pPlayerInfo = null;
     //아이엠 등록 (null가능 유니티 인스펙터에서 확인 불가)
     private SlotRef? m_pTargetSlot = null;
 
@@ -60,7 +66,7 @@ public class DataService : MonoBehaviour
     //등동된 데이터 Container로 가져오기
     //public void BringData()
 
-    public static DataService Instance { get; private set; }
+    public static DataService m_Instance { get; private set; }
 
     private static int CompareByType(IContainer a, IContainer b)
     {
@@ -70,19 +76,25 @@ public class DataService : MonoBehaviour
     private void Awake()
     {
       
-        if (Instance != null && Instance != this)
+        if (m_Instance != null && m_Instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
         // 최초 인스턴스 등록
-        Instance = this;
+        m_Instance = this;
         DontDestroyOnLoad(gameObject); // 선택: 씬 전환에도 유지
 
         //정적 메서드 + 캐시된 델리게이트: 1회만 할당,
         m_listContainer.Sort(CompareByType);
 
+    }
+
+    private void Start()
+    {
+        for (int i = 0; i < m_listContainer.Count; ++i)
+            m_listContainer[i].Init();
     }
 
     private void OnValidate()
@@ -124,6 +136,28 @@ public class DataService : MonoBehaviour
     {
         return true;
     }
+
+    //빈칸 자동으로 넣기
+    public bool TryAddData(eContainerType _eToType, int _iToCategoryIdx = 0)
+    {
+        IContainer pTo = GetContainer(_eToType);
+
+        SlotRef pTargetData = m_pTargetSlot.Value;
+        if (pTargetData.Data == null)
+            return false;
+
+        return pTo.AddData(pTargetData.Data, pTargetData.Amount, _iToCategoryIdx);
+    }
+
+    //요청한 인덱스에 넣기
+    public bool TryDropData(eContainerType _eToType, int _iToIdx, int _iToCategoryIdx = 0)
+    {
+        IContainer pTo = GetContainer(_eToType);
+        if (pTo == null)
+            return false;
+
+        return TryDropData(pTo, _iToIdx);
+    }
     public bool TryDropData(IContainer _pTo, int _iToIdx)
     {
         if (m_pTargetSlot == null)
@@ -142,7 +176,7 @@ public class DataService : MonoBehaviour
         return true;
     }
 
-    //인벤 -> 슬롯 , 인벤-> 슬롯(중복)
+  
     private IContainer GetContainer(eContainerType _eType)
     {
         return m_listContainer[(int)_eType];
@@ -188,7 +222,6 @@ public class DataService : MonoBehaviour
         }
 
         m_pTargetSlot = null;
-       
         return true;
     }
 
@@ -197,5 +230,15 @@ public class DataService : MonoBehaviour
     {
         m_pTargetSlot.Value.Container.DeleteData(m_pTargetSlot.Value.DataIdx);
         m_pTargetSlot = null;
+    }
+
+    public void SetVisiblePlayerInfo(bool _bEnable)
+    {
+        m_pPlayerInfo.SetActive(_bEnable);
+    }
+    public void SetVisibleContainer(eContainerType _eType, bool _bEnable)
+    {
+        IContainer IContain = GetContainer(_eType);
+        IContain.SetVisible(_bEnable);
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using static SOEntryUI;
 
@@ -23,7 +24,6 @@ public class Inventory : BaseUI, IContainer
     [SerializeField] private SlotContainer m_pEquipSlotContainer;
 
     [SerializeField] private Container m_pInevenContainer;
-    [SerializeField] private ButtonUI m_pCloseButton;
 
     [SerializeField] private List<eUIType> m_listCategoryType;
     [SerializeField] private List<ButtonUI> m_listCategoryButton;
@@ -38,22 +38,13 @@ public class Inventory : BaseUI, IContainer
 
     [SerializeField] private Color m_pBaseColor;
 
-    protected override void Awake()
+    //DataService 에서 요청할 때 사용하는 인터페이스
+
+
+    public void Init()
     {
-        base.Awake();
-
-        m_pCloseButton.OnDownEvt += close_tap;
-        m_pInevenContainer.OnSelectEvt += select;
-
-
-        button_option();
-      
-    }
-    protected void Start()
-    {
-        //현재 인벤토리에서 아이템들 수 확인
         int testValue = -1;
-        for(int i = 0; i<m_pInevenContainer.CategoryCount; ++i)
+        for (int i = 0; i < m_pInevenContainer.CategoryCount; ++i)
         {
             testValue += 2;
             CategoryData pCategoryData = m_pInevenContainer.GetCategoryData(i);
@@ -64,22 +55,39 @@ public class Inventory : BaseUI, IContainer
                 if (ListData[j] == null)
                     continue;
 
-                if(m_hashItemCount.TryGetValue((uint)ListData[j].Id, out int iCurCount))
+                if (m_hashItemCount.TryGetValue((uint)ListData[j].Id, out int iCurCount))
                     m_hashItemCount[(uint)ListData[j].Id] += testValue;
                 else
                     m_hashItemCount.Add((uint)ListData[j].Id, testValue);
             }
         }
+
         m_pInevenContainer.BindData(0);
+    }
+
+    public void SetVisible(bool _bOn)
+    {
+        gameObject.SetActive(_bOn);
+    }
+    override protected void Awake()
+    {
+        base.Awake();
+        
+        m_pInevenContainer.OnSelectEvt += select;
+
+        m_pInevenContainer.Build();
+
+        button_option();
+
+    }
+    protected void Start()
+    {
+       
     }
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            int i = UnityEngine.Random.Range(0, m_arrTestData.Length - 1);
-            AddItem(m_arrTestData[i]);
-        }
+        
     }
 
     private void OnDisable()
@@ -108,14 +116,7 @@ public class Inventory : BaseUI, IContainer
         uint iUITypeCode = _pData.GetUITypeCode();
     }
 
-    public void AddItem(SOEntryUI _pSOItem)
-    {
-        uint iID = _pSOItem.GetUIHashCode();
-        if ((iID & (uint)eUIType.Item) == (uint)eUIType.Item)
-        {
-            m_pInevenContainer.AddData(_pSOItem);
-        }   
-    }
+    
 
     private void select()
     {
@@ -142,7 +143,7 @@ public class Inventory : BaseUI, IContainer
         //전송할 데이터 예약
         SlotView pTargetView = m_pInevenContainer.GetTargetSlot();
         int iAmount = m_hashItemCount[(uint)pTargetView.SOEntryUI.Id];
-        DataService.Instance.StartPickData(this, pTargetView.SOEntryUI, pTargetView.SlotIdx, iAmount, GetCategoryIdx(eUIType.Item));
+        DataService.m_Instance.StartPickData(this, pTargetView.SOEntryUI, pTargetView.SlotIdx, iAmount, GetCategoryIdx(eUIType.Item));
 
 
         //인터페이스로 해당 내 아이템 전송 요청
@@ -156,15 +157,9 @@ public class Inventory : BaseUI, IContainer
        
         //중복 허용하지 않는다면 무조건 1
         int iCount = 1;
-        int iCurInvenIdx = m_pInevenContainer.CurrentCategoryIdx;
-        if (m_pInevenContainer.IsCanDuplication(iCurInvenIdx) == false)
-        {
-            if (m_hashItemCount.TryGetValue((uint)pTargetView.SOEntryUI.Id, out iCount) == false)
-                return;
-        }
-
+     
         //데이터 서비스에서 지금 눌린 데이터 참조
-        DataService.Instance.StartPickData(this, pTargetView.SOEntryUI, pTargetView.SlotIdx, iCount);
+        DataService.m_Instance.StartPickData(this, pTargetView.SOEntryUI, pTargetView.SlotIdx, iCount);
 
         //인터페이스 매니저를 만들어서 해당 클래스에게 요청하는 식으로 변경
         m_pEquipSlotContainer.ActiveSlot(pTargetView.SOEntryUI.GetUIHashCode());
@@ -236,12 +231,11 @@ public class Inventory : BaseUI, IContainer
         if (pEntryData == null)
             return 0;
 
-        int iAmount = 0;
-        if (m_hashItemCount.TryGetValue((uint)pEntryData.Id, out iAmount) == false)
+        if (m_hashItemCount.TryGetValue((uint)pEntryData.Id, out int iAmount) == false)
             return 0;
 
-        if (m_pInevenContainer.IsCanDuplication(_iCategoryIdx) == true)
-            iAmount = 1;
+        if (m_pInevenContainer.GetCategoryData(_iCategoryIdx).IsCanDuplication == false)
+            return 1;
 
         return iAmount;
     }
@@ -253,15 +247,37 @@ public class Inventory : BaseUI, IContainer
         if (m_hashItemCount.TryGetValue((uint)_pSoData.Id, out int iAmount) == false)
             return 0;
 
-        if (m_pInevenContainer.IsCanDuplication(_iCategoryIdx) == true)
-            iAmount = 1;
+        if (m_pInevenContainer.GetCategoryData(_iCategoryIdx).IsCanDuplication == true)
+            return 1;
+
         return iAmount;
+    }
+
+    //비어있는 칸으로 넣어주기
+    public bool AddData(SOEntryUI _pSOData, int _iAmount, int _iCategoryIdx = 0)
+    {
+        int iCategoryIdx = GetCategoryIdx(_pSOData.Type);
+        if (iCategoryIdx == -1)
+            return false;
+
+        CategoryData pCategoryData = m_pInevenContainer.GetCategoryData(iCategoryIdx);
+        if(pCategoryData.IsCanDuplication == false &&
+            m_hashItemCount.TryGetValue((uint)_pSOData.Id, out int iCount) == true)
+        {
+            m_hashItemCount[(uint)_pSOData.Id] += _iAmount;
+            return true;
+        }
+        else
+        {
+            return m_pInevenContainer.AddData(_pSOData, iCategoryIdx);
+        }
     }
 
     public bool AddData(int _iDataIdx, SOEntryUI _pSOData, int _iAmount, int _iCategoryIdx = 0)
     {
-        //if (_pSOData.Type != eUIType.Item)
-        //    return false;
+        if(_iCategoryIdx == 0)
+            _iCategoryIdx = GetCategoryIdx(_pSOData.Type);
+        
         uint iID = (uint)_pSOData.Id;
 
         if (m_hashItemCount.TryGetValue(iID, out int iCount) == true)

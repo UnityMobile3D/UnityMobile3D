@@ -8,18 +8,20 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+using eUIType = SOEntryUI.eUIType;
 [System.Serializable]
 public class CategoryData
 {
     public List<SOEntryUI> m_ListData = new List<SOEntryUI>();
 
     [SerializeField] private bool m_bCanDuplication = true; //중복 허용할지(장비 템 창, 스킬 창)
-    
-    public HashSet<SOEntryUI> m_setData = null; //중복 확인을 위한 해쉬
-    public bool IsCanDuplication { get => m_bCanDuplication; }
+   
     public int m_iCurrentRemnantData = 0;
+    public bool IsCanDuplication => m_bCanDuplication;
     public bool IsFull => m_iCurrentRemnantData <= 0;
     public int m_iCategoryIdx = 0;
+
+    [SerializeField] public eUIType m_iUIType = eUIType.None;
     public int GetRemnantDataIdx()
     {
         for (int i = 0; i < m_ListData.Count; ++i)
@@ -55,7 +57,6 @@ public class Container : ButtonUI
     private List<SlotView> m_listView = new List<SlotView>();
     [SerializeField] private int m_iCurrentCategoryIdx = 0;
     public int CurrentCategoryIdx { get=> m_iCurrentCategoryIdx;}
-
 
 
     [SerializeField] private int m_iCategoryCount = 0;
@@ -101,11 +102,12 @@ public class Container : ButtonUI
 
     //빌드 전용
     public bool Run = false;
+
     protected override void Awake()
     {
         base.Awake();
 
-        Build();
+        //Build();
         
         if(m_pSelectFramePrefab != null)
         {
@@ -165,9 +167,7 @@ public class Container : ButtonUI
             return false;
 
         SOEntryUI pDeleteData = pCategoryData.m_ListData[_iDataIdx];
-        //중복 허용이 안된다면 set에서도 제거
-        if (pCategoryData.IsCanDuplication == false)
-            pCategoryData.m_setData.Remove(pDeleteData);
+     
 
         pCategoryData.m_ListData[_iDataIdx] = null;
         ++pCategoryData.m_iCurrentRemnantData;
@@ -184,11 +184,6 @@ public class Container : ButtonUI
         CategoryData pCategoryData = GetCategoryData(_iCategoryIdx);
 
         if (pCategoryData == null || pCategoryData.IsFull == true)
-            return false;
-       
-
-        //중복 허용되고 내 리스트에 이미 해당 데이터가 있다면
-        if(pCategoryData.IsCanDuplication == false && pCategoryData.m_setData.Contains(_pSOEntryUI))
             return false;
 
         if(_iIdx == -1)
@@ -209,9 +204,7 @@ public class Container : ButtonUI
             pCategoryData.m_ListData[_iIdx] = _pSOEntryUI;
         }
      
-        if(pCategoryData.IsCanDuplication == false)
-            pCategoryData.m_setData.Add(_pSOEntryUI);
-
+   
         BindData(_iCategoryIdx);
 
         --pCategoryData.m_iCurrentRemnantData;
@@ -220,7 +213,7 @@ public class Container : ButtonUI
     }
   
 
-    private void Build()
+    public void Build()
     {
         m_IOwner = GetComponentInParent<IContainer>();
 
@@ -285,7 +278,6 @@ public class Container : ButtonUI
             m_iRowCount = Mathf.CeilToInt((float)m_listCategoryData[0].m_ListData.Count / m_iColCount);
 
         //슬롯 프리팹 생성
-        var prefabRT = (RectTransform)m_pSlotPrefab.transform;
         Vector2 vPadding = m_vPadding;
 
         vPadding.x = m_vSlotSize.x / 2.0f + m_vPadding.x;
@@ -332,28 +324,6 @@ public class Container : ButtonUI
         m_vContaninerSize.x = vStep.x * m_iColCount;
         m_vContaninerSize.y = vStep.y * iRowSize;
 
-        for(int i = 0; i<m_listCategoryData.Count; ++i)
-        {
-            CategoryData pCategoryDate = m_listCategoryData[i];
-            pListData = pCategoryDate.m_ListData;
-
-            if (pCategoryDate.IsCanDuplication == false)
-            {
-                //중복 허용이 안된다면 중복된 데이터는 삭제
-                pCategoryDate.m_setData = new HashSet<SOEntryUI>();
-                for (int j = 0; j < pListData.Count; ++j)
-                {
-                    if (pListData[j] == null)
-                        continue;
-
-                    if (pCategoryDate.m_setData.Contains(pListData[j]))
-                        pListData[j] = null;
-                    else
-                        pCategoryDate.m_setData.Add(pListData[j]);
-                }
-            }
-
-        }
 
     }
 
@@ -476,7 +446,12 @@ public class Container : ButtonUI
     {
         //기존 리스트 삭제 (에디터 버전 오브젝트 삭제)
         for (int i = m_pContentView.childCount - 1; i >= 0; --i)
-            Undo.DestroyObjectImmediate(m_pContentView.GetChild(i).gameObject);
+        {
+            if(m_pContentView.GetChild(i).gameObject.GetComponent<SlotView>())
+            {
+                Undo.DestroyObjectImmediate(m_pContentView.GetChild(i).gameObject);
+            }
+        }
 
         m_listView.Clear();
     }
@@ -516,6 +491,16 @@ public class Container : ButtonUI
         return pListData[_iDataIdx];
     }
 
+    public int GetCategoryIdx(eUIType _eUIType)
+    {
+        for (int i = 0; i < m_listCategoryData.Count; ++i)
+        {
+            if (m_listCategoryData[i].m_iUIType == _eUIType)
+                return i;
+        }
+
+        return -1;
+    }
     public void ChanageCategory(int _iCategoryIdx)
     {
         if (m_iCategoryCount <= _iCategoryIdx)

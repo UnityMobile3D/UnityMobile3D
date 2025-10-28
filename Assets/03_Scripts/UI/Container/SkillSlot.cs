@@ -37,6 +37,6 @@ public class SkillSlot : Slot
 
     private void select_skill_slot()
     {
-        DataService.Instance.TryDropData(m_pOwner, SlotIdx);
+        DataService.m_Instance.TryDropData(m_pOwner, SlotIdx);
     }
 }

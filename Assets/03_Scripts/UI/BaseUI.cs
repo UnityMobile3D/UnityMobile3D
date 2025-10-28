@@ -8,12 +8,15 @@ public class BaseUI : MonoBehaviour
     [SerializeField] protected bool m_bRaycast = true;
     virtual protected void Awake()
     {
+
         Graphic pGraphic = GetComponent<Graphic>();
         if (pGraphic == null)
             return;
 
         pGraphic.raycastTarget = m_bRaycast;
     }
+
+   
 
     public void SetRaycast(bool _bRaycast)
     {

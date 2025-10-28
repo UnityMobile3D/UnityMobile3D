@@ -1,28 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Store : BaseUI, IContainer
 {
 
-    [SerializeField] private ButtonUI m_pCloseButton;
-    [SerializeField] private ButtonUI m_pSeleteButton;
-    [SerializeField] private Container m_pItemContainer;
+    [SerializeField] private ButtonUI m_pCloseButton = null;
+    [SerializeField] private ButtonUI m_pPurchaseButton = null;
+    [SerializeField] private Container m_pItemContainer = null;
+    [SerializeField] private TextMeshProUGUI m_pCoinText = null;
 
-    [SerializeField] private eContainerType m_eContainerType = eContainerType.Store; // ¡ç ÀÎ½ºÆåÅÍ¿¡ µå·Ó´Ù¿îÀ¸·Î º¸ÀÓ
+    [SerializeField] private eContainerType m_eContainerType = eContainerType.Store; // â† ì¸ìŠ¤í™í„°ì— ë“œë¡­ë‹¤ìš´ìœ¼ë¡œ ë³´ì„
     public eContainerType ContainerType { get => m_eContainerType; }
 
+    public void Init()
+    {
+        m_pItemContainer.Build();
+    }
+    public void SetVisible(bool _bOn)
+    {
+        gameObject.SetActive(_bOn);
+    }
     protected override void Awake()
     {
         base.Awake();
 
-        //close selete ÇÔ¼ö ¹ÙÀÎµù
+        //close selete í•¨ìˆ˜ ë°”ì¸ë”©
         //m_pCloseButton.OnUpEvt += close_tap;
 
-        m_pItemContainer.OnSelectEvt += select_shapitem;
-
+        m_pPurchaseButton.OnClickEvt += purchase_shapitem;
     }
 
+
+    private void Start()
+    {
+        m_pCoinText.SetText("{0}", ShopManager.m_Instance.Get(ShopManager.eCurrency.Coin)); 
+    }
     private void Update()
     {
 
@@ -34,33 +48,51 @@ public class Store : BaseUI, IContainer
     }
     private void close_tap()
     {
-        //·¹ÀÌ±îÁö Á¦°ÅÇÏ±â À§ÇØ¼­
+        //ë ˆì´ê¹Œì§€ ì œê±°í•˜ê¸° ìœ„í•´ì„œ
         gameObject.SetActive(false);
-
     }
-    private void select_shapitem()
+  
+
+    private void purchase_shapitem()
     {
         SlotView pTarget = m_pItemContainer.GetTargetSlot();
-        SOShapItem pShapItem = pTarget.SOEntryUI as SOShapItem;
+        if (pTarget == null)
+            return;
 
+        SOShapItem pShapItem = pTarget.SOEntryUI as SOShapItem;
         if (pShapItem != null)
         {
-           //µ¥ÀÌÅÍ ¸Å´ÏÀú¿¡¼­ ÇÃ·¹ÀÌ¾î ÄÚÀÎ °ª °¡Á®¿À±â °¡Á®¿Ô´Ù¸é ºñ±³ ÈÄ DataService¸¦ ÅëÇØ¼­ Àü´Ş
+           //ë°ì´í„° ë§¤ë‹ˆì €ì—ì„œ í”Œë ˆì´ì–´ ì½”ì¸ ê°’ ê°€ì ¸ì˜¤ê¸° ê°€ì ¸ì™”ë‹¤ë©´ ë¹„êµ í›„ DataServiceë¥¼ í†µí•´ì„œ ì „ë‹¬
+           if(ShopManager.m_Instance.Spend(ShopManager.eCurrency.Coin, pShapItem.Coin))
+           {
+                DataService.m_Instance.StartPickData(this, pShapItem.ItemUI, pTarget.SlotIdx, 1);
+
+                DataService.m_Instance.TryAddData(eContainerType.Inventory);
+
+                m_pItemContainer.ClearTarget();
+           }
         }
     }
 
-    //IContainer ±¸Çö
+
+
+    //IContainer êµ¬í˜„
     public void SelectData(int _iDataIdx, int _iCategoryIdx = 0) { }
 
     public SOEntryUI GetData(int _iDataIdx, int _iCategoryIdx = 0) { return null; }
     public int GetDataAmount(int _iDataIdx, int _iCategoryIdx = 0) { return -1; }
     public int GetDataAmount(SOEntryUI _pSoData, int _iCategoryIdx = 0) { return -1; }
 
+    public bool AddData(SOEntryUI _pSOData, int _iAmount, int _iCategoryIdx = 0)
+    {
+        return false;
+    }
+
     public bool AddData(int _iDataIdx, SOEntryUI _pSOData, int _iAmount, int _iCategoryIdx = 0) { return false; }
     public bool Consume(int _iDataIdx, int _iAmount, int _iCategoryIdx = 0) { return false; }
     public bool DeleteData(int _iDataIdx, int _iCategoryIdx = 0)
     {
-        //±âÁ¸ ½ºÅ³Ã¢¿¡¼­ ½ºÅ³ÀÌ Áö¿öÁö´Â ÀÏÀº ¾øÀ½
+        //ê¸°ì¡´ ìŠ¤í‚¬ì°½ì—ì„œ ìŠ¤í‚¬ì´ ì§€ì›Œì§€ëŠ” ì¼ì€ ì—†ìŒ
         m_pItemContainer.ClearTarget();
         return true;
     }

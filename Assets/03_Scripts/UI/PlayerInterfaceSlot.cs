@@ -11,12 +11,17 @@ public class PlayerInterfaceSlot : BaseUI, IContainer
 
     [SerializeField] private eContainerType m_eContainerType = eContainerType.Interface; // ← 인스펙터에 드롭다운으로 보임
     public eContainerType ContainerType { get => m_eContainerType; }
-    private void Awake()
+    
+    public void Init()
     {
-        
-    }
 
+    }
     //IContainer 구현
+
+    public void SetVisible(bool _bOn)
+    {
+        gameObject.SetActive(_bOn);
+    }
     public void SelectData(int _iDataIdx, int _iCategoryIdx = 0) { }
 
     public SOEntryUI GetData(int _iDataIdx, int _iCategoryIdx = 0)
@@ -45,6 +50,11 @@ public class PlayerInterfaceSlot : BaseUI, IContainer
             return 0;
 
         return iAmount;
+    }
+
+    public bool AddData(SOEntryUI _pSOData, int _iAmount, int _iCategoryIdx = 0)
+    {
+        return false;
     }
 
     public bool AddData(int _iDataIdx, SOEntryUI _pSOData, int _iAmount, int _iCategoryIdx = 0)

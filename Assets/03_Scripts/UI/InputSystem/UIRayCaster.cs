@@ -12,7 +12,7 @@ public class UIRayCaster
     private PointerEventData m_pPointerEventData;
     private List<RaycastResult> m_listRayResult = new();
 
-    //¾À¸¶´Ù °¡Áö°í ÀÖ´Â ÀÌº¥Æ® ½Ã½ºÅÛ
+    //ì”¬ë§ˆë‹¤ ê°€ì§€ê³  ìˆëŠ” ì´ë²¤íŠ¸ ì‹œìŠ¤í…œ
     public UIRayCaster(EventSystem _pEventSystem, IEnumerable<GraphicRaycaster> _pRay)
     {
         m_pPointerEventData = new PointerEventData(_pEventSystem);
@@ -28,10 +28,12 @@ public class UIRayCaster
 
         for (int i = 0; i < m_listRayCast.Count; ++i)
         {
+            if (m_listRayCast[i].isActiveAndEnabled == false) 
+                continue;
             //EventSystem.current.IsPointerOverGameObject(1);
             m_listRayCast[i].Raycast(m_pPointerEventData, m_listRayResult);
             if (m_listRayResult.Count > 0)
-                return true; // UI À§¿¡ ÀÖÀ½
+                return true; // UI ìœ„ì— ìˆìŒ
         }
        
         return false;

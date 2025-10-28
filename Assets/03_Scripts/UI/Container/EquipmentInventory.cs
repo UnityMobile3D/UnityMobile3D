@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EquipmentInventory : BaseUI , IContainer
@@ -10,9 +11,19 @@ public class EquipmentInventory : BaseUI , IContainer
 
     [SerializeField] private eContainerType m_eContainerType = eContainerType.Equipment; // ← 인스펙터에 드롭다운으로 보임
     public eContainerType ContainerType { get => m_eContainerType; }
-    
+
 
     //IContainer 구현
+
+    public void Init()
+    {
+
+    }
+
+    public void SetVisible(bool _bOn)
+    {
+        gameObject.SetActive(_bOn);
+    }
     public void SelectData(int _iDataIdx, int _iCategoryIdx = 0) { }
 
     public SOEntryUI GetData(int _iDataIdx, int _iCategoryIdx = 0)
@@ -38,6 +49,11 @@ public class EquipmentInventory : BaseUI , IContainer
             return 0;
 
         return iAmount;
+    }
+
+    public bool AddData(SOEntryUI _pSOData, int _iAmount, int _iCategoryIdx = 0)
+    {
+        return false;
     }
 
     public bool AddData(int _iDataIdx, SOEntryUI _pSOData, int _iAmount, int _iCategoryIdx = 0)

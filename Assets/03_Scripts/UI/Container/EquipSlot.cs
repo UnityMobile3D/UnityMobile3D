@@ -41,6 +41,6 @@ public class EquipSlot : Slot
     }
     private void selete_equip_slot()
     {
-        DataService.Instance.TryDropDataAndSwap(m_pOwner, SlotIdx);
+        DataService.m_Instance.TryDropDataAndSwap(m_pOwner, SlotIdx);
     }
 }

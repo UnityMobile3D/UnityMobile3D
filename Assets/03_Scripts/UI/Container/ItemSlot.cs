@@ -65,7 +65,7 @@ public class ItemSlot : Slot
     }
     private void selete_item_slot()
     {
-        DataService.Instance.TryDropDataAndSwap(m_pOwner, SlotIdx);
+        DataService.m_Instance.TryDropDataAndSwap(m_pOwner, SlotIdx);
     }
 
     private void update_count()

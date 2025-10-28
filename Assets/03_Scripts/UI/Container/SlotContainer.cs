@@ -36,7 +36,7 @@ public class SlotContainer : MonoBehaviour
         uint iSlotUICode = pSlot.GetSlotHashCode();
 
         if (_iUIHashCode == iSlotUICode)
-            DataService.Instance.TryDropDataAndSwap(m_pOwner, pSlot.SlotIdx);
+            DataService.m_Instance.TryDropDataAndSwap(m_pOwner, pSlot.SlotIdx);
     }
 
     public void UnActiveSlot()

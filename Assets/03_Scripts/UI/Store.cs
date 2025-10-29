@@ -16,6 +16,7 @@ public class Store : BaseUI, IContainer
 
     public void Init()
     {
+        m_pItemContainer.SetParent(this);
         m_pItemContainer.Build();
     }
     public void SetVisible(bool _bOn)

@@ -90,6 +90,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bRaycast: 1
+  m_eActionID: 0
+  m_pTextMeshProUGUI: {fileID: 0}
   onEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -114,7 +116,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
-  m_pCountBadge: {fileID: 7401679099207673257}
+  m_pIcon: {fileID: 0}
+  m_pCountBadgeText: {fileID: 0}
 --- !u!1 &8322640445877671047
 GameObject:
   m_ObjectHideFlags: 0

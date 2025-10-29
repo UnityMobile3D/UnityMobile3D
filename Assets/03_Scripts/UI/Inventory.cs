@@ -43,6 +43,8 @@ public class Inventory : BaseUI, IContainer
 
     public void Init()
     {
+        m_pInevenContainer.SetParent(this);
+
         int testValue = -1;
         for (int i = 0; i < m_pInevenContainer.CategoryCount; ++i)
         {
@@ -62,7 +64,9 @@ public class Inventory : BaseUI, IContainer
             }
         }
 
-        m_pInevenContainer.BindData(0);
+
+        m_pInevenContainer.Build();
+
     }
 
     public void SetVisible(bool _bOn)
@@ -75,7 +79,6 @@ public class Inventory : BaseUI, IContainer
         
         m_pInevenContainer.OnSelectEvt += select;
 
-        m_pInevenContainer.Build();
 
         button_option();
 

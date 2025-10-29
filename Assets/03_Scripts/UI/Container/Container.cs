@@ -215,8 +215,6 @@ public class Container : ButtonUI
 
     public void Build()
     {
-        m_IOwner = GetComponentInParent<IContainer>();
-
         clear_data();
 
         m_pRectMask = GetComponent<RectMask2D>();
@@ -530,9 +528,14 @@ public class Container : ButtonUI
 
     public int GetCount(SOEntryUI _pEntryUI)
     {
+        if (m_IOwner == null)
+            return -1;
         int iAmount = m_IOwner.GetDataAmount(_pEntryUI, m_iCurrentCategoryIdx);
         return iAmount;
     }
 
-    
+    public void SetParent(IContainer _IContainer)
+    {
+        m_IOwner = _IContainer;
+    }
 }

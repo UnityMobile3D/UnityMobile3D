@@ -19,6 +19,7 @@ public class SkillTree : BaseUI, IContainer
 
     public void Init()
     {
+        m_pSkillContainer.SetParent(this);
         m_pSkillContainer.Build();
     }
 

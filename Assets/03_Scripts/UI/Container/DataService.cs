@@ -54,7 +54,6 @@ public class DataService : MonoBehaviour
     //2. 데이터 이동(인벤->장비, 인벤->상점, 인벤->버리기)
     //3. 데이터 검색(아이템, 스킬)
 
-    private static DataService m_instance = null;
     [SerializeField] private List<BaseUI> m_listContainerObj;
     private List<IContainer> m_listContainer = new List<IContainer>();
 

@@ -45,6 +45,7 @@ public class SOSelector : SOComposite
                     return INode.STATE.RUN;
                 }
             }
+
             cur = 0;
             return INode.STATE.FAILED;
         }

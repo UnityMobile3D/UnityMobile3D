@@ -27,15 +27,22 @@ public class SOFindTarget : SONode
             if (_pBB.Agent == null || _pBB.Target == null)
                 return STATE.FAILED;
 
-            //각도, 거리 체크
-            Vector3 vDiff = _pBB.Target.position - _pBB.Self.position;
-            if (vDiff.magnitude > m_pFindTarget.m_fMaxDistance)
+            _pBB.DistanceToTarget = GlobalAction.GetDisttance(_pBB.Self.position, _pBB.Target.position);
+            if(_pBB.DistanceToTarget > m_pFindTarget.m_fMaxDistance)
+            {
+                _pBB.Agent.isStopped = true;
                 return STATE.FAILED;
+            }
 
-            float fAngle = Vector3.Angle(_pBB.Self.forward, vDiff.normalized);
+            float fAngle = GlobalAction.GetDirection(_pBB.Self.forward, _pBB.Self.position, _pBB.Target.position);
             if (fAngle > m_pFindTarget.m_fFOV * 0.5f)
+            {
+                _pBB.Agent.isStopped = true;
                 return STATE.FAILED;
+            }
 
+
+            _pBB.Agent.isStopped = false;
             return STATE.SUCCESS;
         }
     }

@@ -25,7 +25,6 @@ public abstract class CompositeRuntime : INode
 //각 Action에 필드를 중복 보관하지 않아도 되고, 다른 노드 간 정보 전달이 쉬워진다
 //기본적으로 필요한 정보 보관
 
-
 [Serializable]
 public class Blackboard
 {
@@ -35,8 +34,8 @@ public class Blackboard
     public float DistanceToTarget;
     public float HpRatio;
 
+    public CooldownModule CooldownModule;
     public NavMeshAgent Agent;
     public AnimationBridge AnimBridge;
-    //public AnimationBridge Anim;
 }
 

@@ -26,12 +26,15 @@ public class SOAttackTarget : SONode
 
         public STATE Evaluate(Blackboard _pBB, float _fDT)
         {
-            if (_pBB.Target == null)
+            if (_pBB.Target == null || _pBB.AnimBridge.CurrentClipPlayedAttackOnce(_pBB.CooldownModule.TargetIdx))
+            {
+                _pBB.Agent.isStopped = false;
+                _pBB.AnimBridge.SetAttack(_pBB.CooldownModule.TargetIdx, false);
                 return STATE.FAILED;
+            }
 
-            //만약 공격이 끝났는데도 계속 있다면 run, 공격범위를 벗어나면 failed
-
-            return STATE.RUN;
+            else
+                return STATE.RUN;
         }
     }
 }

@@ -9,9 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25b9c8e9ec03337488b2794654ac72c2, type: 3}
-  m_Name: SOTraceTarget
+  m_Script: {fileID: 11500000, guid: 77504740756b1654da89f2c58758e31e, type: 3}
+  m_Name: SOSelectSkill
   m_EditorClassIdentifier: 
-  m_fRepathTime: 0.25
-  m_fStopDistance: 2
-  m_iareaMask: -1

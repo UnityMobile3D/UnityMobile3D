@@ -8,6 +8,10 @@ public class Monster : MonoBehaviour
     [SerializeField] private Blackboard m_pBlackbard = new Blackboard();
     private BehaviorTree m_pBHTree = null;
 
+    [SerializeField] private List<float> m_listCooldown = new List<float>();
+    public List<float> ListCoolDown => m_listCooldown;
+
+    private CooldownModule m_pCollDownModule = null;
 
     private void Awake()
     {
@@ -18,13 +22,21 @@ public class Monster : MonoBehaviour
 
         m_pBHTree.Init(m_pBlackbard);
 
-        
+        m_pCollDownModule = new CooldownModule();
+        m_pCollDownModule.Init(this);
+        m_pBlackbard.CooldownModule = m_pCollDownModule;
+
     }
 
 
     private void Update()
     {
+        m_pCollDownModule.UpdateCooldown();
+
         m_pBHTree.Evaluate();
     }
+
+
+    
 
 }

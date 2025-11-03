@@ -15,3 +15,5 @@ MonoBehaviour:
   m_listChild:
   - {fileID: 11400000, guid: c05fd975bca1e354389386a2631ddd16, type: 2}
   - {fileID: 11400000, guid: 79c6e48dee1197d4bbc70c58efd8e970, type: 2}
+  - {fileID: 11400000, guid: a175db415104606498cc05a1ff2a7897, type: 2}
+  - {fileID: 11400000, guid: 97bcfece51075de4e990ffa427d5aa66, type: 2}

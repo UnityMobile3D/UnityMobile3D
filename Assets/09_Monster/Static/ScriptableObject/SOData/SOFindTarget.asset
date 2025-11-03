@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c205d5bc23866947808947d9687078d, type: 3}
   m_Name: SOFindTarget
   m_EditorClassIdentifier: 
-  m_fFOV: 90
+  m_fFOV: 120
   m_fMaxDistance: 10

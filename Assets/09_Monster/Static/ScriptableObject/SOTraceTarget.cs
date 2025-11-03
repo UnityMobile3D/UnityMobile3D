@@ -44,13 +44,19 @@ public class TraceTarget : SONode
                     _pBB.Agent.SetDestination(tHit.position);
             }
 
-            //NavMesh가 아직 경로 계산이 끝나고, 목적지에 도착했다면
+            //거리 계산
+            _pBB.DistanceToTarget = GlobalAction.GetDisttance(_pBB.Self.position, _pBB.Target.position);
+         
+            //NavMesh가 경로 계산이 끝나고, 목적지에 도착했다면
             if (_pBB.Agent.pathPending == false
-                && _pBB.Agent.remainingDistance <= m_pTraceTarget.m_fStopDistance)
+                && _pBB.DistanceToTarget <= m_pTraceTarget.m_fStopDistance)
+            {
+                _pBB.AnimBridge.SetMove(false);
+                _pBB.Agent.isStopped = true;
+               
+
                 return STATE.SUCCESS;
-
-            //애니메이션 이동 파라미터 설정
-
+            }
 
             return STATE.RUN;
         }

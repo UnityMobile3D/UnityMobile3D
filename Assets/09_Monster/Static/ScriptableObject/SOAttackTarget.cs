@@ -7,8 +7,6 @@ using STATE = INode.STATE;
 [CreateAssetMenu(menuName = "SO/ActionNode/AttackTarget")]
 public class SOAttackTarget : SONode
 {
-    public float m_fAttackRange = 2.0f;
-
     public override INode CreateRuntime()
     {
         return new AttackTargetRuntime(this);
@@ -35,6 +33,15 @@ public class SOAttackTarget : SONode
 
             else
                 return STATE.RUN;
+        }
+
+        public void Enter()
+        {
+
+        }
+        public void Exit()
+        {
+
         }
     }
 }

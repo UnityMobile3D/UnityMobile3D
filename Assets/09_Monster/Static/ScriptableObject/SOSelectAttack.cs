@@ -32,9 +32,14 @@ public class SOSelectAttack : SONode
 
             _pBB.CooldownModule.StartCooldown(iAttackIdx);
             _pBB.AnimBridge.SetAttack(iAttackIdx,true);
+            _pBB.Self.transform.LookAt(_pBB.Target.position);
 
             return STATE.SUCCESS;
         }
+
+
     }
+
+
 
 }

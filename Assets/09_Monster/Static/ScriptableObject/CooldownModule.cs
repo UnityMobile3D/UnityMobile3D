@@ -31,14 +31,15 @@ public class CooldownModule : MonoBehaviour
     {
         m_pOwner = _pMonster;
 
-        var listCoolDown = m_pOwner.ListCoolDown;
-        for (int i = 0; i < listCoolDown.Count; ++i)
+        var pSkillInfo = m_pOwner.SOMonsterInfo;
+
+        for (int i = 0; i < pSkillInfo.skillinfo.Count; ++i)
         {
             m_listCooldown.Add(new CoolDownData()
             {
                 ID = i,
                 CurCooldown = 0.0f,
-                MaxCooldown = listCoolDown[i],
+                MaxCooldown = pSkillInfo.skillinfo[i].CoolTime,
             });
         }
     }

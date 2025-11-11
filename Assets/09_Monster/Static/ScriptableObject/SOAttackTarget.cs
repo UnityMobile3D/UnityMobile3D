@@ -28,20 +28,12 @@ public class SOAttackTarget : SONode
             {
                 _pBB.Agent.isStopped = false;
                 _pBB.AnimBridge.SetAttack(_pBB.CooldownModule.TargetIdx, false);
+
                 return STATE.FAILED;
             }
 
             else
                 return STATE.RUN;
-        }
-
-        public void Enter()
-        {
-
-        }
-        public void Exit()
-        {
-
         }
     }
 }

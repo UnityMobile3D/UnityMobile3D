@@ -24,6 +24,7 @@ public class SOAttackTarget : SONode
 
         public STATE Evaluate(Blackboard _pBB, float _fDT)
         {
+            //현재 공격 모션이 끝났다면
             if (_pBB.Target == null || _pBB.AnimBridge.CurrentClipPlayedAttackOnce(_pBB.CooldownModule.TargetIdx))
             {
                 _pBB.Agent.isStopped = false;

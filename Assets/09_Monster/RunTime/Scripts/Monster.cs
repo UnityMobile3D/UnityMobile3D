@@ -9,12 +9,12 @@ public class Monster : MonoBehaviour
     [SerializeField] private Blackboard m_pBlackbard = new Blackboard();
     private BehaviorTree m_pBHTree = null;
 
-    [SerializeField] private SOMonsterInfo m_SOMonsterInfo = null;
+    [SerializeField] protected SOMonsterInfo m_SOMonsterInfo = null;
     public SOMonsterInfo SOMonsterInfo => m_SOMonsterInfo;
 
-    private CooldownModule m_pCollDownModule = null;
+    protected CooldownModule m_pCollDownModule = null;
 
-    private void Awake()
+    virtual protected void Awake()
     {
         m_pBlackbard.Self = transform;
         m_pBlackbard.Agent = GetComponent<NavMeshAgent>();
@@ -26,44 +26,52 @@ public class Monster : MonoBehaviour
         m_pCollDownModule = new CooldownModule();
         m_pCollDownModule.Init(this);
         m_pBlackbard.CooldownModule = m_pCollDownModule;
-
     }
 
 
-    private void Update()
+    virtual protected void Update()
     {
         m_pCollDownModule.UpdateCooldown();
 
         m_pBHTree.Evaluate();
     }
 
+    MonsterSkillInfo GetMonsterSkillInfo(int _iIdx)
+    {
+        return m_SOMonsterInfo.skillinfo[_iIdx];
+    }
+
+    //기본 몬스터 공격
     public void SpawnAttackObject()
     {
-        int iTargetIdx = m_pCollDownModule.TargetIdx;
-        if (m_SOMonsterInfo.skillinfo.Count <= iTargetIdx)
-            return;
+        Spawn(Vector3.zero);
+    }
 
+    public void Spawn(Vector3 _vSpawnPos)
+    {
+        int iTargetIdx = m_pCollDownModule.TargetIdx;
+     
         //몬스터 스킬 정보를 통해서 타겟 몬스터 어택 오브젝트 레퍼런스의 아이디를 가져오기
         MonsterSkillInfo pSkillInfo = m_SOMonsterInfo.skillinfo[iTargetIdx];
         string strKey = pSkillInfo.SOPoolEntry.prefabRef.AssetGUID;
 
         //위치 방향 잡기
-        Vector3 vSpawnPos = pSkillInfo.SpawnPos;
-        if(pSkillInfo.SpawnCurPos == true)
-            vSpawnPos = gameObject.transform.position;
+   
+        if (pSkillInfo.SpawnCurPos == true)
+            _vSpawnPos = gameObject.transform.position;
 
         Vector3 vDir = pSkillInfo.AttackDir;
-        if(pSkillInfo.PlayerDir == true)
-            vDir = (m_pBlackbard.Target.transform.position - vSpawnPos).normalized;
+        if (pSkillInfo.PlayerDir == true)
+            vDir = (m_pBlackbard.Target.transform.position - _vSpawnPos).normalized;
         vDir *= pSkillInfo.SpawnDiff;
 
         GameObject pAttackObj = ObjectPoolManager.m_Instance.GetObject(
-            strKey, vSpawnPos + vDir, pSkillInfo.SpawnRot);
+            strKey, _vSpawnPos + vDir, pSkillInfo.SpawnRot);
 
         if (pAttackObj == null)
             return;
 
-        if(pAttackObj.TryGetComponent<MonsterAttackObject>(out var pInfo) == false)
+        if (pAttackObj.TryGetComponent<MonsterAttackObject>(out var pInfo) == false)
         {
             ObjectPoolManager.m_Instance.PushObject(strKey, pAttackObj);
             return;
@@ -71,7 +79,10 @@ public class Monster : MonoBehaviour
 
         pInfo.SetInfo(pSkillInfo);
         pInfo.SetDir(vDir);
+    }
+
+    virtual protected void OnTriggerEnter(Collider other)
+    {
         
     }
-    
 }

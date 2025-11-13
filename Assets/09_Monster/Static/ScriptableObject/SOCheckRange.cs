@@ -26,18 +26,17 @@ public class SOCheckRange : SONode
         public STATE Evaluate(Blackboard _pBB, float _fDT)
         {
             float fDistance = GlobalAction.GetDisttanceToVector2(_pBB.Self.position, _pBB.Target.position);
-
             //안쪽으로 검사
             if (m_pCheckRange.m_bIsIn == true)
             {
-                if (m_pCheckRange.m_fCheckRange < fDistance)
+                if (m_pCheckRange.m_fCheckRange > fDistance)
                     return STATE.SUCCESS;
                 else
                     return STATE.FAILED;
             }
             else
             {
-                if (m_pCheckRange.m_fCheckRange > fDistance)
+                if (m_pCheckRange.m_fCheckRange < fDistance)
                     return STATE.SUCCESS;
                 else
                     return STATE.FAILED;

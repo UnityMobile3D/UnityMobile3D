@@ -13,6 +13,8 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
     private float m_fLifeTime = 10.0f;
     private float m_fCurLifeTime = 0.0f;
 
+    [SerializeField] bool m_bAccVel = false;
+
     public void Awake()
     {
         m_pRigidbody = GetComponent<Rigidbody>();
@@ -48,9 +50,18 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
 
     public void FixedUpdate()
     {
-        Vector3 vStep = m_vDir.normalized * m_fMoveSpeed * Time.fixedDeltaTime;
-        m_pRigidbody.MovePosition(m_pRigidbody.position + vStep);
-    
+        if (m_pRigidbody == null)
+            return;
+
+        if (m_bAccVel == true)
+        {
+            m_pRigidbody.AddForce(m_vDir.normalized * m_fMoveSpeed, ForceMode.Acceleration);
+        }
+        else
+        {
+            Vector3 vStep = m_vDir.normalized * m_fMoveSpeed * Time.fixedDeltaTime;
+            m_pRigidbody.MovePosition(m_pRigidbody.position + vStep);
+        }
     }
 
 
@@ -70,7 +81,10 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
 
     public void OnTriggerEnter(Collider other)
     {
-        
+        if(other.tag == "Player")
+        {
+            Debug.Log("플레이어 타격");
+        }
     }
 }
 

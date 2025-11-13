@@ -97,4 +97,12 @@ public class Player : MonoBehaviour
         _rigidbody.velocity = v;
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "MonsterAttack")
+        {
+            Debug.Log("플레이어 타격받음");
+        }
+    }
+
 }

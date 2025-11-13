@@ -31,6 +31,19 @@ public class TraceTarget : SONode
             if (_pBB.Target == null)
                 return STATE.FAILED;
 
+
+            //거리 계산
+            _pBB.DistanceToTarget = GlobalAction.GetDisttance(_pBB.Self.position, _pBB.Target.position);
+
+            //목적지에 도착했다면 
+            if ( _pBB.DistanceToTarget <= m_pTraceTarget.m_fStopDistance)
+            {
+                _pBB.AnimBridge.SetMove(false);
+                _pBB.Agent.isStopped = true;
+
+                return STATE.FAILED;
+            }
+
             m_fCurTime += _fDT;
 
             //NavMeshAgent의 현재 경로가 잘못된 상태가 아니라면 일정 시간마다 목적지 재설정
@@ -41,22 +54,15 @@ public class TraceTarget : SONode
                 //NavMesh.SamplePosition으로 대상 좌표 근처의 유효한 NavMesh 위치를 찾고목적지 설정
                 if (NavMesh.SamplePosition(_pBB.Target.position, out NavMeshHit tHit,
                     m_pTraceTarget.m_fStopDistance - 0.1f, m_pTraceTarget.m_iareaMask))
+                {
+                    _pBB.AnimBridge.SetMove(true);
                     _pBB.Agent.SetDestination(tHit.position);
+
+                    return STATE.SUCCESS;
+                }
             }
 
-            //거리 계산
-            _pBB.DistanceToTarget = GlobalAction.GetDisttance(_pBB.Self.position, _pBB.Target.position);
-         
-            //NavMesh가 경로 계산이 끝나고, 목적지에 도착했다면
-            if (_pBB.Agent.pathPending == false
-                && _pBB.DistanceToTarget <= m_pTraceTarget.m_fStopDistance)
-            {
-                _pBB.AnimBridge.SetMove(false);
-                _pBB.Agent.isStopped = true;
-               
-
-                return STATE.SUCCESS;
-            }
+           
 
             return STATE.RUN;
         }

@@ -17,8 +17,23 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 09b4621665fce804da0e9945ebaae759
   m_SerializeEntries:
+  - m_GUID: 98c1e720430463643a2b744a19d910cb
+    m_Address: Assets/09_Monster/Static/ScriptableObject/SOData/Dragon/AttackObject/Attack2/BossFireBall.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a3ee8adf347a73d4f8f96dccccf5006a
+    m_Address: Assets/09_Monster/Static/ScriptableObject/SOData/Dragon/AttackObject/DragonAttack1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e478c3b70df328545aa17b091c07280d
     m_Address: Assets/09_Monster/Static/ScriptableObject/SOData/Stone/AttackObj/FireBall.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e581345c2cf36894a838367bef4309b3
+    m_Address: Assets/09_Monster/Static/ScriptableObject/SOData/Bee/AttackObject/MonsterAttack.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

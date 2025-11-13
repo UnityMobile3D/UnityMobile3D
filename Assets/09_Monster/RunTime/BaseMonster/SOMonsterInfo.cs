@@ -18,8 +18,7 @@ public class MonsterSkillInfo
 
     public bool SpawnCurPos = false;
     public bool PlayerDir = false;
-    public bool RandomDir = false;
-    public float SpawnDiff = 0.0f;
+    public float SpawnDiff = 1.0f;
 
     public Vector3 AttackDir = Vector3.zero;
     public Vector3 SpawnPos = Vector3.zero;

@@ -5,7 +5,7 @@ using static SOSkillUI;
 
 public class SkillSlot : Slot
 {
-    [SerializeField] private SOSkillUI m_pSOSkill;
+    [SerializeField] private SOSkillUI m_pSOSkill = null;
 
     [Header("Skill Type")]
     [SerializeField] private eSkillType m_eSkillType = eSkillType.None;
@@ -19,11 +19,20 @@ public class SkillSlot : Slot
         m_pCheckUI.OnClickEvt += select_skill_slot;
 
         m_iUIType |= (uint)m_eSkillType << 8;
+
+    }
+
+    private void Start()
+    {
+        if (m_pSOSkill != null)
+            Bind(m_pSOSkill);    
     }
 
     public override void Bind(SOEntryUI _pSOTarget)
     {
         base.Bind(_pSOTarget);
+        if (_pSOTarget == null)
+            return;
 
         m_pSOSkill = _pSOTarget as SOSkillUI;
 
@@ -32,6 +41,11 @@ public class SkillSlot : Slot
 
     public override void Using()
     {
+        if (m_bCanUse == false)
+            return;
+        if (m_pSOSkill == null)
+            return;
+
         m_bCanUse = false;
     }
 

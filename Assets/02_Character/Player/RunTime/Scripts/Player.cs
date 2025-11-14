@@ -20,6 +20,8 @@ public class Player : MonoBehaviour
     private float       rotateVel;
     private Vector3     desiredPlanarVel;   // 뭐하는 역할?
 
+    private bool        _attack = false;
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
@@ -59,6 +61,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_attack == true)
+            return;
+
         MOVE();
     }
 
@@ -88,6 +93,13 @@ public class Player : MonoBehaviour
         _animator.SetBool("isRun", desiredPlanarVel != Vector3.zero);
 
     }
+
+    public void ATTACK()
+    {
+        _attack = true;
+        _animator.SetBool("isAttack", true);
+    }
+
     private void FixedUpdate()
     {
         // 6) 이동 적용: y는 물리 중력 유지, xz만 갱신

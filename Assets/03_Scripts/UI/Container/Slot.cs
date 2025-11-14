@@ -45,13 +45,16 @@ public class Slot : ButtonUI
     {
         base.Awake();
 
-        //m_pCheckUI.SetRaycast(false);
-        m_pCheckUIImage = m_pCheckUI.GetComponent<Image>();
-        m_pCheckUIImage.enabled = false;
-
         m_pOwner = GetComponentInParent<IContainer>();
 
         m_iUIType = (uint)m_eUIType;
+
+        if (m_pCheckUI != null)
+        {
+            m_pCheckUIImage = m_pCheckUI.GetComponent<Image>();
+            m_pCheckUIImage.enabled = false;
+        }
+
     }
 
     private void OnDestroy()

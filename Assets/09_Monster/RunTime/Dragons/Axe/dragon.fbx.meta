@@ -2822,6 +2822,22 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.20645706
+        functionName: SpawnObject
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: d8070b69a0da6b74f89d3f807e05a1b5,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.9916411
+        functionName: SpawnObject
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: d8070b69a0da6b74f89d3f807e05a1b5,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1

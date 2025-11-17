@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: SOCheck Range
   m_EditorClassIdentifier: 
   m_bIsIn: 1
-  m_fCheckRange: 6
+  m_fCheckRange: 3

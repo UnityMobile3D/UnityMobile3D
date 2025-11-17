@@ -9,7 +9,7 @@ public class TraceTarget : SONode
 {
     public float m_fRepathTime = 0.25f;
     public float m_fStopDistance = 1.6f;
-    public int m_iareaMask = ~0;
+    public int m_iareaMask = NavMesh.AllAreas;
 
     public override INode CreateRuntime()
     {
@@ -30,7 +30,6 @@ public class TraceTarget : SONode
         {
             if (_pBB.Target == null)
                 return STATE.FAILED;
-
 
             //거리 계산
             _pBB.DistanceToTarget = GlobalAction.GetDisttance(_pBB.Self.position, _pBB.Target.position);
@@ -53,9 +52,10 @@ public class TraceTarget : SONode
                 m_fCurTime = 0.0f;
                 //NavMesh.SamplePosition으로 대상 좌표 근처의 유효한 NavMesh 위치를 찾고목적지 설정
                 if (NavMesh.SamplePosition(_pBB.Target.position, out NavMeshHit tHit,
-                    m_pTraceTarget.m_fStopDistance - 0.1f, m_pTraceTarget.m_iareaMask))
+                    3.0f, m_pTraceTarget.m_iareaMask))
                 {
                     _pBB.AnimBridge.SetMove(true);
+                    _pBB.Agent.isStopped = false;
                     _pBB.Agent.SetDestination(tHit.position);
 
                     return STATE.SUCCESS;

@@ -5,8 +5,10 @@ using UnityEngine.AI;
 
 public class BossMonster : Monster
 {
-    //랜덤위치
-    [SerializeField] private Transform m_pSpawnTr = null;
+    [SerializeField] private Transform m_pBreathTr = null;
+
+    //랜덤 위치
+    private Transform m_pSpawnTr = null;
     [SerializeField] private float m_fYSpawnDiff = 10.0f;
     [SerializeField] private float m_fSpawnRadius = 3.0f;
 
@@ -15,11 +17,16 @@ public class BossMonster : Monster
         base.Awake();
     }
 
+    override protected void Start()
+    {
+        base.Start();
+        m_pSpawnTr = m_pBlackbard.Target;
+    }
+
     override protected void Update()
     {
         base.Update();
     }
-
 
     protected override void OnTriggerEnter(Collider other)
     {
@@ -28,6 +35,8 @@ public class BossMonster : Monster
 
     public void SpawnObject()
     {
+        m_pBlackbard.AnimBridge.m_pAnimator.speed = 0.4f;
+
         Vector3 vBasePos = m_pSpawnTr.position;
     
         // xz 평면에서 원형으로 랜덤 위치
@@ -41,6 +50,18 @@ public class BossMonster : Monster
         );
 
         Spawn(vSpawnPos);
+    }
+
+
+    public void Breath()
+    {
+        m_pBlackbard.AnimBridge.m_pAnimator.speed = 0.1f;
+        GameObject pBreath = Spawn(m_pBreathTr.position);
+
+        if (pBreath == null)
+            return;
+
+         pBreath.transform.rotation = m_pBreathTr.rotation;
     }
 
 }

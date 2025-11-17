@@ -17,7 +17,6 @@ public interface IPoolAble
 }
 public class ObjectPoolManager : MonoBehaviour
 {
-    
     public class PoolBucket
     {
         public SOPoolEntry entry;                                     // 설정값 참조
@@ -102,10 +101,10 @@ public class ObjectPoolManager : MonoBehaviour
         if (pBucket.pool.Count <= 0)
             pObject = GameObject.Instantiate(pBucket.prefab, vPosition, Quaternion.Euler(vRot));
         else
+        {
             pObject = pBucket.pool.Dequeue();
-
-        pObject.transform.SetPositionAndRotation(vPosition, Quaternion.Euler(vRot));
-
+            pObject.transform.SetPositionAndRotation(vPosition, Quaternion.Euler(vRot));
+        }
         pObject.SetActive(true);
 
         if (pObject.TryGetComponent<IPoolAble>(out var IPoolCom) == true)

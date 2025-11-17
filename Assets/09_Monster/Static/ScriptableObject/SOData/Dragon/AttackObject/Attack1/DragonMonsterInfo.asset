@@ -17,23 +17,50 @@ MonoBehaviour:
     AttackRange: 0
     AttackDamage: 10
     LifeTime: 0.1
+    AttackTime: 0
     MoveSpeed: 0
+    SpawnPlayerPos: 0
     SpawnCurPos: 1
     PlayerDir: 1
-    SpawnDiff: 4
+    SpawnDiff: 2
     AttackDir: {x: 0, y: 0, z: 0}
     SpawnPos: {x: 0, y: 0, z: 0}
     SpawnRot: {x: 0, y: 0, z: 0}
     SOPoolEntry: {fileID: 11400000, guid: 0160dc8e172d5ea40968ed78e77d0f32, type: 2}
-  - CoolTime: 8
+    EndFrameSpawn:
+      SpawnObject: {fileID: 0}
+      Offset: {x: 0, y: 0, z: 0}
+  - CoolTime: 10
     AttackRange: 0
-    AttackDamage: 20
-    LifeTime: 5
-    MoveSpeed: 7
+    AttackDamage: 0
+    LifeTime: 3
+    AttackTime: 1000
+    MoveSpeed: 0
+    SpawnPlayerPos: 1
     SpawnCurPos: 0
-    PlayerDir: 1
-    SpawnDiff: 1
+    PlayerDir: 0
+    SpawnDiff: 0
     AttackDir: {x: 0, y: 0, z: 0}
     SpawnPos: {x: 0, y: 0, z: 0}
     SpawnRot: {x: 0, y: 0, z: 0}
     SOPoolEntry: {fileID: 11400000, guid: 5155e13df952be9459ba9556aa8a2203, type: 2}
+    EndFrameSpawn:
+      SpawnObject: {fileID: 11400000, guid: f1377e3060e75c9489e496efdc880326, type: 2}
+      Offset: {x: 0, y: 0, z: 0}
+  - CoolTime: 6
+    AttackRange: 0
+    AttackDamage: 0
+    LifeTime: 3
+    AttackTime: 0
+    MoveSpeed: 0
+    SpawnPlayerPos: 0
+    SpawnCurPos: 0
+    PlayerDir: 0
+    SpawnDiff: 0
+    AttackDir: {x: 0, y: 0, z: 0}
+    SpawnPos: {x: 0, y: 0, z: 0}
+    SpawnRot: {x: 0, y: 0, z: 0}
+    SOPoolEntry: {fileID: 11400000, guid: 23bc6f21b841d784ebf37d15e845b332, type: 2}
+    EndFrameSpawn:
+      SpawnObject: {fileID: 0}
+      Offset: {x: 0, y: 0, z: 0}

@@ -867,291 +867,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.13848765
+      - time: 0.16567543
         functionName: SpawnAttackObject
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 47bd59e8496f3554d931f1dd8e440aea,
+        objectReferenceParameter: {fileID: 11500000, guid: d8070b69a0da6b74f89d3f807e05a1b5,
           type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      transformMask:
-      - path: 
-        weight: 1
-      - path: axe
-        weight: 1
-      - path: axe/head
-        weight: 1
-      - path: axe/head/head_end
-        weight: 1
-      - path: axe/left_foot
-        weight: 1
-      - path: axe/left_foot/foot_master_L
-        weight: 1
-      - path: axe/left_foot/foot_master_L/toes_ctrl_L
-        weight: 1
-      - path: axe/left_foot/foot_master_L/toes_ctrl_L/foot_ctrl_L
-        weight: 1
-      - path: axe/left_foot/foot_master_L/toes_ctrl_L/foot_ctrl_L/lower_leg_IK_L
-        weight: 1
-      - path: axe/left_foot/foot_master_L/toes_ctrl_L/foot_ctrl_L/lower_leg_IK_L/lower_leg_IK_L_end
-        weight: 1
-      - path: axe/left_foot/toes_ctrl_L.001
-        weight: 1
-      - path: axe/left_foot/toes_ctrl_L.001/foot_ctrl_L.001
-        weight: 1
-      - path: axe/left_foot/toes_ctrl_L.001/foot_ctrl_L.001/foot_ctrl_L.001_end
-        weight: 1
-      - path: axe/right_foot
-        weight: 1
-      - path: axe/right_foot/foot_master_R
-        weight: 1
-      - path: axe/right_foot/foot_master_R/toes_ctrl_R
-        weight: 1
-      - path: axe/right_foot/foot_master_R/toes_ctrl_R/foot_ctrl_R
-        weight: 1
-      - path: axe/right_foot/foot_master_R/toes_ctrl_R/foot_ctrl_R/lower_leg_IK_R
-        weight: 1
-      - path: axe/right_foot/foot_master_R/toes_ctrl_R/foot_ctrl_R/lower_leg_IK_R/lower_leg_IK_R_end
-        weight: 1
-      - path: axe/right_foot/toes_ctrl_R.001
-        weight: 1
-      - path: axe/right_foot/toes_ctrl_R.001/foot_ctrl_R.001
-        weight: 1
-      - path: axe/right_foot/toes_ctrl_R.001/foot_ctrl_R.001/foot_ctrl_R.001_end
-        weight: 1
-      - path: axe/root
-        weight: 1
-      - path: axe/root/back.bone.1
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/left_hand
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/left_hand/el_bow_L
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/left_hand/el_bow_L/el_bow_L_end
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/lower_arm_IK_L
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/lower_arm_IK_L/lower_arm_IK_L_end
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/lower_arm_IK_R
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/lower_arm_IK_R/lower_arm_IK_R_end
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/neck.bone
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/neck.bone/head.bone
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/neck.bone/head.bone/head.bone.top
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/neck.bone/head.bone/head.bone.top/head.bone.top_end
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/neck.bone/head.bone/mouth_bone
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/neck.bone/head.bone/mouth_bone/mouth_bone_end
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/right_hand
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/right_hand/el_bow_R
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/right_hand/el_bow_R/el_bow_R_end
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/arm_equip_hepler_L
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/arm_equip_hepler_L/collar_bone_L.002
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/arm_equip_hepler_L/collar_bone_L.002/collar_bone_L.002_end
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/axe_L
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/axe_L/axe_L_end
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/axe_L/axe_left
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.002
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.002/middle_finger_L1
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.002/middle_finger_L1/middle_finger_L2
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.002/middle_finger_L1/middle_finger_L2/middle_finger_L2_end
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.005
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.005/index_finger_L1
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.005/index_finger_L1/index_finger_L2
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.005/index_finger_L1/index_finger_L2/index_finger_L2_end
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.008
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.008/thumb_L1
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.008/thumb_L1/thumb_L2
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.008/thumb_L1/thumb_L2/thumb_L2_end
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/arm_equip_helper_R
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/arm_equip_helper_R/arm_equip_R
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/arm_equip_helper_R/arm_equip_R/arm_equip_R_end
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/axe_R
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/axe_R/axe_R_end
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/axe_R/axe_right
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.002
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.002/middle_finger_R1
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.002/middle_finger_R1/middle_finger_R2
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.002/middle_finger_R1/middle_finger_R2/middle_finger_R2_end
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.005
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.005/index_finger_R1
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.005/index_finger_R1/index_finger_R2
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.005/index_finger_R1/index_finger_R2/index_finger_R2_end
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.008
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.008/thumb_R1
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.008/thumb_R1/thumb_R2
-        weight: 1
-      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.008/thumb_R1/thumb_R2/thumb_R2_end
-        weight: 1
-      - path: axe/root/back.bone.002
-        weight: 1
-      - path: axe/root/back.bone.002/tail_bone_2
-        weight: 1
-      - path: axe/root/back.bone.002/tail_bone_2/tail_bone_1
-        weight: 1
-      - path: axe/root/back.bone.002/tail_bone_2/tail_bone_1/tail_bone_1_end
-        weight: 1
-      - path: axe/root/back_control
-        weight: 1
-      - path: axe/root/back_control/back_control_end
-        weight: 1
-      - path: axe/root/hip_bone_L
-        weight: 1
-      - path: axe/root/hip_bone_L/lower_hip_bone_L
-        weight: 1
-      - path: axe/root/hip_bone_L/lower_hip_bone_L/leg_equip_helper_L
-        weight: 1
-      - path: axe/root/hip_bone_L/lower_hip_bone_L/leg_equip_helper_L/leg_equip_L
-        weight: 1
-      - path: axe/root/hip_bone_L/lower_hip_bone_L/leg_equip_helper_L/leg_equip_L/leg_equip_L_end
-        weight: 1
-      - path: axe/root/hip_bone_L/lower_hip_bone_L/upper_leg_L
-        weight: 1
-      - path: axe/root/hip_bone_L/lower_hip_bone_L/upper_leg_L/lower_leg_L
-        weight: 1
-      - path: axe/root/hip_bone_L/lower_hip_bone_L/upper_leg_L/lower_leg_L/foot_L
-        weight: 1
-      - path: axe/root/hip_bone_L/lower_hip_bone_L/upper_leg_L/lower_leg_L/foot_L/toes_L
-        weight: 1
-      - path: axe/root/hip_bone_L/lower_hip_bone_L/upper_leg_L/lower_leg_L/foot_L/toes_L/toes_L_end
-        weight: 1
-      - path: axe/root/hip_bone_R
-        weight: 1
-      - path: axe/root/hip_bone_R/lower_hip_bone_R
-        weight: 1
-      - path: axe/root/hip_bone_R/lower_hip_bone_R/leg_equip_helper_R
-        weight: 1
-      - path: axe/root/hip_bone_R/lower_hip_bone_R/leg_equip_helper_R/leg_equip_R
-        weight: 1
-      - path: axe/root/hip_bone_R/lower_hip_bone_R/leg_equip_helper_R/leg_equip_R/leg_equip_R_end
-        weight: 1
-      - path: axe/root/hip_bone_R/lower_hip_bone_R/upper_leg_R
-        weight: 1
-      - path: axe/root/hip_bone_R/lower_hip_bone_R/upper_leg_R/lower_leg_R
-        weight: 1
-      - path: axe/root/hip_bone_R/lower_hip_bone_R/upper_leg_R/lower_leg_R/foot_R
-        weight: 1
-      - path: axe/root/hip_bone_R/lower_hip_bone_R/upper_leg_R/lower_leg_R/foot_R/toes_R
-        weight: 1
-      - path: axe/root/hip_bone_R/lower_hip_bone_R/upper_leg_R/lower_leg_R/foot_R/toes_R/toes_R_end
-        weight: 1
-      - path: axe/root/tail
-        weight: 1
-      - path: axe/root/tail/tail_end
-        weight: 1
-      - path: axe/root/tail_bone_IK
-        weight: 1
-      - path: axe/root/tail_bone_IK/tail_bone_IK_end
-        weight: 1
-      - path: axe/root_control
-        weight: 1
-      - path: axe/root_control/mouth_bone.001
-        weight: 1
-      - path: axe/root_control/mouth_bone.001/mouth_bone.001_end
-        weight: 1
-      - path: chin
-        weight: 1
-      - path: dinosaur
-        weight: 1
-      - path: equip_arm
-        weight: 1
-      - path: equip_leg
-        weight: 1
-      maskType: 0
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: axe|dead 2
-      takeName: axe|dead 2
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 28
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
       transformMask:
       - path: 
         weight: 1
@@ -3114,7 +2837,308 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.44435006
+        functionName: SpawnAttackObject
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: d8070b69a0da6b74f89d3f807e05a1b5,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      transformMask:
+      - path: 
+        weight: 1
+      - path: axe
+        weight: 1
+      - path: axe/head
+        weight: 1
+      - path: axe/head/head_end
+        weight: 1
+      - path: axe/left_foot
+        weight: 1
+      - path: axe/left_foot/foot_master_L
+        weight: 1
+      - path: axe/left_foot/foot_master_L/toes_ctrl_L
+        weight: 1
+      - path: axe/left_foot/foot_master_L/toes_ctrl_L/foot_ctrl_L
+        weight: 1
+      - path: axe/left_foot/foot_master_L/toes_ctrl_L/foot_ctrl_L/lower_leg_IK_L
+        weight: 1
+      - path: axe/left_foot/foot_master_L/toes_ctrl_L/foot_ctrl_L/lower_leg_IK_L/lower_leg_IK_L_end
+        weight: 1
+      - path: axe/left_foot/toes_ctrl_L.001
+        weight: 1
+      - path: axe/left_foot/toes_ctrl_L.001/foot_ctrl_L.001
+        weight: 1
+      - path: axe/left_foot/toes_ctrl_L.001/foot_ctrl_L.001/foot_ctrl_L.001_end
+        weight: 1
+      - path: axe/right_foot
+        weight: 1
+      - path: axe/right_foot/foot_master_R
+        weight: 1
+      - path: axe/right_foot/foot_master_R/toes_ctrl_R
+        weight: 1
+      - path: axe/right_foot/foot_master_R/toes_ctrl_R/foot_ctrl_R
+        weight: 1
+      - path: axe/right_foot/foot_master_R/toes_ctrl_R/foot_ctrl_R/lower_leg_IK_R
+        weight: 1
+      - path: axe/right_foot/foot_master_R/toes_ctrl_R/foot_ctrl_R/lower_leg_IK_R/lower_leg_IK_R_end
+        weight: 1
+      - path: axe/right_foot/toes_ctrl_R.001
+        weight: 1
+      - path: axe/right_foot/toes_ctrl_R.001/foot_ctrl_R.001
+        weight: 1
+      - path: axe/right_foot/toes_ctrl_R.001/foot_ctrl_R.001/foot_ctrl_R.001_end
+        weight: 1
+      - path: axe/root
+        weight: 1
+      - path: axe/root/back.bone.1
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/left_hand
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/left_hand/el_bow_L
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/left_hand/el_bow_L/el_bow_L_end
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/lower_arm_IK_L
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/lower_arm_IK_L/lower_arm_IK_L_end
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/lower_arm_IK_R
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/lower_arm_IK_R/lower_arm_IK_R_end
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/neck.bone
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/neck.bone/head.bone
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/neck.bone/head.bone/head.bone.top
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/neck.bone/head.bone/head.bone.top/head.bone.top_end
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/neck.bone/head.bone/mouth_bone
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/neck.bone/head.bone/mouth_bone/mouth_bone_end
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/right_hand
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/right_hand/el_bow_R
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/back.bone.4/right_hand/el_bow_R/el_bow_R_end
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/arm_equip_hepler_L
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/arm_equip_hepler_L/collar_bone_L.002
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/arm_equip_hepler_L/collar_bone_L.002/collar_bone_L.002_end
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/axe_L
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/axe_L/axe_L_end
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/axe_L/axe_left
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.002
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.002/middle_finger_L1
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.002/middle_finger_L1/middle_finger_L2
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.002/middle_finger_L1/middle_finger_L2/middle_finger_L2_end
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.005
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.005/index_finger_L1
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.005/index_finger_L1/index_finger_L2
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.005/index_finger_L1/index_finger_L2/index_finger_L2_end
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.008
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.008/thumb_L1
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.008/thumb_L1/thumb_L2
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_L/upper_arm_L/lower_arm_L/wrist_L/wrist_L.008/thumb_L1/thumb_L2/thumb_L2_end
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/arm_equip_helper_R
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/arm_equip_helper_R/arm_equip_R
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/arm_equip_helper_R/arm_equip_R/arm_equip_R_end
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/axe_R
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/axe_R/axe_R_end
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/axe_R/axe_right
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.002
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.002/middle_finger_R1
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.002/middle_finger_R1/middle_finger_R2
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.002/middle_finger_R1/middle_finger_R2/middle_finger_R2_end
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.005
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.005/index_finger_R1
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.005/index_finger_R1/index_finger_R2
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.005/index_finger_R1/index_finger_R2/index_finger_R2_end
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.008
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.008/thumb_R1
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.008/thumb_R1/thumb_R2
+        weight: 1
+      - path: axe/root/back.bone.1/back.bone.2/back.bone.3/collar_bone_R/upper_arm_R/lower_arm_R/wrist_R/wrist_R.008/thumb_R1/thumb_R2/thumb_R2_end
+        weight: 1
+      - path: axe/root/back.bone.002
+        weight: 1
+      - path: axe/root/back.bone.002/tail_bone_2
+        weight: 1
+      - path: axe/root/back.bone.002/tail_bone_2/tail_bone_1
+        weight: 1
+      - path: axe/root/back.bone.002/tail_bone_2/tail_bone_1/tail_bone_1_end
+        weight: 1
+      - path: axe/root/back_control
+        weight: 1
+      - path: axe/root/back_control/back_control_end
+        weight: 1
+      - path: axe/root/hip_bone_L
+        weight: 1
+      - path: axe/root/hip_bone_L/lower_hip_bone_L
+        weight: 1
+      - path: axe/root/hip_bone_L/lower_hip_bone_L/leg_equip_helper_L
+        weight: 1
+      - path: axe/root/hip_bone_L/lower_hip_bone_L/leg_equip_helper_L/leg_equip_L
+        weight: 1
+      - path: axe/root/hip_bone_L/lower_hip_bone_L/leg_equip_helper_L/leg_equip_L/leg_equip_L_end
+        weight: 1
+      - path: axe/root/hip_bone_L/lower_hip_bone_L/upper_leg_L
+        weight: 1
+      - path: axe/root/hip_bone_L/lower_hip_bone_L/upper_leg_L/lower_leg_L
+        weight: 1
+      - path: axe/root/hip_bone_L/lower_hip_bone_L/upper_leg_L/lower_leg_L/foot_L
+        weight: 1
+      - path: axe/root/hip_bone_L/lower_hip_bone_L/upper_leg_L/lower_leg_L/foot_L/toes_L
+        weight: 1
+      - path: axe/root/hip_bone_L/lower_hip_bone_L/upper_leg_L/lower_leg_L/foot_L/toes_L/toes_L_end
+        weight: 1
+      - path: axe/root/hip_bone_R
+        weight: 1
+      - path: axe/root/hip_bone_R/lower_hip_bone_R
+        weight: 1
+      - path: axe/root/hip_bone_R/lower_hip_bone_R/leg_equip_helper_R
+        weight: 1
+      - path: axe/root/hip_bone_R/lower_hip_bone_R/leg_equip_helper_R/leg_equip_R
+        weight: 1
+      - path: axe/root/hip_bone_R/lower_hip_bone_R/leg_equip_helper_R/leg_equip_R/leg_equip_R_end
+        weight: 1
+      - path: axe/root/hip_bone_R/lower_hip_bone_R/upper_leg_R
+        weight: 1
+      - path: axe/root/hip_bone_R/lower_hip_bone_R/upper_leg_R/lower_leg_R
+        weight: 1
+      - path: axe/root/hip_bone_R/lower_hip_bone_R/upper_leg_R/lower_leg_R/foot_R
+        weight: 1
+      - path: axe/root/hip_bone_R/lower_hip_bone_R/upper_leg_R/lower_leg_R/foot_R/toes_R
+        weight: 1
+      - path: axe/root/hip_bone_R/lower_hip_bone_R/upper_leg_R/lower_leg_R/foot_R/toes_R/toes_R_end
+        weight: 1
+      - path: axe/root/tail
+        weight: 1
+      - path: axe/root/tail/tail_end
+        weight: 1
+      - path: axe/root/tail_bone_IK
+        weight: 1
+      - path: axe/root/tail_bone_IK/tail_bone_IK_end
+        weight: 1
+      - path: axe/root_control
+        weight: 1
+      - path: axe/root_control/mouth_bone.001
+        weight: 1
+      - path: axe/root_control/mouth_bone.001/mouth_bone.001_end
+        weight: 1
+      - path: chin
+        weight: 1
+      - path: dinosaur
+        weight: 1
+      - path: equip_arm
+        weight: 1
+      - path: equip_leg
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: axe|attack3
+      takeName: axe|attack
+      internalID: 3556017502971079535
+      firstFrame: 0
+      lastFrame: 14
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events:
+      - time: 0.34919283
+        functionName: Breath
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: d8070b69a0da6b74f89d3f807e05a1b5,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.8283771
+        functionName: EndCurAttack
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: d8070b69a0da6b74f89d3f807e05a1b5,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1

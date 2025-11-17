@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AnimationBridge : MonoBehaviour
 {
-    private Animator m_pAnimator = null;
+    public Animator m_pAnimator = null;
 
     [SerializeField] private List<string> ListAttack = new List<string>() { "Attack" };
     [SerializeField] private string Speed = "Speed";

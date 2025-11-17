@@ -107,7 +107,7 @@ public class Slot : ButtonUI
         if (m_pSOTarget == null)
             return;
 
-        InputManager.m_Instance.BindUGUIButtonBoolean(ActionID, true);
+        base.OnPointerClick(e);
     }
 
     public virtual void Using()

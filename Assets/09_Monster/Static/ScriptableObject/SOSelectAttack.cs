@@ -37,7 +37,6 @@ public class SOSelectAttack : SONode
             return STATE.SUCCESS;
         }
 
-
     }
 
 

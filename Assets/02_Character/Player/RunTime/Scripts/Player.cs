@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     private Vector3     desiredPlanarVel;   // 뭐하는 역할?
 
     private bool        _attack = false;
-
+ 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
@@ -94,10 +94,21 @@ public class Player : MonoBehaviour
 
     }
 
+    public void EndAttack() 
+    { 
+        _attack = false;
+        _animator.SetBool("isAttack", false); 
+    }
+
     public void ATTACK()
     {
         _attack = true;
         _animator.SetBool("isAttack", true);
+    }
+    public void ENDATTCK()
+    {
+        _attack = false;
+        _animator.SetBool("isAttack", false);
     }
 
     private void FixedUpdate()

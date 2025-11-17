@@ -19,10 +19,8 @@ public class ButtonUI : BaseUI,
     //UGUI 포인터 이벤트는 Monobehaviour update전에 이벤트 발생
 
     //만약 InputManager와 병합한다면
-    [SerializeField] private eActionID m_eActionID = eActionID.None;
-    public eActionID ActionID { get => m_eActionID; }
-    bool m_bIsBindingInputAction = false;
-    public bool IsBindingInputAction { get => m_bIsBindingInputAction; }
+   
+    [SerializeField] protected BindInputAction m_pActionBind = null;
 
     public TextMeshProUGUI m_pTextMeshProUGUI;
 
@@ -50,10 +48,9 @@ public class ButtonUI : BaseUI,
     {
         base.Awake();
 
-        if (m_eActionID != eActionID.None)
-            m_bIsBindingInputAction = true;
 
         m_pTextMeshProUGUI = GetComponentInChildren<TextMeshProUGUI>();
+        m_pActionBind = GetComponent<BindInputAction>();
     }
    
     virtual public void OnPointerEnter(PointerEventData e)
@@ -99,9 +96,11 @@ public class ButtonUI : BaseUI,
     }
     virtual public void OnPointerClick(PointerEventData e)
     {
-      
         onClick?.Invoke();
         OnClickEvt?.Invoke();
-        //Debug.Log("Button Clicked");
+
+        if(m_pActionBind != null)
+            m_pActionBind.Action();
+        
     }
 }

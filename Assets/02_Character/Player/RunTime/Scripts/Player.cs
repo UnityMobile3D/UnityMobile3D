@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     
     private Rigidbody _rigidbody;
     private Animator _animator;
+    private Health _health;
 
     // 이동 관련변수
     [Header("Move")]
@@ -20,13 +21,20 @@ public class Player : MonoBehaviour
     private float       rotateVel;
     private Vector3     desiredPlanarVel;   // 뭐하는 역할?
 
+    // 상태 관리
     private bool        _attack = false;
- 
+    private bool        _hit = false;
+    private bool        _run = false;
+
+    [Header("Hit")]
+    private Coroutine _knockbackRoutine;
+    [SerializeField] private float knockbackDamping = 3f;
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
-
+        _health = GetComponent<Health>();
         // Rigidbody 세팅
         _rigidbody.useGravity = true;
         _rigidbody.drag = 0f;
@@ -61,7 +69,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_attack == true)
+        if (_attack == true || _hit == true)
             return;
 
         MOVE();
@@ -78,7 +86,7 @@ public class Player : MonoBehaviour
         Vector3 moveDir = new Vector3(input.x, 0f, input.y);
         if (moveDir.sqrMagnitude > 0.0001f)
             lastDir = moveDir.normalized;
-
+    
         // 3) 회전
         float targetY = Mathf.Atan2(lastDir.x, lastDir.z) * Mathf.Rad2Deg;
         float currentY = transform.eulerAngles.y;
@@ -90,8 +98,7 @@ public class Player : MonoBehaviour
         desiredPlanarVel = planar;
 
         // 5) 애니메이션 파라미터 설정
-        _animator.SetBool("isRun", desiredPlanarVel != Vector3.zero);
-
+        _animator.SetBool("isWalk", desiredPlanarVel != Vector3.zero);
     }
 
     public void EndAttack() 
@@ -110,22 +117,97 @@ public class Player : MonoBehaviour
         _attack = false;
         _animator.SetBool("isAttack", false);
     }
+    public void HIT()
+    {
+        _hit = true;
+        _animator.SetTrigger("hit");
+    }
+    public void ENDHIT()
+    {
+        _hit = false;
+    }
+    
 
     private void FixedUpdate()
     {
         // 6) 이동 적용: y는 물리 중력 유지, xz만 갱신
-        Vector3 v = _rigidbody.velocity;
-        v.x = desiredPlanarVel.x;
-        v.z = desiredPlanarVel.z;
-        _rigidbody.velocity = v;
+        if(_hit == false)
+        {
+            Vector3 v = _rigidbody.velocity;
+            v.x = desiredPlanarVel.x;
+            v.z = desiredPlanarVel.z;
+            _rigidbody.velocity = v;
+        }
+     
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "MonsterAttack")
+        if (other.tag == "MonsterAttack")
         {
-            Debug.Log("플레이어 타격받음");
+            if (_hit == true)
+                return;
+
+            HIT();
+            //플레이어 기준 가장 가까운 점
+            Vector3 hitPoint = other.ClosestPoint(transform.position);
+
+            MonsterAttackObject pAttackObject = other.GetComponent<MonsterAttackObject>();
+            effect(pAttackObject.MonsterSkillInfo, hitPoint);
+
+            _health.TakeDamage((int)pAttackObject.Damage);
         }
     }
+    private void effect(MonsterSkillInfo _skillInfo, in Vector3 _hitPosition)
+    {
+        // 기존 넉백 코루틴 돌고 있으면 정지
+        if (_knockbackRoutine != null)
+        {
+            StopCoroutine(_knockbackRoutine);
+            _knockbackRoutine = null;
+        }
 
+        Vector3 playerPos = _rigidbody.position;
+        Vector3 dir = playerPos - _hitPosition;
+        dir.y = 0.0f; 
+
+        //거의 차이가 없다면 플레이어 반대 방향으로
+        if (dir.sqrMagnitude < 0.0001f)
+            dir = -transform.forward;
+        
+        dir.Normalize();
+
+        float power = _skillInfo.AttackPower;
+
+        // 위로 살짝 튕기게
+        Vector3 force = dir * power;
+     
+        // 순간 넉백을 위해 기존 속도 잠깐 끊기
+        _rigidbody.velocity = Vector3.zero;
+
+        _rigidbody.AddForce(force, ForceMode.Impulse);
+    
+        transform.LookAt(_hitPosition);
+
+        //시간이 지나면서 점점 멈추게 (속도 감쇠)
+        _knockbackRoutine = StartCoroutine(knockbac_coroutine());
+    }
+
+    private IEnumerator knockbac_coroutine()
+    {
+        while (_rigidbody.velocity.sqrMagnitude > 0.01f)
+        {
+            // velocity를 0쪽으로 점점 줄임
+            _rigidbody.velocity = Vector3.Lerp(
+                _rigidbody.velocity,
+                Vector3.zero,
+                Time.fixedDeltaTime
+            );
+
+            yield return null;
+        }
+
+        _rigidbody.velocity = Vector3.zero;
+        _knockbackRoutine = null;
+    }
 }

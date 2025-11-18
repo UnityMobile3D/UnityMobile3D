@@ -16,13 +16,19 @@ MonoBehaviour:
   - CoolTime: 3
     AttackRange: 0
     AttackDamage: 5
+    AttackPower: 3
+    isDown: 0
     LifeTime: 0.1
+    AttackTime: 0
     MoveSpeed: 0
+    SpawnPlayerPos: 0
     SpawnCurPos: 1
     PlayerDir: 1
-    RandomDir: 0
-    SpawnDiff: 0.5
+    SpawnDiff: 1
     AttackDir: {x: 0, y: 0, z: 0}
     SpawnPos: {x: 0, y: 0, z: 0}
     SpawnRot: {x: 0, y: 0, z: 0}
     SOPoolEntry: {fileID: 11400000, guid: 57434e21db5a3a14a900f8b09d3610ff, type: 2}
+    EndFrameSpawn:
+      SpawnObject: {fileID: 0}
+      Offset: {x: 0, y: 0, z: 0}

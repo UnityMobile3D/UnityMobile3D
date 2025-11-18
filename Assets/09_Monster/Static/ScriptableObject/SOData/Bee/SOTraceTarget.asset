@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: SOTraceTarget
   m_EditorClassIdentifier: 
   m_fRepathTime: 0.25
-  m_fStopDistance: 2
+  m_fStopDistance: 1.5
   m_iareaMask: -1

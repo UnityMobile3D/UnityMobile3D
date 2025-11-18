@@ -7,9 +7,13 @@ using UnityEngine.Events;
 
 public class MonsterAttackObject : MonoBehaviour, IPoolAble
 {
+    protected Monster m_pOwner = null;
+
     private Rigidbody m_pRigidbody = null;
     private Collider m_pCollider = null;
+
     private MonsterSkillInfo m_pMonsterSkillInfo = null;
+    public MonsterSkillInfo MonsterSkillInfo => m_pMonsterSkillInfo;
 
     private float m_fMoveSpeed = 0.0f;
     private Vector3 m_vDir = Vector3.zero;
@@ -20,12 +24,15 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
 
     private float m_fCurLifeTime = 0.0f;
 
+    [SerializeField] private int m_iAttackCount = 1;
+    private int m_iCurAttackCount = 0;
+
     private float m_fDamage = 0.0f;
+    public float Damage => m_fDamage;
+
     [SerializeField] bool m_bAccVel = false;
-    protected Monster m_pOwner = null;
 
     private uint m_iCreateCount = 0;
-
     private string m_strSpawnKey = string.Empty;
 
     public void Awake()
@@ -114,6 +121,7 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
         m_fAttackTime = _pSkillInfo.AttackTime;
         m_fMoveSpeed = _pSkillInfo.MoveSpeed;
         m_vDir = _pSkillInfo.AttackDir;
+        m_fDamage = _pSkillInfo.AttackDamage;
 
         m_strSpawnKey = _pSkillInfo.SOPoolEntry.prefabRef.AssetGUID;
     }
@@ -132,8 +140,35 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
     {
         if(other.tag == "Player")
         {
-            Debug.Log("플레이어 타격");
+            if (check_attack_count() == true)
+                PushPoolObject();
         }
+      
+    }
+
+    public void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            effect(other.GetComponent<Rigidbody>());
+
+            if (check_attack_count() == true)
+                PushPoolObject();
+        }
+    }
+
+    private bool check_attack_count()
+    {
+        ++m_iCurAttackCount;
+        if(m_iCurAttackCount >= m_iAttackCount)
+            return true;
+
+        return false;
+    }
+
+    private void effect(Rigidbody _pOther)
+    {
+        
     }
 }
 

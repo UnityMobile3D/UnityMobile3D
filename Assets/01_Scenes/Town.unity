@@ -32768,6 +32768,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04366d1246978db4a8aa2d384978c7d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_pAnimator: {fileID: 0}
   ListAttack:
   - Attack
   Speed: Speed
@@ -33065,7 +33066,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &4940997905784084523
 GameObject:
   m_ObjectHideFlags: 0
@@ -33662,6 +33663,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04366d1246978db4a8aa2d384978c7d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_pAnimator: {fileID: 0}
   ListAttack:
   - Attack
   Speed: Speed

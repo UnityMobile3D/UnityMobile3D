@@ -446,6 +446,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 2
   rotateTime: 0.1
+  knockbackDamping: 3
 --- !u!136 &876108263
 CapsuleCollider:
   m_ObjectHideFlags: 0

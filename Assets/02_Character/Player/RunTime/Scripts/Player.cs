@@ -1,16 +1,32 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[Serializable]
+public enum eEquipType
+{
+    None,
+    Hat,
+    Top,
+    Shoes,
+    Weapon,
+}
+[Serializable]
+public struct PlayerEquipPoint
+{
+    public eEquipType eEquipType;
+    public Transform   EquipTransform;
+}
 public class Player : MonoBehaviour
 {
-    // Context
-    //InputManager action;
-    
-    private Rigidbody _rigidbody;
-    private Animator _animator;
-    private Health _health;
+   
+    private Rigidbody   _rigidbody;
+    private Animator    _animator;
+    private Health      _health;
 
     // 이동 관련변수
     [Header("Move")]
@@ -21,8 +37,11 @@ public class Player : MonoBehaviour
     private float       rotateVel;
     private Vector3     desiredPlanarVel;   // 뭐하는 역할?
 
+    [SerializeField] private List<PlayerEquipPoint> m_listEquipPoint = new List<PlayerEquipPoint>((int)eEquipType.Weapon);
+
     // 상태 관리
-    private bool        _attack = false;
+    const int           MAX_ATTACK = 2;
+    private int         _attack = 0;
     private bool        _hit = false;
     private bool        _run = false;
 
@@ -69,10 +88,22 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_attack == true || _hit == true)
+        if (_attack >= 1 || _hit == true)
             return;
 
         MOVE();
+    }
+
+
+    public Transform GetEquipPoint(eEquipType _eType)
+    {
+        for (int i = 0; i < m_listEquipPoint.Count; ++i)
+        {
+            if (m_listEquipPoint[i].eEquipType == _eType)
+                return m_listEquipPoint[i].EquipTransform;
+        }
+
+        return null;
     }
 
     private void MOVE()
@@ -101,26 +132,30 @@ public class Player : MonoBehaviour
         _animator.SetBool("isWalk", desiredPlanarVel != Vector3.zero);
     }
 
-    public void EndAttack() 
-    { 
-        _attack = false;
-        _animator.SetBool("isAttack", false); 
+    public void ENDATTACK(int _iAttackCombo) 
+    {
+        if(_iAttackCombo < MAX_ATTACK)
+            _attack -= _iAttackCombo;
+        else if(_iAttackCombo>= MAX_ATTACK)
+            _attack = 0;
+
+        if(_attack == 0)
+            _animator.SetBool("isAttack", false);
     }
 
-    public void ATTACK()
+   public void ATTACK()
     {
-        _attack = true;
+        ++_attack;
         _animator.SetBool("isAttack", true);
     }
-    public void ENDATTCK()
-    {
-        _attack = false;
-        _animator.SetBool("isAttack", false);
-    }
-    public void HIT()
+   
+    public void HIT(bool _bDown = false)
     {
         _hit = true;
-        _animator.SetTrigger("hit");
+        if(_bDown == true)
+            _animator.SetTrigger("down");
+        else
+            _animator.SetTrigger("hit");
     }
     public void ENDHIT()
     {
@@ -141,6 +176,7 @@ public class Player : MonoBehaviour
      
     }
 
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "MonsterAttack")

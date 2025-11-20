@@ -6,6 +6,11 @@ public class Health : MonoBehaviour, IHealth
 {
     [SerializeField] private int m_iHP = 100;
     [SerializeField] private int m_iMaxHP = 100;
+    [SerializeField] private int m_iDefense = 1;
+    [SerializeField] private int m_iSpeed = 1;
+    [SerializeField] private int m_iAttackPower = 10;
+    [SerializeField] private int m_iAttackSpeed = 1;
+
     public int CurrentHP { get { return m_iHP; } }
     public int MaxHP { get { return m_iMaxHP; } }
 
@@ -14,7 +19,7 @@ public class Health : MonoBehaviour, IHealth
 
     public void TakeDamage(int _iDamage)
     {
-        m_iHP -= _iDamage;
+        m_iHP -= (_iDamage - m_iDefense);
         if (m_iHP <= 0)
             m_iHP = 0;
 
@@ -32,6 +37,11 @@ public class Health : MonoBehaviour, IHealth
     public bool IsDead()
     {
         return m_iHP <= 0;
+    }
+
+    public void AddAttackPower(int _iAttackIncrease)
+    {
+        m_iAttackPower += _iAttackIncrease;
     }
 }
 

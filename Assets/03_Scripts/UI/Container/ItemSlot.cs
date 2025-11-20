@@ -55,13 +55,11 @@ public class ItemSlot : Slot
 
         //데이터 사용 후 인덱스 업데이트
         if (m_pOwner?.Consume(m_iSlotIdx, iConsumeCount) == false)
-        {
             Bind(null);
-        }
 
         update_count();
 
-        ItemEffectRunner.UsingItem(m_pSOItem, null, null, m_listEffect);
+        //ItemEffectRunner.UsingItem(m_pSOItem.ItemData, null, null, m_listEffect);
     }
     private void selete_item_slot()
     {

@@ -2,16 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "HealEffect", menuName = "Effects/Heal")]
+[CreateAssetMenu(menuName = "SO/Item/Effect/Heal")]
 public class SOHealEffect : SOItemEffect
 {
-    public override void Apply(ref EffectContext _tEffectCnt)
+    public override void Apply(EffectContext _tEffectCnt)
     {
         GameObject pTarget = _tEffectCnt.pTarget;
         if(pTarget != null)
         {
-            //해당 오브젝트에 IHeal 인터페이스 접근
-
+            if(pTarget.TryGetComponent<Health>(out var pHealth) == true)
+            {
+                pHealth.Heal(_tEffectCnt.Value.Int);
+            }
         }
     }
 }

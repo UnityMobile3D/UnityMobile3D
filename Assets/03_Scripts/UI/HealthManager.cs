@@ -16,7 +16,7 @@ public class HealthManager : MonoBehaviour
         if (m_pPlayerHealth.CurrentHP == 0)
             fHPRatio = 0.0f;
 
-        fHPRatio = m_pPlayerHealth.CurrentHP / m_pPlayerHealth.MaxHP;
+        fHPRatio = (float)m_pPlayerHealth.CurrentHP / m_pPlayerHealth.MaxHP;
 
         if(fHPRatio == 0.0f)
             m_pHealthImage.fillAmount = 0;

@@ -18,5 +18,5 @@ MonoBehaviour:
   type: 24
   sortKey: 0
   cooldown: 0
-  level: 5
   equiptype: 4
+  m_pSOItem: {fileID: 11400000, guid: 1035a33cdbec48245a1266b200efc5df, type: 2}

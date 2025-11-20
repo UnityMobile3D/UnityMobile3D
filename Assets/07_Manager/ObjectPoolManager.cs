@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using UnityEditor.AddressableAssets.Settings;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -26,9 +27,11 @@ public class ObjectPoolManager : MonoBehaviour
 
     private Dictionary<string, PoolBucket> m_hashPoolBucket = new Dictionary<string, PoolBucket>();
     [SerializeField] private List<SOPoolEntry> m_listFixed = new List<SOPoolEntry>();
+    [SerializeField] private List<SOPoolEntry> m_listFixedItem = new List<SOPoolEntry>();
     private readonly SemaphoreSlim m_pSemaphore = new SemaphoreSlim(4, 4); // 동시 Instantiate 
     public static ObjectPoolManager m_Instance { get; private set; }
 
+ 
     private async void Awake()
     {
         m_Instance = this;
@@ -38,7 +41,11 @@ public class ObjectPoolManager : MonoBehaviour
         for(int i = 0; i<m_listFixed.Count; i++)
             listTask.Add(LoadObject(m_listFixed[i]));
 
-        await Task.WhenAll(listTask);
+        for (int i = 0; i < m_listFixedItem.Count; i++)
+            listTask.Add(LoadObject(m_listFixedItem[i]));
+
+
+        await Task.WhenAll(listTask); // ?이거 하는 이유가 필요한가?
     }
 
     public async Task<PoolBucket> LoadObject(SOPoolEntry _pPoolEntry)
@@ -77,6 +84,7 @@ public class ObjectPoolManager : MonoBehaviour
         return pBucket;
     }
 
+ 
     public void DeleteObject(string _strKey)
     {
         if (m_hashPoolBucket.ContainsKey(_strKey) == false)
@@ -90,13 +98,23 @@ public class ObjectPoolManager : MonoBehaviour
         m_hashPoolBucket.Remove(_strKey);
     }
 
+  
 
-    public GameObject GetObject(string _strKey , in Vector3 vPosition, in Vector3 vRot)
+    public GameObject GetObject(string _strKey , in Vector3 _vPosition, in Vector3 _vRot)
     {
         if (m_hashPoolBucket.TryGetValue(_strKey, out var pBucket) == false)
             return null;
 
         GameObject pObject = null;
+
+        Vector3 vPosition = _vPosition;
+        Vector3 vRot = _vRot;
+
+        //기본값이라면 원래 프리팹 위치와 회전으로
+        if (_vPosition == Vector3.zero)
+            vPosition = pBucket.prefab.transform.position;
+        if(_vRot == Vector3.zero)
+            vRot = pBucket.prefab.transform.rotation.eulerAngles;
 
         if (pBucket.pool.Count <= 0)
             pObject = GameObject.Instantiate(pBucket.prefab, vPosition, Quaternion.Euler(vRot));

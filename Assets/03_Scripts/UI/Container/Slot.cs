@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 using static System.Net.Mime.MediaTypeNames;
-using eSkillType = SOSkillUI.eSkillType;
+using eSkillType = SkillRunner.eSkillType;
 using eUIType = SOEntryUI.eUIType;
 using Image = UnityEngine.UI.Image;
 
@@ -54,7 +54,6 @@ public class Slot : ButtonUI
             m_pCheckUIImage = m_pCheckUI.GetComponent<Image>();
             m_pCheckUIImage.enabled = false;
         }
-
     }
 
     private void OnDestroy()
@@ -101,13 +100,12 @@ public class Slot : ButtonUI
         return m_iUIType;
     }
 
-
-    public override void OnPointerClick(PointerEventData e)
+    public override void OnPointerDown(PointerEventData e)
     {
         if (m_pSOTarget == null)
             return;
 
-        base.OnPointerClick(e);
+        base.OnPointerDown(e);
     }
 
     public virtual void Using()

@@ -2,25 +2,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using eSkillType = SkillRunner.eSkillType;
+using Game.Skill;
 [CreateAssetMenu(menuName = "UIData/Catalog/Skill UI", fileName = "SOEntryUI")]
 public class SOSkillUI : SOEntryUI
 {
-    public enum eSkillType
-    {
-        None,
-        Default,
-        SubSkill,
-        MainSkill,
-    }
-
+   
     [SerializeField] private uint level;
     [SerializeField] private eSkillType skilltype;
-    //[SerializeField] private uint cost;
+    [SerializeField] private SOSKill skill;
 
     public uint Level => level;
     public eSkillType SkillType => skilltype;
 
+    public SOSKill Skill => skill;
     
     public override uint GetUIHashCode()
     {

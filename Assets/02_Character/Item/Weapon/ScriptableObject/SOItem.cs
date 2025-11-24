@@ -10,6 +10,8 @@ public class SOItem : ScriptableObject
 
     public uint Level;
 
+    public float cooldown = 1.0f;
+
     public SOItemEffect[] EquippedEffects;
     public SOItemEffect[] ReleaseEffects;
     public SOItemEffect[] UsingEffects;

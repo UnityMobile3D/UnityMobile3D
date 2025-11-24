@@ -33,7 +33,7 @@ public class ItemSlot : Slot
         if (_pSOTarget != null)
         {
             m_pSOItem = _pSOTarget as SOItemUI;
-            SetCoolTime(m_pSOItem.Cooldown);
+            SetCoolTime(m_pSOItem.ItemData.cooldown);
             update_count();
         } 
         else

@@ -20,7 +20,6 @@ public class SOEntryUI : ScriptableObject
     [SerializeField] protected Sprite icon;               // 아이콘
     [SerializeField] private eUIType type;
     [SerializeField] private int sortKey = 0;           // 정렬 우선순위(작을수록 앞)
-    [SerializeField] private float cooldown;            // 쿨타임
 
     protected uint hashCode = (uint)eUIType.None;
 
@@ -30,7 +29,6 @@ public class SOEntryUI : ScriptableObject
     public eUIType Type => type;
     public int SortKey => sortKey;
 
-    public float Cooldown => cooldown;
 
     public virtual uint GetUIHashCode()
     {

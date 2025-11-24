@@ -109,17 +109,14 @@ public class InputManager : MonoBehaviour
             m_pActionMapper.MapPointer(m_listTouchEvent, m_pPointerState);
         }
 
-        //UGUI와 연동된 액션
         m_pActionState.Clear();
-
+        //UGUI와 연동된 액션
         m_pActionState.CopyFrom(m_pUGUIActionState);
 
         //UGUI나 다른 다바이스 기기와 연동된 캐릭터 인풋 관련된 액션들
         m_pActionMapper.MapDevice(m_pActionState, m_listActions);
 
         m_pUGUIActionState.Clear();
-
-
 
     }
 

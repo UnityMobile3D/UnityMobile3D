@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static SOSkillUI;
 
+using eSkillType = SkillRunner.eSkillType;
 public class SkillSlot : Slot
 {
     [SerializeField] private SOSkillUI m_pSOSkill = null;
@@ -20,6 +21,8 @@ public class SkillSlot : Slot
 
         m_iUIType |= (uint)m_eSkillType << 8;
 
+
+
     }
 
     private void Start()
@@ -36,7 +39,7 @@ public class SkillSlot : Slot
 
         m_pSOSkill = _pSOTarget as SOSkillUI;
 
-        SetCoolTime(m_pSOSkill.Cooldown);
+        SetCoolTime(m_pSOSkill.Skill.Option.cooldown);
     }
 
     public override void Using()

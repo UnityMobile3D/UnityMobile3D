@@ -21,12 +21,20 @@ public struct PlayerEquipPoint
     public eEquipType eEquipType;
     public Transform   EquipTransform;
 }
+
+
 public class Player : MonoBehaviour
 {
    
     private Rigidbody   _rigidbody;
     private Animator    _animator;
     private Health      _health;
+
+
+    private Skill       _skill; //이거 스킬 러너로 교체하기
+    public Rigidbody RigidBody => _rigidbody;
+    public Animator  Animator  => _animator;
+    public Skill     Skill => _skill;
 
     // 이동 관련변수
     [Header("Move")]
@@ -35,7 +43,7 @@ public class Player : MonoBehaviour
 
     private Vector3     lastDir = Vector3.forward;
     private float       rotateVel;
-    private Vector3     desiredPlanarVel;   // 뭐하는 역할?
+    private Vector3     desiredPlanarVel;  
 
     [SerializeField] private List<PlayerEquipPoint> m_listEquipPoint = new List<PlayerEquipPoint>((int)eEquipType.Weapon);
 
@@ -54,6 +62,7 @@ public class Player : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
         _health = GetComponent<Health>();
+        _skill = GetComponent<Skill>();
         // Rigidbody 세팅
         _rigidbody.useGravity = true;
         _rigidbody.drag = 0f;
@@ -88,10 +97,19 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_attack >= 1 || _hit == true)
-            return;
+        //우선권은 스킬한테
+        if(_skill.CurrentSkill != null)
+        {
+            _skill.UpdateSkill();
+        }
 
-        MOVE();
+        else
+        {
+            if (_attack >= 1 || _hit == true)
+                return;
+            else
+                MOVE();
+        }  
     }
 
 
@@ -156,6 +174,10 @@ public class Player : MonoBehaviour
             _animator.SetTrigger("down");
         else
             _animator.SetTrigger("hit");
+
+        if(_skill.CurrentSkill != null)
+            _skill.EndSkill();
+        
     }
     public void ENDHIT()
     {

@@ -8,6 +8,7 @@ TagManager:
   - Ground
   - MonsterAttack
   - Obstacle
+  - PlayerAttack
   layers:
   - Default
   - TransparentFX

@@ -349,6 +349,14 @@ public class Container : ButtonUI
     {
         m_bOnSelect = !m_bOnSelect;
     }
+    public void OnSelect()
+    {
+        m_bOnSelect =true;
+    }
+    public void OffSelect()
+    {
+        m_bOnSelect =false;
+    }
 
     /*/////////////////////////////////////
                   Input 

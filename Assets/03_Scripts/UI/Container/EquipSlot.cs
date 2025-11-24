@@ -55,6 +55,8 @@ public class EquipSlot : Slot
         {
             if (m_pEquipObject.TryGetComponent<Item>(out var pPreItem) == true)
                 ItemEffectRunner.ApplyEffectRelease(m_pPreEquip.m_pSOItem, pPreItem.EffectContext);
+
+            ObjectPoolManager.m_Instance.PushObject(m_pPreEquip.m_pSOItem.ItemObject.AssetGUID, m_pEquipObject);
         }
 
         GameObject pEquip =

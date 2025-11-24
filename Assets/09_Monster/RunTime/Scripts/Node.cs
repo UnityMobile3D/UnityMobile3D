@@ -21,7 +21,6 @@ public abstract class CompositeRuntime : INode
         m_pListNode = _listChild;
     }
     public abstract STATE Evaluate(Blackboard _pBB, float _fDT);
-
 }
 
 //각 Action에 필드를 중복 보관하지 않아도 되고, 다른 노드 간 정보 전달이 쉬워진다

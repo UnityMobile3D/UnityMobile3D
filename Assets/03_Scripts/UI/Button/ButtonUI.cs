@@ -69,6 +69,9 @@ public class ButtonUI : BaseUI,
     {
         onDown?.Invoke();
         OnDownEvt?.Invoke();
+
+        if (m_pActionBind != null)
+            m_pActionBind.Action();
     }
 
     virtual public void OnPointerUp(PointerEventData e)
@@ -98,9 +101,5 @@ public class ButtonUI : BaseUI,
     {
         onClick?.Invoke();
         OnClickEvt?.Invoke();
-
-        if(m_pActionBind != null)
-            m_pActionBind.Action();
-        
     }
 }

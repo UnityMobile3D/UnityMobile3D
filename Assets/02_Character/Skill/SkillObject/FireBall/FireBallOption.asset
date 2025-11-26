@@ -9,14 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: FirBallOption
-  m_EditorClassIdentifier: Assembly-CSharp:Game.Skill:SkillOptionProfile
+  m_Script: {fileID: 11500000, guid: 90a846f40ea7dc941940921a0e557a65, type: 3}
+  m_Name: FireBallOption
+  m_EditorClassIdentifier: 
   cooldown: 5
-  manacost: 10
-  power: 10
+  manacost: 20
+  power: 7
   chargetime: 1.5
   lifeTime: 5
-  moveSpeed: 4
+  moveSpeed: 5
   castType: 1
   targetingProfile: {fileID: 11400000, guid: a8b67be994cd13448adb8d47ba417609, type: 2}

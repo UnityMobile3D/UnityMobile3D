@@ -166,10 +166,19 @@ public class ActionMapper
             {
                 if (set_value(_pState, pActionRef,j) == true)
                 {
-                    if(pActionRef.InputFunction != null)
-                        pActionRef.InputFunction.Invoke();
-
+                    //이전엔 눌리지 않았는데 이번엔 눌렸다면
+                    if(pActionRef.IsPressed == false && pActionRef.InputFunction != null)
+                    {
+                        pActionRef.IsPressed = true;
+                        pActionRef.InputFunction?.Invoke();
+                    }
                     break;
+                }
+                //저번 프레임에서 눌렸는데 이번테 안 눌렸다면
+                else if (pActionRef.IsPressed == true) 
+                {
+                    pActionRef.IsPressed = false;
+                    pActionRef.ReleaseFunction?.Invoke();
                 }
             }
         }

@@ -19,4 +19,4 @@ MonoBehaviour:
   sortKey: 52
   level: 0
   skilltype: 2
-  skill: {fileID: 0}
+  skill: {fileID: 11400000, guid: 93ace933078a7f349918fbd0e863e781, type: 2}

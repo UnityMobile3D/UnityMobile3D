@@ -41,7 +41,9 @@ public class InputManager : MonoBehaviour
     public class ActionBinding
     {
         public eActionID ID = eActionID.None;
+        public bool IsPressed = false;
         public PED InputFunction = null;
+        public PED ReleaseFunction = null;
         public List<InputActionReference> listAction = new(); // <- 인스펙터에서 선택 가능
     }
 
@@ -116,8 +118,7 @@ public class InputManager : MonoBehaviour
         //UGUI나 다른 다바이스 기기와 연동된 캐릭터 인풋 관련된 액션들
         m_pActionMapper.MapDevice(m_pActionState, m_listActions);
 
-        m_pUGUIActionState.Clear();
-
+        //m_pUGUIActionState.Clear();
     }
 
     private void LateUpdate()

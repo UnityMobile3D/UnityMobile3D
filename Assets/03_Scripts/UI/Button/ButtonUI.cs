@@ -78,6 +78,9 @@ public class ButtonUI : BaseUI,
     {
         onUp?.Invoke();
         OnUpEvt?.Invoke();
+
+        if (m_pActionBind != null)
+            m_pActionBind.Release();
     }
 
     virtual public void OnBeginDrag(PointerEventData e)

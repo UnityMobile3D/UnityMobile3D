@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using eSkillType = SkillRunner.eSkillType;
-using Game.Skill;
 [CreateAssetMenu(menuName = "UIData/Catalog/Skill UI", fileName = "SOEntryUI")]
 public class SOSkillUI : SOEntryUI
 {

@@ -45,12 +45,6 @@ public class ItemSlot : Slot
 
     public override void Using()
     {
-        if (m_bCanUse == false)
-            return;
-
-        m_bCanUse = false;
-        //InputManager.m_Instance.BindUGUIButtonBoolean(ActionID, true);
-
         int iConsumeCount = 1;
 
         //데이터 사용 후 인덱스 업데이트

@@ -11,5 +11,12 @@ public class BindInputAction : MonoBehaviour
     public void Action()
     {
         InputManager.m_Instance.BindUGUIButtonBoolean(m_eActionID, true);
+        Debug.Log("Action");
+    }
+
+    public void Release()
+    {
+        InputManager.m_Instance.BindUGUIButtonBoolean(m_eActionID, false);
+        Debug.Log("Release Action");
     }
 }

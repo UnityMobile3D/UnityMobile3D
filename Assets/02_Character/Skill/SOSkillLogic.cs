@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using SkillContext = Skill.SkillContext;
+using SkillContext = SkillRunner.SkillContext;
 
 //[CreateAssetMenu(menuName = "SO/Profiles/Logic", fileName = "LogicProfile")]
 public abstract class SOSkillLogic : ScriptableObject

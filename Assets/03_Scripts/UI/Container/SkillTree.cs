@@ -46,7 +46,7 @@ public class SkillTree : BaseUI, IContainer
 
     private void OnDisable()
     {
-        //m_pPlayerInterface.
+        m_pSlotContainer.UnActiveSlot();
     }
     private void close_tap()
     {

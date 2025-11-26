@@ -1,4 +1,3 @@
-using Game.Skill;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +10,9 @@ public class SkillAttackObject : MonoBehaviour, IPoolAble
     private Collider m_pCollider = null;
 
     private SOSKill m_pSkill = null;
+
+    private List<IChargeEvent> m_listChargeEvent = new List<IChargeEvent>();
+    public List<IChargeEvent> ChargeEvents => m_listChargeEvent;
 
     private float m_fMoveSpeed = 0.0f;
     private Vector3 m_vDir = Vector3.zero;
@@ -32,8 +34,12 @@ public class SkillAttackObject : MonoBehaviour, IPoolAble
 
     public void Awake()
     {
-        m_pRigidbody = GetComponent<Rigidbody>();
-        m_pCollider = GetComponent<Collider>();
+        m_pRigidbody = GetComponentInChildren<Rigidbody>(true);
+        m_pCollider = GetComponentInChildren<Collider>(true);
+
+        var listEvent = GetComponentsInChildren<IChargeEvent>(true);
+        for(int i = 0; i<listEvent.Length; ++i)
+            m_listChargeEvent.Add(listEvent[i]);
     }
 
     public void OnSpawn()
@@ -44,12 +50,10 @@ public class SkillAttackObject : MonoBehaviour, IPoolAble
     {
         m_iCreateCount = 0;
     }
-
-    public void OnEnable()
+    public void OnDisable()
     {
         m_fCurLifeTime = 0.0f;
-        m_vDir = Vector3.zero;
-        m_pCollider.enabled = false;
+        m_iCurAttackCount = 0;
     }
 
     public void Update()
@@ -99,8 +103,7 @@ public class SkillAttackObject : MonoBehaviour, IPoolAble
         m_fMoveSpeed = _pSkillInfo.Option.moveSpeed;
         m_fDamage = _pSkillInfo.Damage.baseDamage;
         m_iAttackCount = _pSkillInfo.Option.targetingProfile.MaxTargets;   
-        m_vDir = transform.forward;
-
+        
         m_strSpawnKey = _strKey;
     }
 

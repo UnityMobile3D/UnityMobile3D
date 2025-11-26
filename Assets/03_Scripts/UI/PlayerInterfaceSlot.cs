@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public class PlayerInterfaceSlot : BaseUI, IContainer
 {
     [SerializeField] private SlotContainer m_pSlotContainer = null;
@@ -11,10 +9,12 @@ public class PlayerInterfaceSlot : BaseUI, IContainer
 
     [SerializeField] private eContainerType m_eContainerType = eContainerType.Interface; // ← 인스펙터에 드롭다운으로 보임
     public eContainerType ContainerType { get => m_eContainerType; }
-    
+
+    public static int InterfaceSlotCount;
+
     public void Init()
     {
-
+        InterfaceSlotCount = m_pSlotContainer.SlotList.Count;
     }
     //IContainer 구현
 

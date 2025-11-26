@@ -1,9 +1,8 @@
-using Game.Skill;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using SkillContext = Skill.SkillContext;
+using SkillContext = SkillRunner.SkillContext;
 
 
 [CreateAssetMenu(menuName = "SO/Profiles/Logic/PlayerSpawn", fileName = "SOPlayerSpawn")]
@@ -12,22 +11,31 @@ public class SOPlayerSpawn : SOSkillLogic
     public AssetReference AttackObjectReference = null;
     public override bool UpdateSkill(SkillContext _pSkillContext)
     {
-        
-        Skill pPlayerSkill = _pSkillContext.skill;
-        TargetingProfile pTargetPro = pPlayerSkill.CurrentSkill.Option.targetingProfile;
+        SkillRunner pPlayerSkill = _pSkillContext.skill;
+        TargetingProfile pTargetPro = pPlayerSkill.RunSkill.Option.targetingProfile;
 
-        Vector3 vSpawnPos = pPlayerSkill.transform.position;
+        Vector3 vSpawnPos = pPlayerSkill.gameObject.transform.position;
+        Vector3 vDir = pPlayerSkill.gameObject.transform.forward;
         if (pTargetPro.playerFacing == true)
-            vSpawnPos += vSpawnPos + (pPlayerSkill.transform.forward * pTargetPro.spawnDistance);
+            vSpawnPos += (vDir * pTargetPro.spawnDistance);
 
         vSpawnPos+= pTargetPro.offset;
 
         GameObject pAttackObject = 
             ObjectPoolManager.m_Instance.GetObject(AttackObjectReference.AssetGUID, vSpawnPos, Vector3.zero);
 
-        if (pAttackObject.TryGetComponent<SkillAttackObject>(out SkillAttackObject pAttackComp) == false)
+        if (pAttackObject.TryGetComponent<SkillAttackObject>(out SkillAttackObject pAttackComp) == true)
         {
-            pAttackComp.SetSpawnKey(AttackObjectReference.AssetGUID);
+            //스킬 초기화
+            pAttackComp.SetInfo(pPlayerSkill.RunSkill, AttackObjectReference.AssetGUID);
+            pAttackComp.SetDir(vDir);
+
+            _pSkillContext.runSkillObject = pAttackObject;
+            _pSkillContext.chargeEvents = pAttackComp.ChargeEvents;
+
+            for(int i = 0; i<_pSkillContext.chargeEvents.Count; ++i)
+                _pSkillContext.chargeEvents[i].StartEvent();
+            
             return true;
         }
         else

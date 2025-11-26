@@ -31,10 +31,10 @@ public class Player : MonoBehaviour
     private Health      _health;
 
 
-    private Skill       _skill; //이거 스킬 러너로 교체하기
+    private SkillRunner       _skillRunner; //이거 스킬 러너로 교체하기
     public Rigidbody RigidBody => _rigidbody;
     public Animator  Animator  => _animator;
-    public Skill     Skill => _skill;
+    public SkillRunner SkillRunner => _skillRunner;
 
     // 이동 관련변수
     [Header("Move")]
@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
         _health = GetComponent<Health>();
-        _skill = GetComponent<Skill>();
+        _skillRunner = GetComponent<SkillRunner>();
         // Rigidbody 세팅
         _rigidbody.useGravity = true;
         _rigidbody.drag = 0f;
@@ -74,18 +74,17 @@ public class Player : MonoBehaviour
         // Animator 세팅
         _animator = GetComponentInChildren<Animator>();
 
-        // Input
-        //action = new InputManager();
+      
     }
 
     private void OnEnable()
     {
-        //moveAction.Enable();
+      
     }
 
     private void OnDisable()
     {
-        //moveAction.Disable();
+        
     }
 
     // Start is called before the first frame update
@@ -98,9 +97,9 @@ public class Player : MonoBehaviour
     void Update()
     {
         //우선권은 스킬한테
-        if(_skill.CurrentSkill != null)
+        if(_skillRunner.RunSkill != null)
         {
-            _skill.UpdateSkill();
+            _skillRunner.UpdateSkill();
         }
 
         else
@@ -175,8 +174,8 @@ public class Player : MonoBehaviour
         else
             _animator.SetTrigger("hit");
 
-        if(_skill.CurrentSkill != null)
-            _skill.EndSkill();
+        if(_skillRunner.RunSkill != null)
+            _skillRunner.OffSkill();
         
     }
     public void ENDHIT()

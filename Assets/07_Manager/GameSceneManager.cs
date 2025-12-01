@@ -23,7 +23,7 @@ public class GameSceneManager : MonoBehaviour
 
     private float m_fLoadRatio = 0.0f;
 
-    private async void Awake()
+    private void Awake()
     {   
         if (m_Instance != null)
             Destroy(gameObject);
@@ -31,7 +31,7 @@ public class GameSceneManager : MonoBehaviour
         m_Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        await Addressables.InitializeAsync().Task;
+        Addressables.InitializeAsync();
     }
 
 

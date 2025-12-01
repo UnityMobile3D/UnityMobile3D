@@ -34,7 +34,7 @@ public class SOMoveAround : SONode
             {
                 m_fChangeDirTime = 0f;
                 m_vRandomDir = RandomUnit2D();
-                _pBB.AnimBridge.SetMove(true);
+                _pBB.AnimBridge.SetRun(true);
             }
             else if (m_vRandomDir != Vector2.zero)
                 return STATE.RUN;
@@ -51,7 +51,7 @@ public class SOMoveAround : SONode
             else
             {
                 m_vRandomDir = Vector2.zero;
-                _pBB.AnimBridge.SetMove(false);
+                _pBB.AnimBridge.SetRun(false);
                 _pBB.Agent.isStopped = true;
                 return STATE.FAILED;
             }

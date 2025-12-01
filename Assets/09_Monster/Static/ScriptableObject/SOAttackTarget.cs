@@ -29,6 +29,7 @@ public class SOAttackTarget : SONode
             {
                 _pBB.Agent.isStopped = false;
                 _pBB.AnimBridge.SetAttack(_pBB.CooldownModule.TargetIdx, false);
+                _pBB.SpawnObjects.Clear();
 
                 return STATE.FAILED;
             }

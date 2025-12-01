@@ -36,7 +36,6 @@ public class SkillTree : BaseUI, IContainer
 
         //컨테이너에서 스킬 눌렸다면 가져올 수 있게
         m_pSkillContainer.OnSelectEvt += select_skill;
-
     }
 
     private void Update()
@@ -64,6 +63,7 @@ public class SkillTree : BaseUI, IContainer
         DataService.m_Instance.StartPickData(this, pTargetView.SOEntryUI, pTargetView.SlotIdx, 1);
 
         //인터페이스 매니저를 만들어서 해당 클래스에게 요청하는 식으로 변경
+        m_pSlotContainer.UnActiveSlot();
         m_pSlotContainer.ActiveSlot(pTargetView.SOEntryUI.GetUIHashCode());
     }
 

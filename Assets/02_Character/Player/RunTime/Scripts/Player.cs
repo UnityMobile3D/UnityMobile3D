@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
+using TMPro;
 using Unity.VisualScripting;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -23,33 +25,31 @@ public struct PlayerEquipPoint
 }
 
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour , IHealth
 {
-   
+
+    [Header("Component")]
     private Rigidbody   _rigidbody;
     private Animator    _animator;
-    private Health      _health;
-
-
+   
     private SkillRunner       _skillRunner; //이거 스킬 러너로 교체하기
     public Rigidbody RigidBody => _rigidbody;
     public Animator  Animator  => _animator;
     public SkillRunner SkillRunner => _skillRunner;
 
+    [SerializeField] private ObjectInfo _playerInfo;
+
     // 이동 관련변수
     [Header("Move")]
-    [SerializeField] private float Speed        = 2f;
+    //[SerializeField] private float Speed        = 2f;
     [SerializeField] private float rotateTime   = 0.1f;
 
-    private Vector3     lastDir = Vector3.forward;
     private float       rotateVel;
-    private Vector3     desiredPlanarVel;  
+    Vector3 moveDir;
 
     [SerializeField] private List<PlayerEquipPoint> m_listEquipPoint = new List<PlayerEquipPoint>((int)eEquipType.Weapon);
 
     // 상태 관리
-    const int           MAX_ATTACK = 2;
-    private int         _attack = 0;
     private bool        _hit = false;
     private bool        _run = false;
 
@@ -61,8 +61,9 @@ public class Player : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
-        _health = GetComponent<Health>();
+        _playerInfo = GetComponent<ObjectInfo>();
         _skillRunner = GetComponent<SkillRunner>();
+
         // Rigidbody 세팅
         _rigidbody.useGravity = true;
         _rigidbody.drag = 0f;
@@ -73,9 +74,9 @@ public class Player : MonoBehaviour
 
         // Animator 세팅
         _animator = GetComponentInChildren<Animator>();
-
-      
     }
+
+
 
     private void OnEnable()
     {
@@ -96,19 +97,27 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_hit==true)
+            return;
+
         //우선권은 스킬한테
         if(_skillRunner.RunSkill != null)
         {
             _skillRunner.UpdateSkill();
         }
 
-        else
-        {
-            if (_attack >= 1 || _hit == true)
-                return;
-            else
-                MOVE();
-        }  
+
+
+        Vector2 input = InputManager.m_Instance.ActionState.vDirection;
+        if (input == Vector2.zero)
+            return;
+
+        moveDir = new Vector3(input.x, 0f, input.y);
+
+        float targetY = Mathf.Atan2(moveDir.x, moveDir.z) * Mathf.Rad2Deg;
+        float currentY = transform.eulerAngles.y;
+        float smoothY = Mathf.SmoothDampAngle(currentY, targetY, ref rotateVel, rotateTime);
+        transform.rotation = Quaternion.Euler(0f, smoothY, 0f);
     }
 
 
@@ -125,47 +134,24 @@ public class Player : MonoBehaviour
 
     private void MOVE()
     {
-        // 1) 입력
-        Vector2 input = InputManager.m_Instance.ActionState.vDirection;
+        if (_hit == true || _skillRunner.RunSkill != null)
+            return;
 
-        //Vector2 input = moveAction.ReadValue<Vector2>();
+        if (moveDir == Vector3.zero)
+        {
+            // 걷기 애니메이션 끄고
+            _animator.SetBool("isWalk", false);
+            return;
+        }
 
-        // 2) 평면 방향
-        Vector3 moveDir = new Vector3(input.x, 0f, input.y);
-        if (moveDir.sqrMagnitude > 0.0001f)
-            lastDir = moveDir.normalized;
-    
-        // 3) 회전
-        float targetY = Mathf.Atan2(lastDir.x, lastDir.z) * Mathf.Rad2Deg;
-        float currentY = transform.eulerAngles.y;
-        float smoothY = Mathf.SmoothDampAngle(currentY, targetY, ref rotateVel, rotateTime);
-        transform.rotation = Quaternion.Euler(0f, smoothY, 0f);
+        Vector3 vStep = moveDir * _playerInfo.Speed * Time.fixedDeltaTime;
+        Vector3 vPos = _rigidbody.position;
 
-        // 4) 목표 평면 속도(중력 분리)
-        Vector3 planar = (moveDir.sqrMagnitude > 1f ? moveDir.normalized : moveDir) * Speed;
-        desiredPlanarVel = planar;
-
-        // 5) 애니메이션 파라미터 설정
-        _animator.SetBool("isWalk", desiredPlanarVel != Vector3.zero);
+        _rigidbody.MovePosition(vPos + vStep);
+        _animator.SetBool("isWalk", true);
     }
 
-    public void ENDATTACK(int _iAttackCombo) 
-    {
-        if(_iAttackCombo < MAX_ATTACK)
-            _attack -= _iAttackCombo;
-        else if(_iAttackCombo>= MAX_ATTACK)
-            _attack = 0;
-
-        if(_attack == 0)
-            _animator.SetBool("isAttack", false);
-    }
-
-   public void ATTACK()
-    {
-        ++_attack;
-        _animator.SetBool("isAttack", true);
-    }
-   
+  
     public void HIT(bool _bDown = false)
     {
         _hit = true;
@@ -175,7 +161,7 @@ public class Player : MonoBehaviour
             _animator.SetTrigger("hit");
 
         if(_skillRunner.RunSkill != null)
-            _skillRunner.OffSkill();
+            _skillRunner.CancelSkill();
         
     }
     public void ENDHIT()
@@ -186,36 +172,16 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // 6) 이동 적용: y는 물리 중력 유지, xz만 갱신
-        if(_hit == false)
-        {
-            Vector3 v = _rigidbody.velocity;
-            v.x = desiredPlanarVel.x;
-            v.z = desiredPlanarVel.z;
-            _rigidbody.velocity = v;
-        }
-     
+        //MOVE();
+
     }
 
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "MonsterAttack")
-        {
-            if (_hit == true)
-                return;
-
-            HIT();
-            //플레이어 기준 가장 가까운 점
-            Vector3 hitPoint = other.ClosestPoint(transform.position);
-
-            MonsterAttackObject pAttackObject = other.GetComponent<MonsterAttackObject>();
-            effect(pAttackObject.MonsterSkillInfo, hitPoint);
-
-            _health.TakeDamage((int)pAttackObject.Damage);
-        }
+        
     }
-    private void effect(MonsterSkillInfo _skillInfo, in Vector3 _hitPosition)
+    private void knockback(AttackInfo _attackInfo)
     {
         // 기존 넉백 코루틴 돌고 있으면 정지
         if (_knockbackRoutine != null)
@@ -224,47 +190,65 @@ public class Player : MonoBehaviour
             _knockbackRoutine = null;
         }
 
-        Vector3 playerPos = _rigidbody.position;
-        Vector3 dir = playerPos - _hitPosition;
-        dir.y = 0.0f; 
+        Vector3 vMonsterPos = _rigidbody.position;
+        Vector3 vDir = vMonsterPos - _attackInfo.HitPoint;
+        vDir.y = 0.0f;
 
-        //거의 차이가 없다면 플레이어 반대 방향으로
-        if (dir.sqrMagnitude < 0.0001f)
-            dir = -transform.forward;
-        
-        dir.Normalize();
+        if (vDir.sqrMagnitude < 0.0001f)
+            vDir = -transform.forward;
 
-        float power = _skillInfo.AttackPower;
+        vDir.Normalize();
 
-        // 위로 살짝 튕기게
-        Vector3 force = dir * power;
-     
-        // 순간 넉백을 위해 기존 속도 잠깐 끊기
-        _rigidbody.velocity = Vector3.zero;
-
-        _rigidbody.AddForce(force, ForceMode.Impulse);
-    
-        transform.LookAt(_hitPosition);
+        transform.rotation = Quaternion.LookRotation(-vDir, Vector3.up);
 
         //시간이 지나면서 점점 멈추게 (속도 감쇠)
-        _knockbackRoutine = StartCoroutine(knockbac_coroutine());
+        _knockbackRoutine = StartCoroutine(knockback_coroutine(vDir, (int)_attackInfo.Power));
     }
 
-    private IEnumerator knockbac_coroutine()
+    private IEnumerator knockback_coroutine(Vector3 _vDir, int _iPower)
     {
-        while (_rigidbody.velocity.sqrMagnitude > 0.01f)
+        float fElapsed = 0f;
+
+        while (_hit == true && fElapsed <= 1.0f)
         {
-            // velocity를 0쪽으로 점점 줄임
-            _rigidbody.velocity = Vector3.Lerp(
-                _rigidbody.velocity,
-                Vector3.zero,
-                Time.fixedDeltaTime
-            );
+            float fRevElaps = 1.0f - fElapsed;
+            Vector3 vVelocity = _vDir * _iPower * fRevElaps;
+            Vector3 vNextPos = _rigidbody.position + vVelocity * Time.fixedDeltaTime;
+
+            _rigidbody.MovePosition(vNextPos);
+
+            fElapsed += Time.fixedDeltaTime;
 
             yield return null;
         }
 
-        _rigidbody.velocity = Vector3.zero;
         _knockbackRoutine = null;
+    }
+
+
+
+    //IHealth 구현 (healmanager에 플레이어 넣기)
+    public int CurrentHP => _playerInfo.HP; 
+    public int MaxHP => _playerInfo.MaxHp;
+
+    public void TakeDamage(AttackInfo _pAttackInfo)
+    {
+        if (_hit == true)
+            return;
+
+        HIT();
+
+        knockback(_pAttackInfo);
+
+        _playerInfo.AddHP((int)_pAttackInfo.Damage * -1);
+        HealthManager.m_Instance.PlayerTakeDamage();
+    }
+    public void Heal(int _iAmount)
+    {
+        _playerInfo.AddHP(_iAmount);
+    }
+    public bool IsDead()
+    {
+        return CurrentHP <= 0;
     }
 }

@@ -18,5 +18,6 @@ MonoBehaviour:
   chargetime: 1.5
   lifeTime: 5
   moveSpeed: 5
+  destroyOnCancel: 1
   castType: 1
   targetingProfile: {fileID: 11400000, guid: a8b67be994cd13448adb8d47ba417609, type: 2}

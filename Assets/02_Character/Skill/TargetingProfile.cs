@@ -10,10 +10,10 @@ public class TargetingProfile : ScriptableObject
     public Game.Common.TargetType targetType;   // 대상 유형 (자신/적군/지역/모두)
 
 
-    public bool targetPosition = false;      //타겟 위치로
-    public bool playerFacing = false;        // 플레이어가 바라보는 방향으로 스킬 발동
-    public Vector3 offset = Vector3.zero;       // 생성될 위치 오프셋
-    public float range = 0f;                  // 스킬 사거리
+    public bool targetPosition = false;       //타겟 위치로
+    public bool playerFacing = false;         // 플레이어가 바라보는 방향으로 스킬 발동
+    public Vector3 offset = Vector3.zero;     // 생성될 위치 오프셋
+    public Vector3 offsetRot = Vector3.zero;  // 생성될 회전 오프셋
     public float spawnDistance = 0f;          // 스킬이 생성될 거리
 }
 

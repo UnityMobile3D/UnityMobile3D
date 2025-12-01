@@ -12,18 +12,21 @@ public class SkillRunner : MonoBehaviour
     [Serializable]
     public class SkillContext
     {
-        public SkillRunner skill;                                         //SO를 들고있는 skill Comonent
+        public SkillRunner skill;                                          //SO를 들고있는 skill Comonent
         public Animator animator;                                             
-        public GameObject runSkillObject = null;                          //소환된 오브젝트
+        public SkillAttackObject runSkillObject = null;                    //소환된 오브젝트
 
+        public Vector3 designSpawnPostion = Vector3.zero;                  //스킬 소환 위치
+
+        public bool complete = false;                                      //스킬 완료 여부
         public bool pressed = false;                                       //스킬에 해당하는 버튼 누름 여부
-        public float chargeTime;                                           //누적 시간
+        public float chargeTime =0.0f;                                     //누적 시간
 
         public List<IChargeEvent> chargeEvents = new List<IChargeEvent>(); //차지 이벤트 (스킬 오브젝트의 리스트 참조기 때문에 Clear X
 
         public bool hitEvent = false;                                      //히트 이벤트 발생 여부
         public int hitIndex = -1;                                          //히트 이벤트 프레임
-        public int animHashName;                                         //현재 애니메이션 해시 이름  
+        public int animHashName;                                           //현재 애니메이션 해시 이름  
     }
     [Serializable]
     public enum eSkillType
@@ -32,6 +35,13 @@ public class SkillRunner : MonoBehaviour
         Default,
         SubSkill,
         MainSkill,
+    }
+
+    public enum eSkillState
+    {
+        Success,
+        Failed,
+        Waiting
     }
 
     private CoolDownView[] _cooldowns = null;
@@ -55,14 +65,12 @@ public class SkillRunner : MonoBehaviour
         _player = GetComponent<Player>();
         _skillContext.animator = _player.Animator;
         _skillContext.skill = this;
-        
-    }
-    public void Start()
-    {
-        _skills = new SOSKill[PlayerInterfaceSlot.InterfaceSlotCount];
-        _cooldowns = new CoolDownView[PlayerInterfaceSlot.InterfaceSlotCount];
+
+        _skills = new SOSKill[PlayerInterfaceSlot.SLOT_SIZE];
+        _cooldowns = new CoolDownView[PlayerInterfaceSlot.SLOT_SIZE];
     }
 
+  
     public void Update()
     {
         for(int i = 0; i<_cooldowns.Length; ++i)
@@ -72,12 +80,13 @@ public class SkillRunner : MonoBehaviour
 
             _cooldowns[i].UpdateCoolTime(Time.deltaTime);
         }
-
     }
+
     public void SetSkillDefinition(int slotIdx, SOSKill skill, CoolDownView cooldown)
     {
         _skills[slotIdx] = skill;
-        _cooldowns[slotIdx] = cooldown;
+        if(cooldown != null)
+            _cooldowns[slotIdx] = cooldown;
     }
 
     // 몬스터는 생성시 스킬 우선 등록, 플레이어는 수시로 변경 가능하도록.
@@ -93,8 +102,8 @@ public class SkillRunner : MonoBehaviour
         if (_runSkill == _skills[slotIdx] || _skills[slotIdx] == null)
             return;
 
-        // 쿨타임 체크
-        if (_cooldowns[slotIdx].IsDone == false)
+        // 쿨타임 체크 , 쿨타임이 없다면 계속 누를 수 있는 스킬
+        if (_cooldowns[slotIdx] != null && _cooldowns[slotIdx].IsDone == false)
             return;
 
         _runSkill = _skills[slotIdx];
@@ -124,7 +133,8 @@ public class SkillRunner : MonoBehaviour
 
     public void OffSkill()          //초기화
     {
-        _runCollDown.ResetCoolTime();
+        if(_runCollDown != null)
+            _runCollDown.ResetCoolTime();
 
         _iCurrentSkillIdx = 0; 
         _runSkill = null;
@@ -137,8 +147,29 @@ public class SkillRunner : MonoBehaviour
         _skillContext.hitEvent = false;
         _skillContext.hitIndex = -1;
 
+        //스킬이 다 안끝났는데 끊겼다면
     }
 
+    public void CancelSkill()
+    {
+        if (_runSkill != null)
+        {
+            if (_runSkill.Option.destroyOnCancel == true)
+            {
+                SkillAttackObject pAttackObj = _skillContext.runSkillObject;
+                //공격이 아직 생성되지 않았다면
+                if (pAttackObj != null && pAttackObj.IsAttackActive == false)
+                    _skillContext.runSkillObject.PushPoolObject();
+            }
+        }
+
+        OffSkill();
+    }
+
+    public void SetSpawnPosition(in Vector3 _vPosition)
+    {
+        _skillContext.designSpawnPostion = _vPosition;
+    }
 
     public void EndPressedSkill()       
     {
@@ -150,19 +181,31 @@ public class SkillRunner : MonoBehaviour
         _skillContext.hitEvent = true;
     }
 
-    public bool UpdateSkill() //스킬이 진행되는 동안
+    public void UpdateSkill() //스킬이 진행되는 동안
     {
         List<SOSkillLogic> listSkill = _runSkill.Loggic.skillLogic;
-        if(listSkill[_iCurrentSkillIdx].UpdateSkill(_skillContext) == true)
+        eSkillState eResult = listSkill[_iCurrentSkillIdx].UpdateSkill(_skillContext);
+        if (eResult == eSkillState.Success)
+        {
             ++_iCurrentSkillIdx;
+            if (_iCurrentSkillIdx > listSkill.Count - 1)
+            {
+                //무한 루프인지 확인
+                if (_runSkill.Option.loopskill == true)
+                {
+                    StartSkill();
+                    _iCurrentSkillIdx = 0;
+                }
 
-        if(_iCurrentSkillIdx > listSkill.Count -1)
+                else
+                    EndSkill();
+            }
+        }
+        else if (eResult == eSkillState.Failed)
         {
             EndSkill();
-            return true;
         }
 
-        return false;
     }
 
     private void AnimationSetting()
@@ -178,6 +221,11 @@ public class SkillRunner : MonoBehaviour
                 }
                 break;
 
+            case SkillAnimPlayMode.Bool:
+                {
+                    _player.Animator.SetBool(_runSkill.Animation.boolName, true);
+                }
+                break;
             case SkillAnimPlayMode.CrossFadeState:
                 { 
                     // 같은 상태인데 다시 재생 원치 않으면 skip
@@ -191,5 +239,10 @@ public class SkillRunner : MonoBehaviour
         }
 
         _skillContext.animHashName = Animator.StringToHash(_runSkill.Animation.stateName);
+    }
+
+    private void OffAnimation()
+    {
+
     }
 }

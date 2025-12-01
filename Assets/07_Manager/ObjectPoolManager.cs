@@ -31,7 +31,7 @@ public class ObjectPoolManager : MonoBehaviour
     private readonly SemaphoreSlim m_pSemaphore = new SemaphoreSlim(4, 4); // 동시 Instantiate 
     public static ObjectPoolManager m_Instance { get; private set; }
 
- 
+    public static bool CompletedLoad = false;
     private async void Awake()
     {
         m_Instance = this;
@@ -45,7 +45,9 @@ public class ObjectPoolManager : MonoBehaviour
             listTask.Add(LoadObject(m_listFixedItem[i]));
 
 
-        await Task.WhenAll(listTask); // ?이거 하는 이유가 필요한가?
+        await Task.WhenAll(listTask);
+
+        CompletedLoad = true;
     }
 
     public async Task<PoolBucket> LoadObject(SOPoolEntry _pPoolEntry)

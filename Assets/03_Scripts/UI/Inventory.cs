@@ -119,8 +119,6 @@ public class Inventory : BaseUI, IContainer
         uint iUITypeCode = _pData.GetUITypeCode();
     }
 
-    
-
     private void select()
     {
         SlotView pTargetView = m_pInevenContainer.GetTargetSlot();
@@ -164,7 +162,7 @@ public class Inventory : BaseUI, IContainer
         //데이터 서비스에서 지금 눌린 데이터 참조
         DataService.m_Instance.StartPickData(this, pTargetView.SOEntryUI, pTargetView.SlotIdx, iCount);
 
-        //인터페이스 매니저를 만들어서 해당 클래스에게 요청하는 식으로 변경
+        m_pEquipSlotContainer.UnActiveSlot();
         m_pEquipSlotContainer.ActiveSlot(pTargetView.SOEntryUI.GetUIHashCode());
     }
 

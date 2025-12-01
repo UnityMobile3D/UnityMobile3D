@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.AddressableAssets.HostingServices;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class MonsterAttackObject : MonoBehaviour, IPoolAble
 {
@@ -14,6 +15,8 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
 
     private MonsterSkillInfo m_pMonsterSkillInfo = null;
     public MonsterSkillInfo MonsterSkillInfo => m_pMonsterSkillInfo;
+
+    private AttackInfo m_pAttackInfo = new AttackInfo();
 
     private float m_fMoveSpeed = 0.0f;
     private Vector3 m_vDir = Vector3.zero;
@@ -27,13 +30,9 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
     [SerializeField] private int m_iAttackCount = 1;
     private int m_iCurAttackCount = 0;
 
-    private float m_fDamage = 0.0f;
-    public float Damage => m_fDamage;
-
-    [SerializeField] bool m_bAccVel = false;
-
     private uint m_iCreateCount = 0;
     private string m_strSpawnKey = string.Empty;
+        
 
     public void Awake()
     {
@@ -44,6 +43,7 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
     public void OnSpawn()
     {
         m_iCreateCount = 1;
+        m_iCurAttackCount = 0;
     }
     public void OnDespawn()
     {
@@ -92,13 +92,9 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
         if (m_pRigidbody == null)
             return;
 
-        if (m_bAccVel == true)
-            m_pRigidbody.AddForce(m_vDir.normalized * m_fMoveSpeed, ForceMode.Acceleration);
-        else
-        {
-            Vector3 vStep = m_vDir.normalized * m_fMoveSpeed * Time.fixedDeltaTime;
-            m_pRigidbody.MovePosition(m_pRigidbody.position + vStep);
-        }
+        Vector3 vStep = m_vDir * m_fMoveSpeed * Time.fixedDeltaTime;
+        m_pRigidbody.MovePosition(m_pRigidbody.position + vStep);
+        
     }
 
     public void PushPoolObject()
@@ -120,10 +116,12 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
         m_fLifeTime = _pSkillInfo.LifeTime;
         m_fAttackTime = _pSkillInfo.AttackTime;
         m_fMoveSpeed = _pSkillInfo.MoveSpeed;
-        m_vDir = _pSkillInfo.AttackDir;
-        m_fDamage = _pSkillInfo.AttackDamage;
-
+        m_vDir = _pSkillInfo.AttackDir.normalized;
         m_strSpawnKey = _pSkillInfo.SOPoolEntry.prefabRef.AssetGUID;
+
+
+        m_pAttackInfo.Power = _pSkillInfo.AttackPower;
+        m_pAttackInfo.Damage = _pSkillInfo.AttackDamage;
     }
 
     public void SetDir(in Vector3 _vDir)
@@ -138,37 +136,36 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
 
     public void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player")
+        if ((m_pMonsterSkillInfo.TargetLayers.value & (1 << other.gameObject.layer)) != 0)
         {
-            if (check_attack_count() == true)
-                PushPoolObject();
+            if (check_attack_count() == false)
+                return;
+            
+
+            Vector3 vHitPoint = other.ClosestPoint(transform.position);
+            m_pAttackInfo.HitPoint = vHitPoint;
+            m_pAttackInfo.HitPoint.y = 0.0f;
+            other.GetComponent<IHealth>().TakeDamage(m_pAttackInfo);
         }
-      
     }
 
     public void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Player")
-        {
-            effect(other.GetComponent<Rigidbody>());
-
-            if (check_attack_count() == true)
-                PushPoolObject();
-        }
+        
     }
 
     private bool check_attack_count()
     {
         ++m_iCurAttackCount;
-        if(m_iCurAttackCount >= m_iAttackCount)
-            return true;
+        if(m_iCurAttackCount > m_iAttackCount)
+        {
+            m_pCollider.enabled = false;
+            return false;
+        }
 
-        return false;
+        return true;
     }
 
-    private void effect(Rigidbody _pOther)
-    {
-        
-    }
+  
 }
 

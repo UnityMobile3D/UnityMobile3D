@@ -83,15 +83,14 @@ public class DataService : MonoBehaviour
 
         // 최초 인스턴스 등록
         m_Instance = this;
-        DontDestroyOnLoad(gameObject); // 선택: 씬 전환에도 유지
-
-        //정적 메서드 + 캐시된 델리게이트: 1회만 할당,
-        m_listContainer.Sort(CompareByType);
-
+        DontDestroyOnLoad(gameObject); // 선택: 씬 전환에도 유지  
     }
 
     private void Start()
     {
+        //정적 메서드 + 캐시된 델리게이트: 1회만 할당,
+        m_listContainer.Sort(CompareByType);
+
         for (int i = 0; i < m_listContainer.Count; ++i)
             m_listContainer[i].Init();
     }

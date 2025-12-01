@@ -26,18 +26,18 @@ public class SkillSlot : Slot
     }
 
     private void Start()
-    {
-        if (m_pSOSkill != null)
-            Bind(m_pSOSkill);
-
+    {   
         Player pPlayer = GameManager.m_Instance.Player;
         if (pPlayer == null)
             return;
 
         m_pSkillRuner = pPlayer.SkillRunner;
+
+        if (m_pSOSkill != null)
+            Bind(m_pSOSkill);
     }
 
- 
+
     public override void Bind(SOEntryUI _pSOTarget)
     {
         base.Bind(_pSOTarget);
@@ -46,10 +46,7 @@ public class SkillSlot : Slot
 
         m_pSOSkill = _pSOTarget as SOSkillUI;
 
-        if (m_pSOSkill.Skill == null)
-            SetCoolTime(0.0f);
-        else
-            SetCoolTime(m_pSOSkill.Skill.Option.cooldown);
+        SetCoolTime(m_pSOSkill.Skill.Option.cooldown);
 
         bind_skill(m_pSOSkill.Skill);
     }

@@ -10,13 +10,24 @@ public class PlayerInterfaceSlot : BaseUI, IContainer
     [SerializeField] private eContainerType m_eContainerType = eContainerType.Interface; // ← 인스펙터에 드롭다운으로 보임
     public eContainerType ContainerType { get => m_eContainerType; }
 
-    public static int InterfaceSlotCount;
+    public static int SLOT_SIZE = 0;
 
+    public void OnValidate()
+    {
+        SLOT_SIZE = m_pSlotContainer.SlotList.Count;
+    }
+    protected override void Awake()
+    {
+        base.Awake();
+
+        m_pSlotContainer.Init();
+    }
+
+    //IContainer 구현
     public void Init()
     {
-        InterfaceSlotCount = m_pSlotContainer.SlotList.Count;
+        //m_pSlotContainer.Init();
     }
-    //IContainer 구현
 
     public void SetVisible(bool _bOn)
     {

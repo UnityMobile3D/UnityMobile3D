@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using static SkillRunner;
 using SkillContext = SkillRunner.SkillContext;
 [CreateAssetMenu(menuName = "SO/Profiles/Logic/Charge", fileName = "SOPlayerCharge")]
 public class SOPlayerCharge : SOSkillLogic
 {
-    public override bool UpdateSkill(SkillContext _pSkillContext)
+    public override eSkillState UpdateSkill(SkillContext _pSkillContext)
     {
         _pSkillContext.chargeTime += Time.deltaTime;
 
@@ -18,12 +18,12 @@ public class SOPlayerCharge : SOSkillLogic
         {
             for (int i = 0; i < _pSkillContext.chargeEvents.Count; ++i)
                 _pSkillContext.chargeEvents[i].EndEvent();
-            return true;
+            return eSkillState.Success;
         }
 
         for (int i = 0; i < _pSkillContext.chargeEvents.Count; ++i)
             _pSkillContext.chargeEvents[i].UpdateEvent(fRatio);
         
-        return false;
+        return eSkillState.Waiting;
     }
 }

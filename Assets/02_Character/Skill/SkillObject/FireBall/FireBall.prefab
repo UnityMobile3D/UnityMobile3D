@@ -63308,10 +63308,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 2672122808655981702}
-        m_TargetAssemblyTypeName: UnityEngine.Collider, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
+      - m_Target: {fileID: 7460694685797233515}
+        m_TargetAssemblyTypeName: SkillAttackObject, Assembly-CSharp
+        m_MethodName: StartAttack
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -63359,10 +63359,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2672122808655981702}
-        m_TargetAssemblyTypeName: UnityEngine.Collider, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
+      - m_Target: {fileID: 7460694685797233515}
+        m_TargetAssemblyTypeName: SkillAttackObject, Assembly-CSharp
+        m_MethodName: EndAttack
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -63398,7 +63398,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -63419,8 +63419,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_fLifeTime: 10
+  m_fStartAttackTime: 0
+  m_fEndAttackTime: 3.4028235e+38
   m_iAttackCount: 1
-  m_bAccVel: 0
 --- !u!54 &4882168567253907987
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -63444,7 +63445,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0

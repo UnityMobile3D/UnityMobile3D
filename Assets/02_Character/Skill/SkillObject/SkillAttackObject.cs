@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class SkillAttackObject : MonoBehaviour, IPoolAble
 {
-    protected Player m_pOwner = null;
+    protected SkillRunner m_pOwner = null;
+    public SkillRunner Owner => m_pOwner;
 
     private Rigidbody m_pRigidbody = null;
     private Collider m_pCollider = null;
@@ -18,16 +21,18 @@ public class SkillAttackObject : MonoBehaviour, IPoolAble
     private Vector3 m_vDir = Vector3.zero;
 
     [SerializeField] private float m_fLifeTime = 10.0f;
-
     private float m_fCurLifeTime = 0.0f;
+
+    private bool m_bIsAttackActive = false;
+    public bool IsAttackActive => m_bIsAttackActive;
+
+    [SerializeField] private float m_fStartAttackTime = 0.0f;
+    [SerializeField] private float m_fEndAttackTime = float.MaxValue;
 
     [SerializeField] private int m_iAttackCount = 1;
     private int m_iCurAttackCount = 0;
 
-    private float m_fDamage = 0.0f;
-    public float Damage => m_fDamage;
-
-    [SerializeField] bool m_bAccVel = false;
+    private AttackInfo m_pAttackInfo = null;
 
     private uint m_iCreateCount = 0;
     private string m_strSpawnKey = string.Empty;
@@ -36,6 +41,7 @@ public class SkillAttackObject : MonoBehaviour, IPoolAble
     {
         m_pRigidbody = GetComponentInChildren<Rigidbody>(true);
         m_pCollider = GetComponentInChildren<Collider>(true);
+        m_pAttackInfo = new AttackInfo();
 
         var listEvent = GetComponentsInChildren<IChargeEvent>(true);
         for(int i = 0; i<listEvent.Length; ++i)
@@ -45,10 +51,17 @@ public class SkillAttackObject : MonoBehaviour, IPoolAble
     public void OnSpawn()
     {
         m_iCreateCount = 1;
+        if(m_fStartAttackTime <= 0.0f)
+            StartAttack();
+        else
+            EndAttack();
+
     }
     public void OnDespawn()
     {
         m_iCreateCount = 0;
+
+        m_bIsAttackActive = false;
     }
     public void OnDisable()
     {
@@ -59,6 +72,11 @@ public class SkillAttackObject : MonoBehaviour, IPoolAble
     public void Update()
     {
         m_fCurLifeTime += Time.deltaTime;
+
+        if(m_bIsAttackActive == false && m_fCurLifeTime >= m_fStartAttackTime)
+            StartAttack();
+        
+
         if (m_fCurLifeTime >= m_fLifeTime)
         {
             //풀에 반납
@@ -74,13 +92,8 @@ public class SkillAttackObject : MonoBehaviour, IPoolAble
         if (m_pRigidbody == null)
             return;
 
-        if (m_bAccVel == true)
-            m_pRigidbody.AddForce(m_vDir.normalized * m_fMoveSpeed, ForceMode.Acceleration);
-        else
-        {
-            Vector3 vStep = m_vDir.normalized * m_fMoveSpeed * Time.fixedDeltaTime;
-            m_pRigidbody.MovePosition(m_pRigidbody.position + vStep);
-        }
+         Vector3 vStep = m_vDir.normalized * m_fMoveSpeed * Time.fixedDeltaTime;
+         m_pRigidbody.MovePosition(m_pRigidbody.position + vStep);
     }
 
     public void PushPoolObject()
@@ -101,9 +114,11 @@ public class SkillAttackObject : MonoBehaviour, IPoolAble
         m_fLifeTime = _pSkillInfo.Option.lifeTime;
 
         m_fMoveSpeed = _pSkillInfo.Option.moveSpeed;
-        m_fDamage = _pSkillInfo.Damage.baseDamage;
+        m_pAttackInfo.Damage = (int)_pSkillInfo.Damage.baseDamage;
+        m_pAttackInfo.Power = (int)_pSkillInfo.Option.power;
         m_iAttackCount = _pSkillInfo.Option.targetingProfile.MaxTargets;   
-        
+        m_fStartAttackTime = _pSkillInfo.Option.startAttackTime;
+
         m_strSpawnKey = _strKey;
     }
 
@@ -113,15 +128,26 @@ public class SkillAttackObject : MonoBehaviour, IPoolAble
         m_vDir.Normalize();
     }
 
-    public void SetOwner(Player _pPlayer) { m_pOwner = _pPlayer; }
+    public void SetOwner(SkillRunner _pPlayerSkillRunner) { m_pOwner = _pPlayerSkillRunner; }
 
     public void SetSpawnKey(string _strKey) { m_strSpawnKey = _strKey; }
+
+
+    void OnParticleSystemStopped()
+    {
+        PushPoolObject();
+    }
+
 
     public void OnTriggerEnter(Collider other)
     {
         if ((m_pSkill.Option.targetingProfile.TargetLayers.value & (1 << other.gameObject.layer)) != 0)
         {
-            Debug.Log("타겟 레이어 충돌");
+            Vector3 vHitPoint = other.ClosestPoint(transform.position);
+            m_pAttackInfo.HitPoint = vHitPoint;
+            m_pAttackInfo.HitPoint.y = 0.0f;
+
+            other.GetComponent<IHealth>()?.TakeDamage(m_pAttackInfo);
         }
     }
 
@@ -139,8 +165,16 @@ public class SkillAttackObject : MonoBehaviour, IPoolAble
         return false;
     }
 
-    private void effect(Rigidbody _pOther)
+    public void StartAttack()
     {
-
+        if(m_pCollider == true)
+            m_pCollider.enabled = true;
+        m_bIsAttackActive = true;
+    }
+    public void EndAttack()
+    {
+        if (m_pCollider == true)
+            m_pCollider.enabled = false;
+        m_bIsAttackActive = false;
     }
 }

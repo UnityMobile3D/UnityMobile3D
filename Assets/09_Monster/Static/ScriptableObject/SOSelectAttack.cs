@@ -30,6 +30,7 @@ public class SOSelectAttack : SONode
             if (iAttackIdx == -1)
                 return STATE.FAILED;
 
+            _pBB.CurrentAttackIdx = iAttackIdx;
             _pBB.CooldownModule.StartCooldown(iAttackIdx);
             _pBB.AnimBridge.SetAttack(iAttackIdx,true);
             _pBB.Self.transform.LookAt(_pBB.Target.position);

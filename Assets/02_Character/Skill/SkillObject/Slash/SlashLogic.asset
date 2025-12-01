@@ -13,10 +13,8 @@ MonoBehaviour:
   m_Name: SlashLogic
   m_EditorClassIdentifier: 
   skillLogic:
-  - {fileID: 11400000, guid: 5e0a8fc07ff2fd44c89f12a66aa9be1a, type: 2}
   - {fileID: 11400000, guid: 949544ee52f56c94393e4b4c69ca4ff5, type: 2}
   - {fileID: 11400000, guid: 92695b495cd009a4f98f4b4766ed0cdb, type: 2}
-  - {fileID: 11400000, guid: 3874772e14a3fd34283ffbb66579a60d, type: 2}
   - {fileID: 11400000, guid: 12d66d745c4f2ed4783f874418978c86, type: 2}
   endSkillLogic: {fileID: 0}
   startSkillLogic: {fileID: 0}

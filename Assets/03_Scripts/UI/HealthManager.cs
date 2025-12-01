@@ -8,26 +8,35 @@ public class HealthManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI m_pHealthText;
     [SerializeField] private Image m_pHealthImage;
-    [SerializeField] private Health m_pPlayerHealth;
+    [SerializeField] private IHealth m_IPlayerStatus;
+
+    public static HealthManager m_Instance = null;
+    public void Awake()
+    {
+        if (m_Instance != null)
+            Destroy(m_Instance);
+
+        m_Instance = this;
+    }
+    public void Start()
+    {
+        m_IPlayerStatus = GameManager.m_Instance.Player.GetComponent<IHealth>();
+        PlayerTakeDamage();
+    }
 
     public void PlayerTakeDamage()
     {
         float fHPRatio = 0.0f;
-        if (m_pPlayerHealth.CurrentHP == 0)
+        if (m_IPlayerStatus.CurrentHP == 0)
             fHPRatio = 0.0f;
 
-        fHPRatio = (float)m_pPlayerHealth.CurrentHP / m_pPlayerHealth.MaxHP;
+        fHPRatio = (float)m_IPlayerStatus.CurrentHP / m_IPlayerStatus.MaxHP;
 
         if(fHPRatio == 0.0f)
             m_pHealthImage.fillAmount = 0;
         else
             m_pHealthImage.fillAmount = fHPRatio;
 
-        m_pHealthText.text = $"{(int)(fHPRatio * 100)} / {m_pPlayerHealth.CurrentHP}";
-    }
-
-    public void Awake()
-    {
-        PlayerTakeDamage();
+        m_pHealthText.text = $"{(int)(fHPRatio * 100)}% / {m_IPlayerStatus.MaxHP}";
     }
 }

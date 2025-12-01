@@ -7,6 +7,7 @@ public enum SkillAnimPlayMode
 {
     None,           // 애니메이션 재생 안함
     Trigger,        // 트리거 하나 세팅
+    Bool,           // bool 하나 세팅
     CrossFadeState  // 특정 스테이트로 강제 CrossFade
 }
 
@@ -15,6 +16,9 @@ public class SKillAnimation : ScriptableObject
 {
     [Header("Trigger Mode")]
     public string triggerName;          // "Attack1_Trigger"
+
+    [Header("Bool Mode")]
+    public string boolName;             // "isRunning"
 
     [Header("Direct State Mode")]
     public string stateName;            // "Player_Attack1"

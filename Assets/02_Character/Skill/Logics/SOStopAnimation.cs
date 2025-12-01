@@ -9,10 +9,10 @@ public class SOAnimationSetting: SOSkillLogic
 {
     public bool stopAnimation = false;
     public float speed = 1f;
-    public override bool UpdateSkill(SkillContext _pSkillContext)
+    public override eSkillState UpdateSkill(SkillContext _pSkillContext)
     {
         _pSkillContext.animator.speed = stopAnimation ? 0f : 1f;
 
-        return true;
+        return eSkillState.Success;
     }
 }

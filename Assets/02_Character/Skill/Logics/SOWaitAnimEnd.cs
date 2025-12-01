@@ -7,7 +7,7 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 [CreateAssetMenu(menuName = "SO/Profiles/Logic/WaitAnimEnd", fileName = "SOWaitAnimEnd")]
 public class SOWaitAnimEnd : SOSkillLogic
 {
-    public override bool UpdateSkill(SkillContext _pSkillContext)
+    public override eSkillState UpdateSkill(SkillContext _pSkillContext)
     {
         int iLayer = _pSkillContext.skill.RunSkill.Animation.layerIndex;
         var tInfo = _pSkillContext.animator.GetCurrentAnimatorStateInfo(iLayer);
@@ -15,8 +15,8 @@ public class SOWaitAnimEnd : SOSkillLogic
         //현재 진행중인 애니메이션 끝났거나 다른 애니메이션으로 전환된경우
         if (tInfo.shortNameHash != _pSkillContext.animHashName ||
             tInfo.normalizedTime >= 0.95f) //1.0f -> 0.95f로 변경(끝나는 시점에 약간의 여유를 주기위해)
-            return true;
+            return eSkillState.Success;
 
-        return false;
+        return eSkillState.Waiting;
     }
 }

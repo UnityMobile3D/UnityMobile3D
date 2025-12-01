@@ -17,7 +17,7 @@ public class EquipmentInventory : BaseUI , IContainer
 
     public void Init()
     {
-
+        m_pEquipSlotContainer.Init();
     }
 
     public void SetVisible(bool _bOn)

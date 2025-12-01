@@ -6,12 +6,13 @@ using static SkillRunner;
 [CreateAssetMenu(menuName = "SO/Profiles/Logic/WaitAnimation", fileName = "SOWaitAnimation")]
 public class SOWaitAnimation : SOSkillLogic
 {
-    public override bool UpdateSkill(SkillContext _pSkillContext)
+    public override eSkillState UpdateSkill(SkillContext _pSkillContext)
     {
         if(_pSkillContext.hitEvent == true)
         {
-            return true;
+            _pSkillContext.hitEvent = false;
+            return eSkillState.Success;
         }
-        return false;
+        return eSkillState.Waiting;
     }
 }

@@ -16,9 +16,15 @@ MonoBehaviour:
   - CoolTime: 3
     AttackRange: 0
     AttackDamage: 10
+    AttackPower: 0
+    isDown: 0
+    TargetLayers:
+      serializedVersion: 2
+      m_Bits: 64
     LifeTime: 0.1
     AttackTime: 0
     MoveSpeed: 0
+    DestroyOnHit: 1
     SpawnPlayerPos: 0
     SpawnCurPos: 1
     PlayerDir: 1
@@ -33,9 +39,15 @@ MonoBehaviour:
   - CoolTime: 10
     AttackRange: 0
     AttackDamage: 0
+    AttackPower: 0
+    isDown: 0
+    TargetLayers:
+      serializedVersion: 2
+      m_Bits: 64
     LifeTime: 3
     AttackTime: 1000
     MoveSpeed: 0
+    DestroyOnHit: 0
     SpawnPlayerPos: 1
     SpawnCurPos: 0
     PlayerDir: 0
@@ -50,9 +62,15 @@ MonoBehaviour:
   - CoolTime: 6
     AttackRange: 0
     AttackDamage: 0
+    AttackPower: 0
+    isDown: 0
+    TargetLayers:
+      serializedVersion: 2
+      m_Bits: 64
     LifeTime: 3
     AttackTime: 0
     MoveSpeed: 0
+    DestroyOnHit: 1
     SpawnPlayerPos: 0
     SpawnCurPos: 0
     PlayerDir: 0

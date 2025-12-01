@@ -28,7 +28,7 @@ public class SOAttack : SONode
             else if(_pBB.CooldownModule.IsIsReady(m_iAttackID) == false)
                 return STATE.FAILED;
 
-
+            _pBB.CurrentAttackIdx = m_iAttackID;
             _pBB.Agent.isStopped = true;
 
             //쿨타임 초기화 및 어택 시작

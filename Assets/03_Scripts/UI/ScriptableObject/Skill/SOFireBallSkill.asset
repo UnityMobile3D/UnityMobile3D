@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2bbfecefaeb9bd4ba3e0694e72d3767, type: 3}
-  m_Name: SOSkill_1
+  m_Name: SOFireBallSkill
   m_EditorClassIdentifier: 
   name: 
-  id: 56
-  icon: {fileID: 21300000, guid: 77fc2d17050aa5141ad4a838993290a0, type: 3}
+  id: 58
+  icon: {fileID: 21300000, guid: fb0655be447e9674cb282e2fe891e845, type: 3}
   type: 8
-  sortKey: 50
+  sortKey: 52
   level: 0
-  skilltype: 2
-  skill: {fileID: 11400000, guid: a356d512f8765ec45bc8b4bded8a4d00, type: 2}
+  skilltype: 3
+  skill: {fileID: 11400000, guid: 93ace933078a7f349918fbd0e863e781, type: 2}

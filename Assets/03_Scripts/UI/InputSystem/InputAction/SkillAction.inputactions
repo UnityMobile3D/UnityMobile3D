@@ -34,7 +34,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SubSkill",
+                    "name": "MainSkill",
                     "type": "Button",
                     "id": "d0aae3aa-90ca-473a-b278-84b2c0efddfc",
                     "expectedControlType": "",
@@ -93,7 +93,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SubSkill",
+                    "action": "MainSkill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

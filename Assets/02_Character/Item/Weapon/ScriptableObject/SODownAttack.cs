@@ -10,7 +10,7 @@ public class SODownAttack : SOItemEffect
         if (_tEffectCnt.pTarget == null)
             return;
 
-        if (_tEffectCnt.pTarget.TryGetComponent<Health>(out var pHealth) == true)
-            pHealth.AddAttackPower(_tEffectCnt.Value.Int * -1);
+        if (_tEffectCnt.pTarget.TryGetComponent<ObjectInfo>(out var pStatus) == true)
+            pStatus.UpAttack(_tEffectCnt.Value.Int * -1);
     }
 }

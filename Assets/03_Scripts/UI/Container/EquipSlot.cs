@@ -25,6 +25,13 @@ public class EquipSlot : Slot
         m_iUIType |= (uint)m_eEquipType << (int)SOEntryUI.eUIType.Equip;
     }
 
+    public override void Init()
+    {
+        //if (m_pEquip != null)
+        //    StartCoroutine(waitPoolAndEquiped());
+    }
+
+
     public override void Bind(SOEntryUI _pSOTarget)
     {
         base.Bind(_pSOTarget);
@@ -76,5 +83,15 @@ public class EquipSlot : Slot
     private void selete_equip_slot()
     {
         DataService.m_Instance.TryDropDataAndSwap(m_pOwner, SlotIdx);
+    }
+
+
+    //처음 캐릭터 장비를 셋팅할 때 오브젝트 풀에서(비동기) 무기 오브젝트가 전부 로드되지 않을 수 있음
+    private IEnumerator waitPoolAndEquiped()
+    {
+        yield return new WaitUntil(() => ObjectPoolManager.m_Instance != null);
+        yield return new WaitUntil(() => ObjectPoolManager.CompletedLoad == true);
+
+        equiped();     
     }
 }

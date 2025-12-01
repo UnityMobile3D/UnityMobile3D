@@ -13,12 +13,10 @@ MonoBehaviour:
   m_Name: FireBallLogic
   m_EditorClassIdentifier: 
   skillLogic:
-  - {fileID: 11400000, guid: 5e0a8fc07ff2fd44c89f12a66aa9be1a, type: 2}
   - {fileID: 11400000, guid: 949544ee52f56c94393e4b4c69ca4ff5, type: 2}
   - {fileID: 11400000, guid: a6a74b09f0f5c444eb954a6c1175f1f3, type: 2}
   - {fileID: 11400000, guid: e59028f29b3793a4da8ff764328de60e, type: 2}
   - {fileID: 11400000, guid: cf664e96863755c479fdd1ac21a9e8d3, type: 2}
-  - {fileID: 11400000, guid: 3874772e14a3fd34283ffbb66579a60d, type: 2}
   - {fileID: 11400000, guid: 34c1644af02e9ae48845e6e0994a0091, type: 2}
   endSkillLogic: {fileID: 0}
   startSkillLogic: {fileID: 0}

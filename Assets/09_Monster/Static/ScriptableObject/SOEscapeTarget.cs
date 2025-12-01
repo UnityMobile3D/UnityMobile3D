@@ -36,7 +36,7 @@ public class SOEscapeTarget : SONode
             m_fCurTime += _fDT;
             if (m_fCurTime >= m_pEscapeTarget.m_fEscapeTime)
             {
-                _pBB.AnimBridge.SetMove(true);
+                _pBB.AnimBridge.SetRun(true);
                 _pBB.Agent.isStopped = false;
 
                 m_fCurTime = m_pEscapeTarget.m_fEscapeTime;

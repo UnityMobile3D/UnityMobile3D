@@ -37,7 +37,7 @@ public class TraceTarget : SONode
             //목적지에 도착했다면 
             if ( _pBB.DistanceToTarget <= m_pTraceTarget.m_fStopDistance)
             {
-                _pBB.AnimBridge.SetMove(false);
+                _pBB.AnimBridge.SetRun(false);
                 _pBB.Agent.isStopped = true;
 
                 return STATE.FAILED;
@@ -54,7 +54,7 @@ public class TraceTarget : SONode
                 if (NavMesh.SamplePosition(_pBB.Target.position, out NavMeshHit tHit,
                     3.0f, m_pTraceTarget.m_iareaMask))
                 {
-                    _pBB.AnimBridge.SetMove(true);
+                    _pBB.AnimBridge.SetRun(true);
                     _pBB.Agent.isStopped = false;
                     _pBB.Agent.SetDestination(tHit.position);
 

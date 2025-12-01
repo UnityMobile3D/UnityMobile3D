@@ -26,9 +26,12 @@ public class InputManager : MonoBehaviour
         None,
         //Boolean
         SkillDefault,
+
+        //SubSkill
         Skill1,
         Skill2,
-        SubSkill,
+
+        MainSkill,
         Item,
 
         //Vector2D

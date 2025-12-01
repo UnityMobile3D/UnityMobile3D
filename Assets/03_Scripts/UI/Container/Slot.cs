@@ -48,7 +48,8 @@ public class Slot : ButtonUI
         base.Awake();
 
         m_pSlotIcon = GetComponent<Image>();
-        m_cOriginalColor = m_pSlotIcon.color;
+        if(m_pSlotIcon != null)
+            m_cOriginalColor = m_pSlotIcon.color;
 
         m_pOwner = GetComponentInParent<IContainer>();
 
@@ -70,6 +71,10 @@ public class Slot : ButtonUI
       
     }
 
+    public virtual void Init()
+    {
+
+    }
     public virtual void Bind(SOEntryUI _pSOTarget)
     {
         m_pSOTarget = _pSOTarget;
@@ -110,7 +115,7 @@ public class Slot : ButtonUI
         if (m_pSOTarget == null)
             return;
 
-         StartCoroutine(LightingSlot());
+      
 
         base.OnPointerDown(e);
     }
@@ -122,10 +127,11 @@ public class Slot : ButtonUI
 
     public override void OnPointerEnter(PointerEventData e)
     {
-        if(m_pLightCoroutine != null)
+        if(m_pLightCoroutine != null && m_pSlotIcon != null)
+        {
             m_pSlotIcon.color = m_cOriginalColor;
-        
-        m_pLightCoroutine = StartCoroutine(LightingSlot());
+            m_pLightCoroutine = StartCoroutine(LightingSlot());
+        }
 
         base.OnPointerEnter(e);
     }

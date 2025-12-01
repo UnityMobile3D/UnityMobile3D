@@ -31,7 +31,7 @@ public class ActionMapper
         public bool bSkillDefault;
         public bool bSkill1;
         public bool bSkill2;
-        public bool bSubSkill;
+        public bool bMainSkill;
         public bool bItem;
         public Vector2 vDirection;
 
@@ -40,7 +40,7 @@ public class ActionMapper
             bSkillDefault = other.bSkillDefault;
             bSkill1 = other.bSkill1;
             bSkill2 = other.bSkill2;
-            bSubSkill = other.bSubSkill;
+            bMainSkill = other.bMainSkill;
             bItem = other.bItem;
             vDirection = other.vDirection;
         }
@@ -60,8 +60,8 @@ public class ActionMapper
                     bSkill2 = _bValue;
                     break;
 
-                case eActionID.SubSkill:
-                    bSubSkill = _bValue;
+                case eActionID.MainSkill:
+                    bMainSkill = _bValue;
                     break;
 
                 case eActionID.Item:
@@ -86,7 +86,7 @@ public class ActionMapper
                 eActionID.SkillDefault => bSkillDefault,
                 eActionID.Skill1 => bSkill1,
                 eActionID.Skill2 => bSkill2,
-                eActionID.SubSkill => bSkill1,
+                eActionID.MainSkill => bMainSkill,
                 eActionID.Item => bItem,
                 _ => false,
             };
@@ -106,7 +106,7 @@ public class ActionMapper
             bSkillDefault = false;
             bSkill1 = false;
             bSkill2 = false;
-            bSubSkill = false;
+            bMainSkill = false;
             bItem = false;
             vDirection = Vector2.zero;
         }
@@ -164,7 +164,7 @@ public class ActionMapper
             var pActionRef = _listActionBindg[i];
             for(int j = 0; j< pActionRef.listAction.Count; ++j)
             {
-                if (set_value(_pState, pActionRef,j) == true)
+                if (check_value(_pState, pActionRef,j) == true)
                 {
                     //이전엔 눌리지 않았는데 이번엔 눌렸다면
                     if(pActionRef.IsPressed == false && pActionRef.InputFunction != null)
@@ -185,7 +185,7 @@ public class ActionMapper
     }
 
    
-    private bool set_value(ActionState _pState , ActionBinding _pAction, int _idx)
+    private bool check_value(ActionState _pState , ActionBinding _pAction, int _idx)
     {
         bool bResult = false;
 

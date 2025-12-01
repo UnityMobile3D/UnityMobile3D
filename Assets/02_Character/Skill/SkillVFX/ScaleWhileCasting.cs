@@ -22,6 +22,7 @@ public class ScaleWhileCasting : MonoBehaviour, IChargeEvent //, ChargeEvent
     [SerializeField] private PED m_pCompleteEvent;
     [SerializeField] private PED m_pStartEvent;
 
+    
     public void StartEvent()
     {
         m_fCurTime = 0.0f;

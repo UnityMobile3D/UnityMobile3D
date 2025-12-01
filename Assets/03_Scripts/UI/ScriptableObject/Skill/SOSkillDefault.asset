@@ -17,6 +17,6 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: e30d7baabfb292c4f9687033f726d8a4, type: 3}
   type: 8
   sortKey: 50
-  cooldown: 0
   level: 0
   skilltype: 1
+  skill: {fileID: 11400000, guid: 1fe4333ff08bbad4daebfe0476f46ef0, type: 2}

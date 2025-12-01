@@ -10,9 +10,9 @@ public class SOHealEffect : SOItemEffect
         GameObject pTarget = _tEffectCnt.pTarget;
         if(pTarget != null)
         {
-            if(pTarget.TryGetComponent<Health>(out var pHealth) == true)
+            if(pTarget.TryGetComponent<ObjectInfo>(out var pStatus) == true)
             {
-                pHealth.Heal(_tEffectCnt.Value.Int);
+                pStatus.AddHP(_tEffectCnt.Value.Int);
             }
         }
     }

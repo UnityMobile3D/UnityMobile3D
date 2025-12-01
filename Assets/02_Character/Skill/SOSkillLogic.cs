@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using SkillContext = SkillRunner.SkillContext;
-
+using eSkillState = SkillRunner.eSkillState;
 //[CreateAssetMenu(menuName = "SO/Profiles/Logic", fileName = "LogicProfile")]
 public abstract class SOSkillLogic : ScriptableObject
 {
-    public abstract bool UpdateSkill(SkillContext _pSkillContext);
+    public abstract eSkillState UpdateSkill(SkillContext _pSkillContext);
 }

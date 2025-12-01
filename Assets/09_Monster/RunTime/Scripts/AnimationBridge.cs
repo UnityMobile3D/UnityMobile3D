@@ -7,8 +7,7 @@ public class AnimationBridge : MonoBehaviour
     public Animator m_pAnimator = null;
 
     [SerializeField] private List<string> ListAttack = new List<string>() { "Attack" };
-    [SerializeField] private string Speed = "Speed";
-    [SerializeField] private string Move = "Move";
+    [SerializeField] private string Run = "Run";
     [SerializeField] private string Hit = "Hit";
     [SerializeField] private string Dead = "Dead";
 
@@ -24,8 +23,6 @@ public class AnimationBridge : MonoBehaviour
         if(m_pAnimator == null)
             m_pAnimator = _pAnim;
 
-        m_iSpeedHash = Animator.StringToHash(Speed);
-        m_hashNameToId[Speed] = m_iSpeedHash;
 
         for(int i = 0; i<ListAttack.Count; ++i)
         {
@@ -34,8 +31,8 @@ public class AnimationBridge : MonoBehaviour
             m_listAttack.Add(iHashID);
         }
       
-        m_iMoveHash = Animator.StringToHash(Move);
-        m_hashNameToId[Move] = m_iMoveHash;
+        m_iMoveHash = Animator.StringToHash(Run);
+        m_hashNameToId[Run] = m_iMoveHash;
 
         m_iHitHash = Animator.StringToHash(Hit);
         m_hashNameToId[Hit] = m_iHitHash;
@@ -44,11 +41,7 @@ public class AnimationBridge : MonoBehaviour
         m_hashNameToId[Dead] = m_iDeadHash;
     }
 
-    public void SetSpeed(float fSpeed)
-    {
-        m_pAnimator.SetFloat(Speed, fSpeed);
-    }
-  
+
     public void SetAttack(int _iIdx, bool _bOn )
     {
         m_pAnimator.SetBool(m_listAttack[_iIdx], _bOn);
@@ -57,13 +50,13 @@ public class AnimationBridge : MonoBehaviour
     {
         m_pAnimator.SetBool(_strName, _bOn);
     }
-    public void SetMove()
+    public void SetRun()
     {
-        m_pAnimator.SetTrigger(Move);
+        m_pAnimator.SetTrigger(Run);
     }
-    public void SetMove(bool _bOn)
+    public void SetRun(bool _bOn)
     {
-        m_pAnimator.SetBool(Move, _bOn);
+        m_pAnimator.SetBool(Run, _bOn);
     }
 
     public void SetHit()

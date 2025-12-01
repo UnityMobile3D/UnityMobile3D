@@ -1,20 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
-public class Monster : MonoBehaviour
+
+using Vector3 = UnityEngine.Vector3;
+using Quaternion = UnityEngine.Quaternion;
+public class Monster : MonoBehaviour , IHealth
 {
     [SerializeField] protected Blackboard m_pBlackbard = new Blackboard();
     private BehaviorTree m_pBHTree = null;
-
     [SerializeField] protected SOMonsterInfo m_SOMonsterInfo = null;
+
+    protected Rigidbody m_pRigidbody = null;
+    protected Animator m_pAnimator = null;
+    protected NavMeshAgent m_pNavMeshAgent = null;
     public SOMonsterInfo SOMonsterInfo => m_SOMonsterInfo;
 
     protected CooldownModule m_pCollDownModule = null;
 
-    private Dictionary<int, List<GameObject>> m_hashAttackObject = new();
+    private ObjectInfo m_pMonsterInfo;
+    private Coroutine m_pKnockbackRoutine;
+
+    protected bool m_bHit = false;
+    //IHealth
+    public int CurrentHP => m_pMonsterInfo.HP;
+    public int MaxHP => m_pMonsterInfo.MaxHp;
+
     virtual protected void Awake()
     {
         m_pBlackbard.Self = transform;
@@ -22,28 +36,33 @@ public class Monster : MonoBehaviour
         m_pBlackbard.AnimBridge = GetComponent<AnimationBridge>();
         m_pBHTree= GetComponent<BehaviorTree>();
 
+        m_pMonsterInfo = GetComponent<ObjectInfo>();
+        m_pRigidbody = GetComponent<Rigidbody>();
+        m_pAnimator = GetComponent<Animator>();
+        m_pNavMeshAgent = GetComponent<NavMeshAgent>();
+
         m_pBHTree.Init(m_pBlackbard, this);
 
         m_pCollDownModule = new CooldownModule();
         m_pCollDownModule.Init(this);
         m_pBlackbard.CooldownModule = m_pCollDownModule;
 
-        //내 공격 오브젝트만큼 크기 늘리기
-        
-        for(int i = 0; i<m_SOMonsterInfo.skillinfo.Count; ++i)
-            m_hashAttackObject.Add(i, new List<GameObject>());
-        
+
+        //objectinfo
+        m_pNavMeshAgent.speed = m_pMonsterInfo.Speed;
     }
 
     virtual protected void Start()
     {
+        //나중에 네트워크로 가면 문제
         m_pBlackbard.Target = GameManager.m_Instance.Player.gameObject.transform;
     }
     virtual protected void Update()
     {
         m_pCollDownModule.UpdateCooldown();
 
-        m_pBHTree.Evaluate();
+        if(m_bHit == false)
+            m_pBHTree.Evaluate();
     }
 
     MonsterSkillInfo GetMonsterSkillInfo(int _iIdx)
@@ -82,60 +101,114 @@ public class Monster : MonoBehaviour
         if (pAttackObj == null)
             return null;
 
-        if (pAttackObj.TryGetComponent<MonsterAttackObject>(out var pInfo) == false)
+        if (pAttackObj.TryGetComponent<MonsterAttackObject>(out var pAttack) == false)
         {
             ObjectPoolManager.m_Instance.PushObject(strKey, pAttackObj);
             return null;
         }
 
-        pInfo.SetInfo(pSkillInfo);
-        pInfo.SetDir(vDir);
-        pInfo.SetOwner(this);
-        m_hashAttackObject[iTargetIdx].Add(pAttackObj);
+        pAttack.SetInfo(pSkillInfo);
+        pAttack.SetDir(vDir);
+        pAttack.SetOwner(this);
+
+        //근접공격은 피격시 사라지고, 소환공격은 계속 유지되게
+        if (pSkillInfo.DestroyOnHit == true)
+            m_pBlackbard.SpawnObjects.Add(pAttack);
+        
 
         return pAttackObj;
     }
-
-    public void EndCurAttack()
-    {
-        //가장 마지막 공격 오브젝트 중지
-        var listAttack = m_hashAttackObject[m_pCollDownModule.TargetIdx];
-
-        //뒤에서 부터 삭제
-        for(int i = listAttack.Count -1; i >=0; --i)
-        {
-            if(listAttack[i].TryGetComponent<MonsterAttackObject>(out var pAttack) == true)
-            {
-                listAttack.RemoveAt(listAttack.Count - 1);
-                pAttack.PushPoolObject();
-            }
-        }
-
-        listAttack.Clear();
-        //복귀
-        m_pBlackbard.AnimBridge.m_pAnimator.speed = 1.0f;
-    }
-
     public void ClearAttackObject()
     {
-        for(int i = 0; i < m_hashAttackObject.Count; ++i)
-        {
-            var listAttack = m_hashAttackObject[i];
-            for (int j = 0; j < listAttack.Count; ++j)
-            {
-                if (listAttack[j].TryGetComponent<MonsterAttackObject>(out var pAttack) == true)
-                    pAttack.PushPoolObject();
-            }
-            listAttack.Clear();
-        }
-    }
-
-    virtual protected void OnTriggerEnter(Collider other)
-    {
+        List<MonsterAttackObject> listAttack = m_pBlackbard.SpawnObjects;
+        for(int i = 0; i<listAttack.Count; ++i)
+            listAttack[i].PushPoolObject();
         
+        m_pBlackbard.SpawnObjects.Clear();
+        m_pBlackbard.CurrentAttackIdx = -1;
     }
 
+    protected virtual void OnTriggerEnter(Collider other)
+    {
 
- 
+    }
+
+    public void EndHit()
+    {
+        m_bHit = false;
+        m_pNavMeshAgent.isStopped = true;
+    }
+    //IHealth 구현
+    public void Hit()
+    {
+        m_pAnimator.SetTrigger("Hit");
+        m_bHit = true;
+
+        m_pNavMeshAgent.isStopped = true;
+    }
+    public void TakeDamage(AttackInfo _pAttackInfo)
+    {
+        ClearAttackObject();
+
+        Hit();
+
+        knockback(_pAttackInfo);
+
+        m_pMonsterInfo.AddHP((int)_pAttackInfo.Damage);
+    }
+    public void Heal(int _iAmount)
+    {
+        m_pMonsterInfo.AddHP(_iAmount);
+    }
+
+    public bool IsDead()
+    {
+        return CurrentHP <= 0;
+    }
+
+    private void knockback(AttackInfo _attackInfo)
+    {
+        // 기존 넉백 코루틴 돌고 있으면 정지
+        if (m_pKnockbackRoutine != null)
+        {
+            StopCoroutine(m_pKnockbackRoutine);
+            m_pKnockbackRoutine = null;
+        }
+
+        Vector3 vMonsterPos = m_pRigidbody.position;
+        Vector3 vDir = vMonsterPos - _attackInfo.HitPoint;
+        vDir.y = 0.0f;
+
+        if (vDir.sqrMagnitude < 0.0001f)
+            vDir = -transform.forward;
+
+        vDir.Normalize();
+
+        transform.rotation = Quaternion.LookRotation(-vDir, Vector3.up);
+
+
+        //시간이 지나면서 점점 멈추게 (속도 감쇠)
+        m_pKnockbackRoutine = StartCoroutine(knockback_coroutine(vDir,(int)_attackInfo.Power));
+    }
+
+    private IEnumerator knockback_coroutine(Vector3 _vDir, int _iPower)
+    {
+        float fElapsed = 0f;
+
+        while (m_bHit == true && fElapsed <=1.0f)
+        {
+            float fRevElaps = 1.0f - fElapsed;
+            Vector3 vVelocity = _vDir * _iPower * fRevElaps;
+            Vector3 vNextPos = m_pRigidbody.position + vVelocity * Time.fixedDeltaTime;
+
+            m_pRigidbody.MovePosition(vNextPos);
+
+            fElapsed += Time.fixedDeltaTime;
+
+            yield return null;
+        }
+
+        m_pKnockbackRoutine = null;
+    }
 
 }

@@ -22,8 +22,28 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1cc90adde66380042a04019f460e658f
+    m_Address: Assets/02_Character/Skill/SkillObject/SlashLight/FX_SlashLight.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6ef4bf1f8aec08349995f4e05f51d5c7
+    m_Address: Assets/02_Character/Skill/SkillObject/BaseAttack/PlayerAttack.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 80be5aad7ce02d5408f9f37c63130d25
+    m_Address: Assets/02_Character/Skill/SkillObject/Thunder/ThunderSkill.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b39f2c7bdff269140bba0cef637a6398
     m_Address: Assets/02_Character/Skill/SkillObject/Slash/Slash.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f29d155e1ac0a004f9d81e6edb8eeff0
+    m_Address: Assets/02_Character/Skill/SkillObject/Thunder/FX_Magic_Circle.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

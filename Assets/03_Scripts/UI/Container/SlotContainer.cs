@@ -7,15 +7,26 @@ public class SlotContainer : MonoBehaviour
 { 
     [SerializeField] private List<Slot> m_listSlot = new List<Slot>();
     public List<Slot> SlotList => m_listSlot;
+    public int SlotCount => m_listSlot.Count;
 
     private IContainer m_pOwner = null;
+
+    
     public void Awake()
     {
+       
+    }
+
+    public void Init()
+    {
         int iCount = 0;
-        for(int i = 0; i < m_listSlot.Count; i++)
+        for (int i = 0; i < m_listSlot.Count; i++)
             m_listSlot[i].SetSlotIdx(iCount++);
 
         m_pOwner = GetComponentInParent<IContainer>();
+
+        for (int i = 0; i < m_listSlot.Count; i++)
+            m_listSlot[i].Init();
     }
 
     public void ActiveSlot(uint _iUIHashCode)
@@ -43,7 +54,6 @@ public class SlotContainer : MonoBehaviour
     {
         for(int i = 0; i<m_listSlot.Count; ++i)
         {
-            //m_listSlot[i]?.SetRaycast(false);
             m_listSlot[i]?.UnActiveSlot();
         }
     }

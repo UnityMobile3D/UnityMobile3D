@@ -25,29 +25,6 @@ public struct AdditionalEffect
 public class ItemEffectRunner : MonoBehaviour
 {
    
-
-    //public static void UsingItem(SOItem _pSOItem, EffectContext _pCtx, List<AdditionalEffect> _arrAddtion)
-    //{
-    //     for (int i = 0; i < _arrAddtion.Count; ++i)
-    //     {
-    //         switch (_arrAddtion[i].Type)
-    //         {
-    //             case EffectAdditionType.Int:
-    //                _pCtx. = UtilityMath.ApplyToValue<int, IntOps>(_pCtx.Value.Int, _arrAddtion[i].Value.Int, _arrAddtion[i].Operation);
-    //                 break;
-    //             case EffectAdditionType.Float:
-    //                _pCtx.Float = UtilityMath.ApplyToValue<float, FloatOps>(_pCtx.Value.Float, _arrAddtion[i].Value.Float, _arrAddtion[i].Operation);
-    //                 break;
-    //             case EffectAdditionType.Vector4:
-    //                 pCtx.Value.Vector4 = UtilityMath.ApplyToValue<Vector4, Vec4Ops>(_pCtx.Value.Vector4, _arrAddtion[i].Value.Vector4, _arrAddtion[i].Operation);
-    //                 break;
-    //         }
-    //     }
-        
-    //     applay_effect(_pSOItem, pCtx);
-    //}
-
-
     public static void ApplyEffectEquipped(SOItem _pSOItem, EffectContext _pCtx)
     {
         //foreach는 내부적으로 열거자(Enumerator) 를 만든 뒤 MoveNext()/Current로 도는 문법
@@ -64,7 +41,7 @@ public class ItemEffectRunner : MonoBehaviour
 
     public static void ApplyEffectUsing(SOItem _pSOItem, EffectContext _pCtx)
     {
-        for (int i = 0; i < _pSOItem.EquippedEffects.Length; ++i)
+        for (int i = 0; i < _pSOItem.UsingEffects.Length; ++i)
             _pSOItem.UsingEffects[i].Apply(_pCtx);
         
     }

@@ -15,6 +15,7 @@ MonoBehaviour:
   skillLogic:
   - {fileID: 11400000, guid: 949544ee52f56c94393e4b4c69ca4ff5, type: 2}
   - {fileID: 11400000, guid: f9e482042ce7f6f44a48862a9ef26369, type: 2}
+  - {fileID: 11400000, guid: 12d66d745c4f2ed4783f874418978c86, type: 2}
   - {fileID: 11400000, guid: 1743dfcda2c04bf4da619be82733af67, type: 2}
   - {fileID: 11400000, guid: 949544ee52f56c94393e4b4c69ca4ff5, type: 2}
   - {fileID: 11400000, guid: f9e482042ce7f6f44a48862a9ef26369, type: 2}

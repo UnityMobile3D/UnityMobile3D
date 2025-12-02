@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: SeqAttack
   m_EditorClassIdentifier: 
   m_listChild:
+  - {fileID: 11400000, guid: 1ed549c0614def84ca8a266d2b38af22, type: 2}
   - {fileID: 11400000, guid: a175db415104606498cc05a1ff2a7897, type: 2}
   - {fileID: 11400000, guid: 97bcfece51075de4e990ffa427d5aa66, type: 2}

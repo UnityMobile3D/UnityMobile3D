@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 using Vector3 = UnityEngine.Vector3;
 using Quaternion = UnityEngine.Quaternion;
-public class Monster : MonoBehaviour , IHealth
+public class Monster : MonoBehaviour , IHealth , IPoolAble
 {
     [SerializeField] protected Blackboard m_pBlackbard = new Blackboard();
     private BehaviorTree m_pBHTree = null;
@@ -21,13 +21,25 @@ public class Monster : MonoBehaviour , IHealth
 
     protected CooldownModule m_pCollDownModule = null;
 
-    private ObjectInfo m_pMonsterInfo;
-    private Coroutine m_pKnockbackRoutine;
+    private ObjectInfo m_pMonsterInfo = null;
+    private Coroutine m_pKnockbackRoutine = null;
+
+    private string m_strPoolKey = "";
 
     protected bool m_bHit = false;
     //IHealth
     public int CurrentHP => m_pMonsterInfo.HP;
     public int MaxHP => m_pMonsterInfo.MaxHp;
+
+    //PoolAble
+    public void OnSpawn()
+    {
+        m_bHit = false;
+    }
+    public void OnDespawn()
+    {
+
+    }
 
     virtual protected void Awake()
     {
@@ -122,7 +134,10 @@ public class Monster : MonoBehaviour , IHealth
     {
         List<MonsterAttackObject> listAttack = m_pBlackbard.SpawnObjects;
         for(int i = 0; i<listAttack.Count; ++i)
-            listAttack[i].PushPoolObject();
+        {
+            if (listAttack[i].MonsterSkillInfo.DestroyOnHit == true)
+                listAttack[i].PushPoolObject();
+        }
         
         m_pBlackbard.SpawnObjects.Clear();
         m_pBlackbard.CurrentAttackIdx = -1;
@@ -148,13 +163,20 @@ public class Monster : MonoBehaviour , IHealth
     }
     public void TakeDamage(AttackInfo _pAttackInfo)
     {
+        m_pMonsterInfo.AddHP((int)_pAttackInfo.Damage * -1);
+
         ClearAttackObject();
+        if (m_pMonsterInfo.HP <= 0.0f)
+        {
+            Dead();
+        }
+        else
+        {
+            Hit();
 
-        Hit();
+            knockback(_pAttackInfo);
+        }
 
-        knockback(_pAttackInfo);
-
-        m_pMonsterInfo.AddHP((int)_pAttackInfo.Damage);
     }
     public void Heal(int _iAmount)
     {
@@ -176,7 +198,7 @@ public class Monster : MonoBehaviour , IHealth
         }
 
         Vector3 vMonsterPos = m_pRigidbody.position;
-        Vector3 vDir = vMonsterPos - _attackInfo.HitPoint;
+        Vector3 vDir = vMonsterPos - _attackInfo.AttackerPosition;
         vDir.y = 0.0f;
 
         if (vDir.sqrMagnitude < 0.0001f)
@@ -211,4 +233,17 @@ public class Monster : MonoBehaviour , IHealth
         m_pKnockbackRoutine = null;
     }
 
+    protected virtual void Dead()
+    {
+        m_bHit = true;
+        m_pAnimator.SetTrigger("Dead");
+    }
+
+    public void PushObjectPool()
+    {
+        if(string.IsNullOrEmpty(m_strPoolKey) == true)
+            Destroy(gameObject);
+        else
+            ObjectPoolManager.m_Instance.PushObject(m_strPoolKey, gameObject);
+    }
 }

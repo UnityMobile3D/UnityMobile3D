@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.AddressableAssets.HostingServices;
 using UnityEngine;
 using UnityEngine.Events;
@@ -18,6 +19,7 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
 
     private AttackInfo m_pAttackInfo = new AttackInfo();
 
+    private bool m_bNearAttack = false;
     private float m_fMoveSpeed = 0.0f;
     private Vector3 m_vDir = Vector3.zero;
 
@@ -116,6 +118,8 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
         m_fLifeTime = _pSkillInfo.LifeTime;
         m_fAttackTime = _pSkillInfo.AttackTime;
         m_fMoveSpeed = _pSkillInfo.MoveSpeed;
+        m_bNearAttack = m_fMoveSpeed > 0.0f ? true : false; 
+    
         m_vDir = _pSkillInfo.AttackDir.normalized;
         m_strSpawnKey = _pSkillInfo.SOPoolEntry.prefabRef.AssetGUID;
 
@@ -141,6 +145,9 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
             if (check_attack_count() == false)
                 return;
             
+            Vector3 vAttackerPos = transform.position;
+            if (m_bNearAttack == true)
+                vAttackerPos = m_pOwner.transform.position;
 
             Vector3 vHitPoint = other.ClosestPoint(transform.position);
             m_pAttackInfo.HitPoint = vHitPoint;

@@ -16,7 +16,7 @@ MonoBehaviour:
   - CoolTime: 3
     AttackRange: 0
     AttackDamage: 5
-    AttackPower: 3
+    AttackPower: 1
     isDown: 0
     TargetLayers:
       serializedVersion: 2

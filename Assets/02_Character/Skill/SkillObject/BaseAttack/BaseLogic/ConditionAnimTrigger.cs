@@ -15,7 +15,7 @@ public class ConditionAnimTrigger : SOSkillLogic
             if (IsPressed == true)
                 _pSkillContext.animator.SetTrigger(triggerName);
 
-             return eSkillState.Success; ;
+             return eSkillState.Success;
         }
         return eSkillState.Failed;
     }

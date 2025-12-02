@@ -17,6 +17,5 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 5105fe1d825990746b9a92407ea447ca, type: 3}
   type: 24
   sortKey: 0
-  cooldown: 0
-  level: 5
   equiptype: 2
+  m_pSOItem: {fileID: 11400000, guid: eb4f084bb3f17bc40b36c45f0adb7efd, type: 2}

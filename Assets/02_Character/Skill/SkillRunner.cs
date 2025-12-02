@@ -70,7 +70,7 @@ public class SkillRunner : MonoBehaviour
         _cooldowns = new CoolDownView[PlayerInterfaceSlot.SLOT_SIZE];
     }
 
-  
+   
     public void Update()
     {
         for(int i = 0; i<_cooldowns.Length; ++i)
@@ -106,6 +106,10 @@ public class SkillRunner : MonoBehaviour
         if (_cooldowns[slotIdx] != null && _cooldowns[slotIdx].IsDone == false)
             return;
 
+        //마나 체크
+        if (_player.PlayerInfo.MP < _skills[slotIdx].Option.manacost)
+            return;
+
         _runSkill = _skills[slotIdx];
         _runCollDown = cooldown;
         _iCurrentSkillIdx = 0;
@@ -116,7 +120,10 @@ public class SkillRunner : MonoBehaviour
     public void StartSkill()  //스킬이 시작
     {
         //애니메이션 시작
-        
+        _player.PlayerInfo.AddMP((int)_runSkill.Option.manacost * -1);
+        HealthManager.m_Instance.PlayerConsumeMP();
+
+
         _runSkill.Loggic.startSkillLogic?.UpdateSkill(_skillContext);
         _skillContext.pressed = true;
 

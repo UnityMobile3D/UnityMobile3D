@@ -9,7 +9,7 @@ public class EquipmentInventory : BaseUI , IContainer
 
     Dictionary<int, int> m_hashItemCount = new Dictionary<int, int>();
 
-    [SerializeField] private eContainerType m_eContainerType = eContainerType.Equipment; // ← 인스펙터에 드롭다운으로 보임
+    [SerializeField] private eContainerType m_eContainerType = eContainerType.Equipment; 
     public eContainerType ContainerType { get => m_eContainerType; }
 
 
@@ -53,6 +53,17 @@ public class EquipmentInventory : BaseUI , IContainer
 
     public bool AddData(SOEntryUI _pSOData, int _iAmount, int _iCategoryIdx = 0)
     {
+        if (_pSOData == null)
+            return false;
+
+        var listSlot = m_pEquipSlotContainer.SlotList;
+        for(int i = 0; i< listSlot.Count; ++i)
+        {
+            if(listSlot[i].GetSlotHashCode() == _pSOData.GetUIHashCode())
+            {
+                return AddData(i, _pSOData, _iAmount);
+            }
+        }
         return false;
     }
 
@@ -62,8 +73,8 @@ public class EquipmentInventory : BaseUI , IContainer
         if (_pSOData == null)
             return false;
 
-        var pListSlot = m_pEquipSlotContainer.SlotList;
-        if (pListSlot.Count <= _iDataIdx || m_hashItemCount.ContainsKey(_pSOData.Id))
+        var listSlot = m_pEquipSlotContainer.SlotList;
+        if (listSlot.Count <= _iDataIdx || m_hashItemCount.ContainsKey(_pSOData.Id))
             return false;
 
 

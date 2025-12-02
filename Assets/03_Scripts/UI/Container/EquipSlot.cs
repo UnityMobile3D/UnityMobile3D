@@ -15,7 +15,12 @@ public class EquipSlot : Slot
 
     private GameObject m_pEquipObject = null;
 
-    //public List<AdditionalEffect> m_listEffect = new List<AdditionalEffect>();
+    //아이템이 컨텍스트를 들고있으면 해당 아이템을 들고있는 오브젝트를 슬롯이 들고있거나, 
+    //아이템 컨텍스트를 슬롯에서 들고있어야한다. 아니면 사용할 때마다 가져오기..
+    //아이템은 월드 오브젝트로 먹으면 풀에 다시 넣어야하는데 내가 여기서도 참조하고 있으면 꼬드가 굉장히 더러워질 수 있음
+    
+    //아이템은 Value로만 계수를 들고있고 bind될 때 context에서 해당 값들 복사
+    //private EffectContext m_pItemEquipContext = null;
 
     protected override void Awake()
     {
@@ -27,10 +32,14 @@ public class EquipSlot : Slot
 
     public override void Init()
     {
-        //if (m_pEquip != null)
-        //    StartCoroutine(waitPoolAndEquiped());
+        
     }
 
+    protected override void OnValidate()
+    {
+        base.OnValidate();
+        m_iUIType |= (uint)m_eEquipType << (int)SOEntryUI.eUIType.Equip;
+    }
 
     public override void Bind(SOEntryUI _pSOTarget)
     {
@@ -86,12 +95,5 @@ public class EquipSlot : Slot
     }
 
 
-    //처음 캐릭터 장비를 셋팅할 때 오브젝트 풀에서(비동기) 무기 오브젝트가 전부 로드되지 않을 수 있음
-    private IEnumerator waitPoolAndEquiped()
-    {
-        yield return new WaitUntil(() => ObjectPoolManager.m_Instance != null);
-        yield return new WaitUntil(() => ObjectPoolManager.CompletedLoad == true);
-
-        equiped();     
-    }
+  
 }

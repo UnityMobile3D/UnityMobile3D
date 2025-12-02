@@ -17,6 +17,7 @@ public class SkillAttackObject : MonoBehaviour, IPoolAble
     private List<IChargeEvent> m_listChargeEvent = new List<IChargeEvent>();
     public List<IChargeEvent> ChargeEvents => m_listChargeEvent;
 
+    private bool m_bNearAttack = false;
     private float m_fMoveSpeed = 0.0f;
     private Vector3 m_vDir = Vector3.zero;
 
@@ -112,12 +113,13 @@ public class SkillAttackObject : MonoBehaviour, IPoolAble
 
 
         m_fLifeTime = _pSkillInfo.Option.lifeTime;
-
         m_fMoveSpeed = _pSkillInfo.Option.moveSpeed;
         m_pAttackInfo.Damage = (int)_pSkillInfo.Damage.baseDamage;
         m_pAttackInfo.Power = (int)_pSkillInfo.Option.power;
         m_iAttackCount = _pSkillInfo.Option.targetingProfile.MaxTargets;   
         m_fStartAttackTime = _pSkillInfo.Option.startAttackTime;
+
+        m_bNearAttack = m_fMoveSpeed > 0.0f ? false : true;
 
         m_strSpawnKey = _strKey;
     }
@@ -144,8 +146,14 @@ public class SkillAttackObject : MonoBehaviour, IPoolAble
         if ((m_pSkill.Option.targetingProfile.TargetLayers.value & (1 << other.gameObject.layer)) != 0)
         {
             Vector3 vHitPoint = other.ClosestPoint(transform.position);
+            Vector3 vAttackerPos = transform.position;
+
+            if (m_bNearAttack == true)
+                vAttackerPos = m_pOwner.transform.position;
+
             m_pAttackInfo.HitPoint = vHitPoint;
             m_pAttackInfo.HitPoint.y = 0.0f;
+            m_pAttackInfo.AttackerPosition = vAttackerPos;
 
             other.GetComponent<IHealth>()?.TakeDamage(m_pAttackInfo);
         }

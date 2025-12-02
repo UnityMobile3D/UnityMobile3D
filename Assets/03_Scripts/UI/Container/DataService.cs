@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using UnityEditor;
@@ -61,6 +62,8 @@ public class DataService : MonoBehaviour
     //아이엠 등록 (null가능 유니티 인스펙터에서 확인 불가)
     private SlotRef? m_pTargetSlot = null;
 
+    [SerializeField] private List<SOEquipUI> m_listPlayerStartEquip = new();
+
     //public void RegisterData()
     //등동된 데이터 Container로 가져오기
     //public void BringData()
@@ -93,6 +96,10 @@ public class DataService : MonoBehaviour
 
         for (int i = 0; i < m_listContainer.Count; ++i)
             m_listContainer[i].Init();
+
+        //플레이더 데이터 미리 셋팅
+        StartCoroutine(waitPoolAndEquiped());
+
     }
 
     private void OnValidate()
@@ -238,5 +245,21 @@ public class DataService : MonoBehaviour
     {
         IContainer IContain = GetContainer(_eType);
         IContain.SetVisible(_bEnable);
+    }
+
+
+
+
+    //처음 캐릭터 장비를 셋팅할 때 오브젝트 풀에서(비동기) 무기 오브젝트가 전부 로드되지 않을 수 있음
+    private IEnumerator waitPoolAndEquiped()
+    {
+        yield return new WaitUntil(() => ObjectPoolManager.m_Instance != null);
+        yield return new WaitUntil(() => ObjectPoolManager.CompletedLoad == true);
+
+        for (int i = 0; i < m_listPlayerStartEquip.Count; ++i)
+        {
+            SOEquipUI pEquip = m_listPlayerStartEquip[i];
+            m_listContainer[(int)eContainerType.Equipment].AddData(pEquip, 1);
+        }
     }
 }

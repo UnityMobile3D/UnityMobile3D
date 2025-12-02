@@ -9,15 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 569485499479cd64e8720a2ff8b608bf, type: 3}
-  m_Name: Potion_3
+  m_Script: {fileID: 11500000, guid: b04dc63f80150604ea12fcedb87f46e4, type: 3}
+  m_Name: BluePotionPool
   m_EditorClassIdentifier: 
-  name: 
-  id: 55
-  icon: {fileID: 21300000, guid: b7f77607c82ea4142a2070c0e37e1756, type: 3}
-  type: 16
-  sortKey: 56
-  cooldown: 2
-  level: 0
-  itemtype: 1
-  effects: []
+  prefabRef:
+    m_AssetGUID: 84e11f3e5de2f564cae835d9767a214e
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  preload: 3
+  max: 5

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[CreateAssetMenu(menuName = "SO/Item/Effect/Heal")]
+[CreateAssetMenu(menuName = "SO/Item/Effect/Health")]
 public class SOHealth : ScriptableObject
 {
     public int MaxHP = 100;

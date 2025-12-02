@@ -8,6 +8,7 @@ public class AttackInfo
 {
     public float Damage;
     public float Power;
+    public Vector3 AttackerPosition;
     public Vector3 HitPoint;
 }
 

@@ -17,6 +17,12 @@ public class ObjectInfo : MonoBehaviour
         else if(hp <=0)
             hp = 0;
     }
+    public void AddMaxHP(int _value)
+    {
+        maxHp += _value;
+    }
+
+   
 
     public int HP => hp;
     public int MaxHp => maxHp;
@@ -31,13 +37,40 @@ public class ObjectInfo : MonoBehaviour
     [Header("Speed")]
     [SerializeField] private int speed;
     [SerializeField] private int maxSpeed;
-    
+    public void AddMP(int _value)
+    {
+        mp += _value;
+        if (mp >= maxMp)
+            mp = maxMp;
+        else if (mp <= 0)
+            mp = 0;
+    }
+
+
     public int Speed => speed;
     public int MaxSpeed => maxSpeed;
+
+    public void AddSpeed(int _value)
+    {
+        speed += _value;
+        if (speed >= maxSpeed)
+            speed = maxSpeed;
+        else if (speed <= 0)
+            speed = 1;
+    }
+
 
     [Header("Defense")]
     [SerializeField] private int defense;
     [SerializeField] private int maxDefense;
+    public void AddDefense(int _value)
+    {
+        defense += _value;
+        if (defense >= maxDefense)
+            defense = maxDefense;
+        else if (defense <= 0)
+            defense = 1;
+    }
 
     public int Defense => defense;
     public int MaxDefense => maxDefense;

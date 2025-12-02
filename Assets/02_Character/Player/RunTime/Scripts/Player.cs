@@ -38,7 +38,7 @@ public class Player : MonoBehaviour , IHealth
     public SkillRunner SkillRunner => _skillRunner;
 
     [SerializeField] private ObjectInfo _playerInfo;
-
+    public ObjectInfo PlayerInfo => _playerInfo;
     // 이동 관련변수
     [Header("Move")]
     //[SerializeField] private float Speed        = 2f;
@@ -65,12 +65,12 @@ public class Player : MonoBehaviour , IHealth
         _skillRunner = GetComponent<SkillRunner>();
 
         // Rigidbody 세팅
-        _rigidbody.useGravity = true;
-        _rigidbody.drag = 0f;
-        _rigidbody.angularDrag = 0f;
-        _rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
-        _rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
-        _rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        //_rigidbody.useGravity = true;
+        //_rigidbody.drag = 0f;
+        //_rigidbody.angularDrag = 0f;
+        //_rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+        //_rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        //_rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 
         // Animator 세팅
         _animator = GetComponentInChildren<Animator>();
@@ -105,19 +105,11 @@ public class Player : MonoBehaviour , IHealth
         {
             _skillRunner.UpdateSkill();
         }
+        else
+        {
+            ROTATE();
+        }
 
-
-
-        Vector2 input = InputManager.m_Instance.ActionState.vDirection;
-        if (input == Vector2.zero)
-            return;
-
-        moveDir = new Vector3(input.x, 0f, input.y);
-
-        float targetY = Mathf.Atan2(moveDir.x, moveDir.z) * Mathf.Rad2Deg;
-        float currentY = transform.eulerAngles.y;
-        float smoothY = Mathf.SmoothDampAngle(currentY, targetY, ref rotateVel, rotateTime);
-        transform.rotation = Quaternion.Euler(0f, smoothY, 0f);
     }
 
 
@@ -147,10 +139,24 @@ public class Player : MonoBehaviour , IHealth
         Vector3 vStep = moveDir * _playerInfo.Speed * Time.fixedDeltaTime;
         Vector3 vPos = _rigidbody.position;
 
-        _rigidbody.MovePosition(vPos + vStep);
+        transform.position = (vPos + vStep);
+        //_rigidbody.MovePosition(vPos + vStep);
         _animator.SetBool("isWalk", true);
     }
 
+    private void ROTATE()
+    {
+        Vector2 input = InputManager.m_Instance.ActionState.vDirection;
+        moveDir = new Vector3(input.x, 0f, input.y);
+
+        if (input == Vector2.zero)
+            return;
+
+        float targetY = Mathf.Atan2(moveDir.x, moveDir.z) * Mathf.Rad2Deg;
+        float currentY = transform.eulerAngles.y;
+        float smoothY = Mathf.SmoothDampAngle(currentY, targetY, ref rotateVel, rotateTime);
+        transform.rotation = Quaternion.Euler(0f, smoothY, 0f);
+    }
   
     public void HIT(bool _bDown = false)
     {
@@ -172,8 +178,7 @@ public class Player : MonoBehaviour , IHealth
 
     private void FixedUpdate()
     {
-        //MOVE();
-
+        MOVE();
     }
 
     
@@ -191,10 +196,10 @@ public class Player : MonoBehaviour , IHealth
         }
 
         Vector3 vMonsterPos = _rigidbody.position;
-        Vector3 vDir = vMonsterPos - _attackInfo.HitPoint;
+        Vector3 vDir = vMonsterPos - _attackInfo.AttackerPosition;
         vDir.y = 0.0f;
 
-        if (vDir.sqrMagnitude < 0.0001f)
+        if (vDir.sqrMagnitude < 0.001f)
             vDir = -transform.forward;
 
         vDir.Normalize();

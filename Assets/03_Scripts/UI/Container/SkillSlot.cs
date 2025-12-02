@@ -25,6 +25,12 @@ public class SkillSlot : Slot
         m_iUIType |= (uint)m_eSkillType << 8;
     }
 
+    protected override void OnValidate()
+    {
+        base.OnValidate();
+        m_iUIType |= (uint)m_eSkillType << (int)SOEntryUI.eUIType.Skill;
+    }
+
     private void Start()
     {   
         Player pPlayer = GameManager.m_Instance.Player;
@@ -36,7 +42,6 @@ public class SkillSlot : Slot
         if (m_pSOSkill != null)
             Bind(m_pSOSkill);
     }
-
 
     public override void Bind(SOEntryUI _pSOTarget)
     {

@@ -25,8 +25,8 @@ public class SlotContainer : MonoBehaviour
 
         m_pOwner = GetComponentInParent<IContainer>();
 
-        for (int i = 0; i < m_listSlot.Count; i++)
-            m_listSlot[i].Init();
+        //for (int i = 0; i < m_listSlot.Count; i++)
+        //    m_listSlot[i].Init();
     }
 
     public void ActiveSlot(uint _iUIHashCode)

@@ -14412,12 +14412,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0e0d0d39aadf2a4ebf74d55fc21b558, type: 3}
---- !u!4 &1142601433 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4105805283940168, guid: bd1a894f239d58d4dbf63f27e28096bd,
-    type: 3}
-  m_PrefabInstance: {fileID: 1345928162}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1149722246 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 81796729383309460, guid: 9de25cb83282c7046b4dc6d17d18c281,
@@ -16347,63 +16341,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 168517732}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1345928162
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1657131909}
-    m_Modifications:
-    - target: {fileID: 1783979763778466, guid: bd1a894f239d58d4dbf63f27e28096bd, type: 3}
-      propertyPath: m_Name
-      value: rpgpp_lt_bush_01 (2)
-      objectReference: {fileID: 0}
-    - target: {fileID: 1783979763778466, guid: bd1a894f239d58d4dbf63f27e28096bd, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4105805283940168, guid: bd1a894f239d58d4dbf63f27e28096bd, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4105805283940168, guid: bd1a894f239d58d4dbf63f27e28096bd, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 91.3437
-      objectReference: {fileID: 0}
-    - target: {fileID: 4105805283940168, guid: bd1a894f239d58d4dbf63f27e28096bd, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 21.55
-      objectReference: {fileID: 0}
-    - target: {fileID: 4105805283940168, guid: bd1a894f239d58d4dbf63f27e28096bd, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 31.088957
-      objectReference: {fileID: 0}
-    - target: {fileID: 4105805283940168, guid: bd1a894f239d58d4dbf63f27e28096bd, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.37232772
-      objectReference: {fileID: 0}
-    - target: {fileID: 4105805283940168, guid: bd1a894f239d58d4dbf63f27e28096bd, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4105805283940168, guid: bd1a894f239d58d4dbf63f27e28096bd, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.92810136
-      objectReference: {fileID: 0}
-    - target: {fileID: 4105805283940168, guid: bd1a894f239d58d4dbf63f27e28096bd, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4105805283940168, guid: bd1a894f239d58d4dbf63f27e28096bd, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -136.282
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: bd1a894f239d58d4dbf63f27e28096bd, type: 3}
 --- !u!1001 &1347597470
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21271,7 +21208,6 @@ Transform:
   - {fileID: 1945634646}
   - {fileID: 686543767}
   - {fileID: 66148694}
-  - {fileID: 1142601433}
   - {fileID: 1312989512}
   m_Father: {fileID: 415293645}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -32419,6 +32355,7 @@ GameObject:
   - component: {fileID: 1644566750700302812}
   - component: {fileID: 1644566750700302811}
   - component: {fileID: 1644566750700302810}
+  - component: {fileID: 1644566750700302813}
   m_Layer: 7
   m_Name: StoneMonster
   m_TagString: Monster
@@ -32771,8 +32708,7 @@ MonoBehaviour:
   m_pAnimator: {fileID: 0}
   ListAttack:
   - Attack
-  Speed: Speed
-  Move: Move
+  Run: Run
   Hit: Hit
   Dead: Dead
 --- !u!114 &1644566750700302812
@@ -32795,8 +32731,31 @@ MonoBehaviour:
     CooldownModule: {fileID: 0}
     Agent: {fileID: 0}
     AnimBridge: {fileID: 0}
+    CurrentAttackIdx: -1
+    SpawnObjects: []
   m_SOMonsterInfo: {fileID: 11400000, guid: 334a0c20e24148944a8adc685ecbfe6a, type: 2}
-  m_pMonsterInfo: {fileID: 0}
+--- !u!114 &1644566750700302813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1640920912429264030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6796e4a61d49a0429f0da1fab667112, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 40
+  maxHp: 40
+  mp: 0
+  maxMp: 0
+  speed: 2
+  maxSpeed: 2
+  defense: 5
+  maxDefense: 5
+  attack: 5
+  maxAttack: 5
 --- !u!4 &1644920874791878798
 Transform:
   m_ObjectHideFlags: 0
@@ -33068,7 +33027,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &4940997905784084523
 GameObject:
   m_ObjectHideFlags: 0
@@ -33652,8 +33611,9 @@ MonoBehaviour:
     CooldownModule: {fileID: 0}
     Agent: {fileID: 0}
     AnimBridge: {fileID: 0}
+    CurrentAttackIdx: -1
+    SpawnObjects: []
   m_SOMonsterInfo: {fileID: 11400000, guid: d1f1d827b9e83ce4a91839cdb0f818c7, type: 2}
-  m_pMonsterInfo: {fileID: 0}
 --- !u!114 &5026246067429539216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33669,8 +33629,7 @@ MonoBehaviour:
   m_pAnimator: {fileID: 0}
   ListAttack:
   - Attack
-  Speed: Speed
-  Move: Run
+  Run: Run
   Hit: Hit
   Dead: Dead
 --- !u!114 &5026246067429539217

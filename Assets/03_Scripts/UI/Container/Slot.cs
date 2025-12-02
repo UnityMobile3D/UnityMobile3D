@@ -62,6 +62,11 @@ public class Slot : ButtonUI
         }
     }
 
+    protected virtual void OnValidate()
+    {
+        m_iUIType = (uint)m_eUIType;
+    }
+
     private void OnDestroy()
     {
         
@@ -95,13 +100,17 @@ public class Slot : ButtonUI
     }
     public void ActiveSlot()
     {
-        //m_pCheckUI.SetRaycast(true);
+        if (m_pCheckUIImage == null)
+            return;
+
         m_pCheckUIImage.enabled = true;
     }
 
     public void UnActiveSlot()
     {
-        //m_pCheckUI.SetRaycast(false);
+        if (m_pCheckUIImage == null)
+            return;
+
         m_pCheckUIImage.enabled = false;
     }
 
@@ -115,8 +124,6 @@ public class Slot : ButtonUI
         if (m_pSOTarget == null)
             return;
 
-      
-
         base.OnPointerDown(e);
     }
 
@@ -127,8 +134,11 @@ public class Slot : ButtonUI
 
     public override void OnPointerEnter(PointerEventData e)
     {
-        if(m_pLightCoroutine != null && m_pSlotIcon != null)
+        if(m_pSlotIcon != null)
         {
+            if (m_pLightCoroutine != null)
+                StopCoroutine(m_pLightCoroutine);
+
             m_pSlotIcon.color = m_cOriginalColor;
             m_pLightCoroutine = StartCoroutine(LightingSlot());
         }

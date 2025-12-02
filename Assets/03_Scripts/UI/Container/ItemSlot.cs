@@ -15,15 +15,19 @@ public class ItemSlot : Slot
     [SerializeField] private TextMeshProUGUI m_pCountBadge = null;
 
     public SOItemUI SOItem { get => m_pSOItem; }
-
-    public List<AdditionalEffect> m_listEffect = new List<AdditionalEffect>();
-
+   
     protected override void Awake()
     {
         base.Awake();
         m_pCheckUI.OnClickEvt += selete_item_slot;
 
-        m_iUIType |= (uint)m_eItemType << 16;
+        m_iUIType |= (uint)m_eItemType << (int)SOEntryUI.eUIType.Item;
+    }
+
+    protected override void OnValidate()
+    {
+        base.OnValidate();
+        m_iUIType |= (uint)m_eItemType << (int)SOEntryUI.eUIType.Item;
     }
 
     public override void Bind(SOEntryUI _pSOTarget)
@@ -35,6 +39,8 @@ public class ItemSlot : Slot
             m_pSOItem = _pSOTarget as SOItemUI;
             SetCoolTime(m_pSOItem.ItemData.cooldown);
             update_count();
+
+    
         } 
         else
         {
@@ -51,9 +57,11 @@ public class ItemSlot : Slot
         if (m_pOwner?.Consume(m_iSlotIdx, iConsumeCount) == false)
             Bind(null);
 
-        update_count();
+      
+        //if (m_pItemObject.TryGetComponent<Item>(out var pItem) == true)
+        //    ItemEffectRunner.ApplyEffectUsing(m_pSOItem.ItemData, pItem.EffectContext);
 
-        //ItemEffectRunner.UsingItem(m_pSOItem.ItemData, null, null, m_listEffect);
+        update_count();
     }
     private void selete_item_slot()
     {

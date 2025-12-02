@@ -3628,6 +3628,7 @@ GameObject:
   - component: {fileID: 1341775770}
   - component: {fileID: 1341775769}
   - component: {fileID: 1341775768}
+  - component: {fileID: 1341775776}
   m_Layer: 0
   m_Name: dragon
   m_TagString: Untagged
@@ -3674,8 +3675,7 @@ MonoBehaviour:
   - Attack
   - Attack2
   - Attack3
-  Speed: Speed
-  Move: Move
+  Run: Walk
   Hit: Hit
   Dead: Dead
 --- !u!114 &1341775770
@@ -3711,6 +3711,8 @@ MonoBehaviour:
     CooldownModule: {fileID: 0}
     Agent: {fileID: 0}
     AnimBridge: {fileID: 0}
+    CurrentAttackIdx: -1
+    SpawnObjects: []
   m_SOMonsterInfo: {fileID: 11400000, guid: 217df672c310c2744b571fd87cae0625, type: 2}
   m_pBreathTr: {fileID: 578150812}
   m_fYSpawnDiff: 10
@@ -3807,6 +3809,28 @@ Transform:
   - {fileID: 578150812}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &1341775776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1341775767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6796e4a61d49a0429f0da1fab667112, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 400
+  maxHp: 400
+  mp: 0
+  maxMp: 0
+  speed: 3
+  maxSpeed: 3
+  defense: 10
+  maxDefense: 20
+  attack: 10
+  maxAttack: 10
 --- !u!1 &1357119180
 GameObject:
   m_ObjectHideFlags: 0

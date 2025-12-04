@@ -19,7 +19,7 @@ public class SOPlayerSpawn : SOSkillLogic
 
         Vector3 vSpawnPos = pPlayerSkill.gameObject.transform.position;
         Vector3 vRot = pPlayerSkill.gameObject.transform.eulerAngles;
-        Vector3 vDir = pPlayerSkill.gameObject.transform.forward;
+        Vector3 vDir = pPlayerSkill.gameObject.transform.forward; 
 
         if(IsUseDesignPos == true)
             vSpawnPos = _pSkillContext.designSpawnPostion;
@@ -38,15 +38,15 @@ public class SOPlayerSpawn : SOSkillLogic
         vObjectAngle +=  pTargetPro.offsetRot;
         pAttackObject.transform.rotation = Quaternion.Euler(vObjectAngle);
 
-        if (pAttackObject.TryGetComponent<SkillAttackObject>(out SkillAttackObject pAttackComp) == true)
+        if (pAttackObject.TryGetComponent<SkillObject>(out SkillObject pSkillObj) == true)
         {
             //스킬 초기화
-            pAttackComp.SetInfo(pPlayerSkill.RunSkill, AttackObjectReference.AssetGUID);
-            pAttackComp.SetDir(vDir);
-            pAttackComp.SetOwner(_pSkillContext.skill);
+            pSkillObj.SetOwner(_pSkillContext.skill);
+            pSkillObj.SetInfo(pPlayerSkill.RunSkill, AttackObjectReference.AssetGUID);
+            pSkillObj.Init();
 
-            _pSkillContext.runSkillObject = pAttackComp;
-            _pSkillContext.chargeEvents = pAttackComp.ChargeEvents;
+            _pSkillContext.runSkillObject = pSkillObj;
+            _pSkillContext.chargeEvents = pSkillObj.ChargeEvents;
 
             for(int i = 0; i<_pSkillContext.chargeEvents.Count; ++i)
                 _pSkillContext.chargeEvents[i].StartEvent();

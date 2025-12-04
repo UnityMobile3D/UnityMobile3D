@@ -17,5 +17,5 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: b53db54545fcd5747b7ba5e450c07baf, type: 3}
   type: 24
   sortKey: 0
+  itemdata: {fileID: 11400000, guid: 1cf8eae5c07381b45b4d942f86bb4aac, type: 2}
   equiptype: 1
-  m_pSOItem: {fileID: 11400000, guid: 1cf8eae5c07381b45b4d942f86bb4aac, type: 2}

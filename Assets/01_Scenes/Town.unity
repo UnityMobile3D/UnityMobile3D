@@ -32362,7 +32362,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1640944084346063880
 GameObject:
   m_ObjectHideFlags: 0
@@ -32707,10 +32707,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_pAnimator: {fileID: 0}
   ListAttack:
-  - Attack
-  Run: Run
-  Hit: Hit
-  Dead: Dead
+  - Name: Attack
+    ParamName: Attack
+    IsOn: 0
+  Run:
+    Name: Run
+    ParamName: Run
+    IsOn: 0
+  Hit:
+    Name: Hit
+    ParamName: Hit
+    IsOn: 0
+  Dead:
+    Name: Dead
+    ParamName: Dead
+    IsOn: 0
 --- !u!114 &1644566750700302812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32734,6 +32745,7 @@ MonoBehaviour:
     CurrentAttackIdx: -1
     SpawnObjects: []
   m_SOMonsterInfo: {fileID: 11400000, guid: 334a0c20e24148944a8adc685ecbfe6a, type: 2}
+  m_pDropTable: {fileID: 11400000, guid: 702b697e69218a14dac6387293aa0d2b, type: 2}
 --- !u!114 &1644566750700302813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32746,8 +32758,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6796e4a61d49a0429f0da1fab667112, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 40
-  maxHp: 40
+  hp: 20
+  maxHp: 20
   mp: 0
   maxMp: 0
   speed: 2
@@ -33614,6 +33626,7 @@ MonoBehaviour:
     CurrentAttackIdx: -1
     SpawnObjects: []
   m_SOMonsterInfo: {fileID: 11400000, guid: d1f1d827b9e83ce4a91839cdb0f818c7, type: 2}
+  m_pDropTable: {fileID: 11400000, guid: 6806a2572d05dc74f9cf19ade552e0f3, type: 2}
 --- !u!114 &5026246067429539216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33628,10 +33641,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_pAnimator: {fileID: 0}
   ListAttack:
-  - Attack
-  Run: Run
-  Hit: Hit
-  Dead: Dead
+  - Name: Attack
+    ParamName: Attack
+    IsOn: 0
+  Run:
+    Name: Run
+    ParamName: Run
+    IsOn: 0
+  Hit:
+    Name: Hit
+    ParamName: Hit
+    IsOn: 0
+  Dead:
+    Name: Dead
+    ParamName: Dead
+    IsOn: 0
 --- !u!114 &5026246067429539217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33644,8 +33668,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6796e4a61d49a0429f0da1fab667112, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 10
-  maxHp: 20
+  hp: 5
+  maxHp: 5
   mp: 0
   maxMp: 0
   speed: 2

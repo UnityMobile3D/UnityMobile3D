@@ -18,6 +18,8 @@ public class SOUpMaxHPEffect : SOItemEffect
                     pStatus.AddMaxHP(_tEffectCnt.Value.Int * -1);
                 else
                     pStatus.AddMaxHP(_tEffectCnt.Value.Int);
+
+                HealthManager.m_Instance.UpdateHP();
             }
         }
     }

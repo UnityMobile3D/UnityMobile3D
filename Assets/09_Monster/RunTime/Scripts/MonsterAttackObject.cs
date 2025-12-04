@@ -49,15 +49,24 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
     }
     public void OnDespawn()
     {
-        if(m_pMonsterSkillInfo != null && m_pMonsterSkillInfo.EndFrameSpawn.SpawnObject != null)
+        MonsterSkillInfo pEndSpawn = m_pMonsterSkillInfo.SpawnOption.EndFrameSpawnSkill;
+        MonsterSpawnOption pSpawnOption = pEndSpawn.SpawnOption;
+        //재귀적으로 호출, 마지막 프레임에 소환할 오브젝트가 있다면
+        if (pSpawnOption != null)
         {
-            SOPoolEntry pSpawnEntry = m_pMonsterSkillInfo.EndFrameSpawn.SpawnObject;
+            SOPoolEntry pSpawnEntry = pEndSpawn.SpawnOption.SOPoolEntry;
 
-            GameObject pSpawnObj = ObjectPoolManager.m_Instance.GetObject(pSpawnEntry.prefabRef.AssetGUID,
-                transform.position, Vector3.zero);
+            if (pSpawnEntry != null)
+            {
+                GameObject pSpawnObj = 
+                    ObjectPoolManager.m_Instance.GetObject(pSpawnEntry.prefabRef.AssetGUID,transform.position, Vector3.zero);
 
-            if(pSpawnObj.TryGetComponent<MonsterAttackObject>(out var pAttackObj) == true)
-                pAttackObj.SetSpawnKey(pSpawnEntry.prefabRef.AssetGUID);
+                if (pSpawnObj.TryGetComponent<MonsterAttackObject>(out var pAttackObj) == true)
+                {
+                    pAttackObj.SetInfo(pEndSpawn);
+                    pAttackObj.SetSpawnKey(pSpawnEntry.prefabRef.AssetGUID);
+                }
+            }
         }
 
         m_iCreateCount = 0;
@@ -111,21 +120,18 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
 
     public void SetInfo(MonsterSkillInfo _pSkillInfo)
     {
-        if (m_pMonsterSkillInfo != null)
-            return;
-
         m_pMonsterSkillInfo = _pSkillInfo;
-        m_fLifeTime = _pSkillInfo.LifeTime;
-        m_fAttackTime = _pSkillInfo.AttackTime;
-        m_fMoveSpeed = _pSkillInfo.MoveSpeed;
-        m_bNearAttack = m_fMoveSpeed > 0.0f ? true : false; 
+        m_fLifeTime = _pSkillInfo.SpawnOption.LifeTime;
+        m_fAttackTime = _pSkillInfo.SkillOption.AttackTime;
+        m_fMoveSpeed = _pSkillInfo.SkillOption.MoveSpeed;
+        m_bNearAttack = m_fMoveSpeed > 0.0f ? false : true; 
     
-        m_vDir = _pSkillInfo.AttackDir.normalized;
-        m_strSpawnKey = _pSkillInfo.SOPoolEntry.prefabRef.AssetGUID;
+        m_vDir = _pSkillInfo.SpawnOption.AttackDir.normalized;
+        m_strSpawnKey = _pSkillInfo.SpawnOption.SOPoolEntry.prefabRef.AssetGUID;
 
 
-        m_pAttackInfo.Power = _pSkillInfo.AttackPower;
-        m_pAttackInfo.Damage = _pSkillInfo.AttackDamage;
+        m_pAttackInfo.Power = _pSkillInfo.SkillOption.AttackPower;
+        m_pAttackInfo.Damage = _pSkillInfo.SkillOption.AttackDamage;
     }
 
     public void SetDir(in Vector3 _vDir)
@@ -140,7 +146,11 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
 
     public void OnTriggerEnter(Collider other)
     {
-        if ((m_pMonsterSkillInfo.TargetLayers.value & (1 << other.gameObject.layer)) != 0)
+        if (m_pMonsterSkillInfo == null)
+            return;
+
+        if ((m_pMonsterSkillInfo.SkillOption.TargetLayers.value & 
+            (1 << other.gameObject.layer)) != 0)
         {
             if (check_attack_count() == false)
                 return;
@@ -149,8 +159,7 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
             if (m_bNearAttack == true)
                 vAttackerPos = m_pOwner.transform.position;
 
-            Vector3 vHitPoint = other.ClosestPoint(transform.position);
-            m_pAttackInfo.HitPoint = vHitPoint;
+            m_pAttackInfo.HitPoint = vAttackerPos;
             m_pAttackInfo.HitPoint.y = 0.0f;
             other.GetComponent<IHealth>().TakeDamage(m_pAttackInfo);
         }

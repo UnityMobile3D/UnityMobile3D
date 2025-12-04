@@ -36,7 +36,7 @@ public class Store : BaseUI, IContainer
 
     private void Start()
     {
-        m_pCoinText.SetText("{0}", ShopManager.m_Instance.Get(ShopManager.eCurrency.Coin)); 
+        update_coin();
     }
     private void Update()
     {
@@ -51,6 +51,7 @@ public class Store : BaseUI, IContainer
     {
         //레이까지 제거하기 위해서
         gameObject.SetActive(false);
+        m_pItemContainer.ClearTarget();
     }
   
 
@@ -64,15 +65,21 @@ public class Store : BaseUI, IContainer
         if (pShapItem != null)
         {
            //데이터 매니저에서 플레이어 코인 값 가져오기 가져왔다면 비교 후 DataService를 통해서 전달
-           if(ShopManager.m_Instance.Spend(ShopManager.eCurrency.Coin, pShapItem.Coin))
+           if(ShopManager.m_Instance.Spend(ShopManager.eCurrency.Coin, pShapItem.Coin) == true)
            {
                 DataService.m_Instance.StartPickData(this, pShapItem.ItemUI, pTarget.SlotIdx, 1);
 
                 DataService.m_Instance.TryAddData(eContainerType.Inventory);
 
                 m_pItemContainer.ClearTarget();
+
+                update_coin();
            }
         }
+    }
+    private void update_coin()
+    {
+        m_pCoinText.SetText("{0}", ShopManager.m_Instance.Get(ShopManager.eCurrency.Coin));
     }
 
 

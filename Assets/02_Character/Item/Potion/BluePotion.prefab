@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 3764202736558670850}
   - component: {fileID: 246682253190511464}
   - component: {fileID: 1451186616508789275}
-  m_Layer: 0
+  - component: {fileID: 8291476957981533463}
+  m_Layer: 12
   m_Name: BluePotion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,11 +97,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e9778cfebac2e94781c81293d5a978a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_tEffectValue:
-    pTarget: {fileID: 0}
-    pOwner: {fileID: 0}
-    Value:
-      Int: 10
-      Float: 0
-      Vector4: {x: 0, y: 0, z: 0, w: 0}
   m_pItem: {fileID: 11400000, guid: 6a2b967da185eac4c93d02bd7b7f14e4, type: 2}
+--- !u!136 &8291476957981533463
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3103103281790252032}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Height: 3
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.5, z: 0}

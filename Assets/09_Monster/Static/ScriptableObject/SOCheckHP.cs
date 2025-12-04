@@ -25,7 +25,7 @@ public class SOCheckHP : SONode
         public STATE Evaluate(Blackboard _pBB, float _fDT)
         {
             //내가 지정한 피 양보다 작으면 
-            if(m_pOwner.m_fCheckHPRatio < _pBB.HpRatio)
+            if(m_pOwner.m_fCheckHPRatio > _pBB.HpRatio)
             {
                 return STATE.SUCCESS;
             }

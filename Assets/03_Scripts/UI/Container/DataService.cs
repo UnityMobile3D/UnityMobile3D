@@ -154,6 +154,13 @@ public class DataService : MonoBehaviour
         return pTo.AddData(pTargetData.Data, pTargetData.Amount, _iToCategoryIdx);
     }
 
+    public bool TryAddData(eContainerType _eToType, SOEntryUI _pEntryUI, int _iAmount)
+    {
+        IContainer pTo = GetContainer(_eToType);
+
+        return pTo.AddData(_pEntryUI, _iAmount);
+    }
+
     //요청한 인덱스에 넣기
     public bool TryDropData(eContainerType _eToType, int _iToIdx, int _iToCategoryIdx = 0)
     {

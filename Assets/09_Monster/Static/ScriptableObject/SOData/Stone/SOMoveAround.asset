@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f3230ede3b5f8640b6fcbff98e68d28, type: 3}
   m_Name: SOMoveAround
   m_EditorClassIdentifier: 
-  m_bEnterExit: 0
-  m_fChangeDirTime: 2
+  m_fChangeDirTime: 1
   m_fStepDistance: 3

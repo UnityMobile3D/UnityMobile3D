@@ -12,6 +12,10 @@ public class SOSKill : ScriptableObject
     [SerializeField]        private MetaProfile meta;
     [Header("Damage")]
     [SerializeField]        private DamageProfile damage;
+    [Header("Defense")]
+    [SerializeField]        private DefenseProfile defense;
+    [Header("Buff")]
+    [SerializeField]        private BuffProfile buff;
     [Header("Option")]
     [SerializeField]        private SkillOptionProfile option;
     [Header("Logic")]
@@ -21,6 +25,8 @@ public class SOSKill : ScriptableObject
 
     public MetaProfile Meta => meta;
     public DamageProfile Damage => damage;
+    public DefenseProfile Defense => defense;
+    public BuffProfile Buff => buff;
     public SkillOptionProfile Option => option;
     public LogicProfile Loggic => logic;
     public SKillAnimation Animation => animation;

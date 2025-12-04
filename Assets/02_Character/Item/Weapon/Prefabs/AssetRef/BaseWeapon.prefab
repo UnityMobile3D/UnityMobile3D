@@ -96,11 +96,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e9778cfebac2e94781c81293d5a978a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_tEffectValue:
-    pTarget: {fileID: 0}
-    pOwner: {fileID: 1087868068176786116}
-    Value:
-      Int: 5
-      Float: 0
-      Vector4: {x: 0, y: 0, z: 0, w: 0}
   m_pItem: {fileID: 11400000, guid: 1035a33cdbec48245a1266b200efc5df, type: 2}
+  m_bDontDestroy: 1

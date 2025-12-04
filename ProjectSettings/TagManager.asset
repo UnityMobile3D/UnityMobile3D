@@ -9,6 +9,7 @@ TagManager:
   - MonsterAttack
   - Obstacle
   - PlayerAttack
+  - Item
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - MonsterAttack
   - PlayerAttack
   - Obstacle
-  - 
+  - Item
   - 
   - 
   - 

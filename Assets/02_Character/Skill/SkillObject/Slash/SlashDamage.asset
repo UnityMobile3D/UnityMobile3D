@@ -17,3 +17,6 @@ MonoBehaviour:
   criticalChance: 0
   criticalMultiplier: 0
   damageVariance: 0
+  power: 3
+  startAttackTime: 0
+  moveSpeed: 0

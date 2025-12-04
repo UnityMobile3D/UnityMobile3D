@@ -14,6 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemID: 0
   Level: 0
+  cooldown: 1
+  m_tBaseValues:
+    Int: 10
+    Float: 0
+    Vector4: {x: 0, y: 0, z: 0, w: 0}
   EquippedEffects:
   - {fileID: 11400000, guid: 143b7467cd419954c946d7a336584472, type: 2}
   - {fileID: 11400000, guid: 8d959035a3ae3444996b24afc1559657, type: 2}

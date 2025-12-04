@@ -1,10 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
+public interface IItemUI
+{
+    SOItem ItemData { get; }
+}
+
+
 [CreateAssetMenu(menuName = "UIData/Catalog/Item UI", fileName = "SOEntryUI")]
-public class SOItemUI : SOEntryUI
+public class SOItemUI : SOEntryUI , IItemUI
 {
     public enum eItemType
     {

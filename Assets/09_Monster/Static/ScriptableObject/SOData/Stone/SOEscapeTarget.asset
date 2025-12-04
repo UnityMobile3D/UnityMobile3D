@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebf7684fd234ddc4eacec4773ff4d7a0, type: 3}
   m_Name: SOEscapeTarget
   m_EditorClassIdentifier: 
-  m_fEscapeDistance: 7
-  m_fEscapeTime: 1.5
+  m_fEscapeDistance: 5
+  m_fEscapeTime: 1

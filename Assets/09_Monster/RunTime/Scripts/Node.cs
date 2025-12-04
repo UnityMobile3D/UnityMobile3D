@@ -10,7 +10,6 @@ public interface INode
 {
     public enum STATE { RUN, SUCCESS, FAILED }
     public STATE Evaluate(Blackboard _pBB, float _fDT);
-
 }
 
 public abstract class CompositeRuntime : INode
@@ -39,6 +38,7 @@ public class Blackboard
     public NavMeshAgent Agent;
     public AnimationBridge AnimBridge;
 
+    public bool Attacking = false;
     public int CurrentAttackIdx = -1;
     public List<MonsterAttackObject> SpawnObjects = new List<MonsterAttackObject>();
 }

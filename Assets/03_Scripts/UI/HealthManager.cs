@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,9 +11,15 @@ public class HealthManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_pMPText;
     [SerializeField] private Image m_pHealthImage;
     [SerializeField] private Image m_pMPImage;
-    [SerializeField] private ObjectInfo m_IPlayerStatus;
+    [SerializeField] private ObjectInfo m_pPlayerStatus;
 
     public static HealthManager m_Instance = null;
+
+    private Coroutine m_pUpdateHPCoroutine = null;
+    private Coroutine m_pUpdateMPCoroutine = null;
+
+    [SerializeField] private float m_fLerpTime = 0.2f;
+
     public void Awake()
     {
         if (m_Instance != null)
@@ -22,42 +29,82 @@ public class HealthManager : MonoBehaviour
     }
     public void Start()
     {
-        if(m_IPlayerStatus ==null)
-            m_IPlayerStatus = GameManager.m_Instance.Player.GetComponent<ObjectInfo>();
+        if(m_pPlayerStatus ==null)
+            m_pPlayerStatus = GameManager.m_Instance.Player.GetComponent<ObjectInfo>();
 
-        PlayerTakeDamage();
-        PlayerConsumeMP();
+        UpdateHP();
+        UpdateMP();
     }
 
-    public void PlayerTakeDamage()
+    public void UpdateHP()
     {
         float fHPRatio = 0.0f;
-        if (m_IPlayerStatus.HP == 0)
-            fHPRatio = 0.0f;
-        else
-            fHPRatio = (float)m_IPlayerStatus.HP / m_IPlayerStatus.MaxHp;
 
-        if(fHPRatio == 0.0f)
-            m_pHealthImage.fillAmount = 0;
-        else
-            m_pHealthImage.fillAmount = fHPRatio;
+        if (m_pPlayerStatus.HP > 0)
+            fHPRatio = (float)m_pPlayerStatus.HP / m_pPlayerStatus.MaxHp;
 
-        m_pHealthText.text = $"{(int)(fHPRatio * 100)}% / {m_IPlayerStatus.MaxHp}";
+        // 이전에 돌던 HP Lerp가 있으면 중단
+        if (m_pUpdateHPCoroutine != null)
+            StopCoroutine(m_pUpdateHPCoroutine);
+
+        // 현재 UI fillAmount에서 목표 비율까지 보간
+        m_pUpdateHPCoroutine = StartCoroutine(LerpHP(m_pHealthImage.fillAmount, fHPRatio, m_pPlayerStatus.HP,
+            m_pHealthImage, m_pHealthText));
     }
 
-    public void PlayerConsumeMP()
+    public void UpdateMP()
     {
         float fMPRatio = 0.0f;
-        if (m_IPlayerStatus.MP == 0)
-            fMPRatio = 0.0f;
-        else
-            fMPRatio = (float)m_IPlayerStatus.MP / m_IPlayerStatus.MaxMp;
 
-        if (fMPRatio == 0.0f)
-            m_pHealthImage.fillAmount = 0;
-        else
-            m_pHealthImage.fillAmount = fMPRatio;
+        if (m_pPlayerStatus.MP > 0)
+            fMPRatio = (float)m_pPlayerStatus.MP / m_pPlayerStatus.MaxMp;
 
-        m_pHealthText.text = $"{(int)(fMPRatio * 100)}% / {m_IPlayerStatus.MaxMp}";
+        // 이전에 돌던 HP Lerp가 있으면 중단
+        if (m_pUpdateMPCoroutine != null)
+            StopCoroutine(m_pUpdateMPCoroutine);
+
+        // 현재 UI fillAmount에서 목표 비율까지 보간
+        m_pUpdateMPCoroutine = StartCoroutine(LerpHP(m_pMPImage.fillAmount, fMPRatio, m_pPlayerStatus.MP,
+            m_pMPImage, m_pMPText));
+    }
+
+
+    private IEnumerator LerpHP(float _fCurRatio, float _fGoalRatio, float _fCurValue , Image _pImage, TextMeshProUGUI _pText)
+    {
+        // 바로 점프해야 할 정도로 아주 작은 차이면 그냥 세팅
+        if (Mathf.Approximately(_fCurRatio, _fGoalRatio))
+        {
+            _pImage.fillAmount = _fGoalRatio;
+
+            int iHpPercent = (int)(_fGoalRatio * 100.0f);
+            _pText.text = $"{iHpPercent}% / {_fCurValue}";
+            yield break;
+        }
+
+        float fElapsed = 0.0f;
+
+        while (fElapsed < m_fLerpTime)
+        {
+            fElapsed += Time.deltaTime;
+            float t = fElapsed / m_fLerpTime;
+            if (t > 1.0f)
+                t = 1.0f;
+
+            float fRatio = Mathf.Lerp(_fCurRatio, _fGoalRatio, t);
+            _pImage.fillAmount = fRatio;
+
+            int iHpPercent = (int)(_fGoalRatio * 100.0f);
+            _pText.text = $"{iHpPercent}% / {_fCurValue}";
+
+            yield return null;  
+        }
+
+        // 마지막으로 목표값으로 정확히 맞춰줌
+        _pImage.fillAmount = _fGoalRatio;
+
+        int iFinalPercent = (int)(_fGoalRatio * 100.0f);
+        _pText.text = $"{iFinalPercent}% / {_fCurValue}";
+
+        m_pUpdateHPCoroutine = null;
     }
 }

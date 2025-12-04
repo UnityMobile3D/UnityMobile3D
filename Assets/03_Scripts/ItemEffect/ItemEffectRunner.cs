@@ -29,21 +29,28 @@ public class ItemEffectRunner : MonoBehaviour
     {
         //foreach는 내부적으로 열거자(Enumerator) 를 만든 뒤 MoveNext()/Current로 도는 문법
         //열거자 객체가 힙에 만들어지면(참조형/박싱) → 임시 객체가 생기고 → 수집 대상이 되어 GC 스파이크
+        SettingValue(_pSOItem, _pCtx);
         for (int i = 0; i< _pSOItem.EquippedEffects.Length; ++i)
             _pSOItem.EquippedEffects[i].Apply(_pCtx);
     }
 
     public static void ApplyEffectRelease(SOItem _pSOItem, EffectContext _pCtx)
     {
+        SettingValue(_pSOItem, _pCtx);
         for (int i = 0; i < _pSOItem.ReleaseEffects.Length; ++i)
             _pSOItem.ReleaseEffects[i].Apply(_pCtx);
     }
 
     public static void ApplyEffectUsing(SOItem _pSOItem, EffectContext _pCtx)
     {
+        SettingValue(_pSOItem, _pCtx);
         for (int i = 0; i < _pSOItem.UsingEffects.Length; ++i)
-            _pSOItem.UsingEffects[i].Apply(_pCtx);
-        
+            _pSOItem.UsingEffects[i].Apply(_pCtx);   
+    }
+
+    private static void SettingValue(SOItem _pSOItem, EffectContext _pCtx)
+    {
+        _pCtx.Value = _pSOItem.BaseValues;
     }
 
 };

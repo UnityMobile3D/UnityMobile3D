@@ -15,7 +15,9 @@ public class ItemSlot : Slot
     [SerializeField] private TextMeshProUGUI m_pCountBadge = null;
 
     public SOItemUI SOItem { get => m_pSOItem; }
-   
+
+    private EffectContext m_pItemEquipContext = new EffectContext();
+
     protected override void Awake()
     {
         base.Awake();
@@ -39,8 +41,6 @@ public class ItemSlot : Slot
             m_pSOItem = _pSOTarget as SOItemUI;
             SetCoolTime(m_pSOItem.ItemData.cooldown);
             update_count();
-
-    
         } 
         else
         {
@@ -51,15 +51,17 @@ public class ItemSlot : Slot
 
     public override void Using()
     {
+        if (m_pSOItem == null)
+            return;
+        
         int iConsumeCount = 1;
 
         //데이터 사용 후 인덱스 업데이트
         if (m_pOwner?.Consume(m_iSlotIdx, iConsumeCount) == false)
             Bind(null);
 
-      
-        //if (m_pItemObject.TryGetComponent<Item>(out var pItem) == true)
-        //    ItemEffectRunner.ApplyEffectUsing(m_pSOItem.ItemData, pItem.EffectContext);
+        
+        ItemEffectRunner.ApplyEffectUsing(m_pSOItem.ItemData, m_pItemEquipContext);
 
         update_count();
     }
@@ -83,9 +85,5 @@ public class ItemSlot : Slot
 
     }
 
-    private void update_count(int _iCount)
-    {
-
-    }
 }
 

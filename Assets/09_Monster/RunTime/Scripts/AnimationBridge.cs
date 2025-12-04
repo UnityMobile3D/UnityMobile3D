@@ -1,15 +1,31 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+[Serializable]
+public class AnimationInfo
+{
+    public AnimationInfo(string _strName, string _strParamName, bool _bOn)
+    {
+        Name = _strName; ParamName = _strParamName; IsOn = _bOn;
+    }
+    public string Name;
+    public string ParamName;
+    public bool   IsOn;
+}
 
 public class AnimationBridge : MonoBehaviour
 {
     public Animator m_pAnimator = null;
 
-    [SerializeField] private List<string> ListAttack = new List<string>() { "Attack" };
-    [SerializeField] private string Run = "Run";
-    [SerializeField] private string Hit = "Hit";
-    [SerializeField] private string Dead = "Dead";
+    [SerializeField] private List<AnimationInfo> ListAttack = new List<AnimationInfo>() 
+        {new AnimationInfo("Attack","Attack",false)};
+
+
+    [SerializeField] private AnimationInfo Run = new AnimationInfo("Run", "Run", false);
+    [SerializeField] private AnimationInfo Hit = new AnimationInfo("Hit", "Hit", false);
+    [SerializeField] private AnimationInfo Dead = new AnimationInfo("Dead", "Dead", false);
 
     private int m_iSpeedHash;
     private List<int> m_listAttack = new List<int>();
@@ -26,19 +42,19 @@ public class AnimationBridge : MonoBehaviour
 
         for(int i = 0; i<ListAttack.Count; ++i)
         {
-             int iHashID = Animator.StringToHash(ListAttack[i]);
-            m_hashNameToId[ListAttack[i]] = iHashID;
+            int iHashID = Animator.StringToHash(ListAttack[i].Name);
+            m_hashNameToId[ListAttack[i].Name] = iHashID;
             m_listAttack.Add(iHashID);
         }
       
-        m_iMoveHash = Animator.StringToHash(Run);
-        m_hashNameToId[Run] = m_iMoveHash;
+        m_iMoveHash = Animator.StringToHash(Run.Name);
+        m_hashNameToId[Run.Name] = m_iMoveHash;
 
-        m_iHitHash = Animator.StringToHash(Hit);
-        m_hashNameToId[Hit] = m_iHitHash;
+        m_iHitHash = Animator.StringToHash(Hit.Name);
+        m_hashNameToId[Hit.Name] = m_iHitHash;
 
-        m_iDeadHash = Animator.StringToHash(Dead);
-        m_hashNameToId[Dead] = m_iDeadHash;
+        m_iDeadHash = Animator.StringToHash(Dead.Name);
+        m_hashNameToId[Dead.Name] = m_iDeadHash;
     }
 
 
@@ -52,20 +68,20 @@ public class AnimationBridge : MonoBehaviour
     }
     public void SetRun()
     {
-        m_pAnimator.SetTrigger(Run);
+        m_pAnimator.SetTrigger(Run.ParamName);
     }
     public void SetRun(bool _bOn)
     {
-        m_pAnimator.SetBool(Run, _bOn);
+        m_pAnimator.SetBool(Run.ParamName, _bOn);
     }
 
     public void SetHit()
     {
-        m_pAnimator.SetTrigger(Hit);
+        m_pAnimator.SetTrigger(Hit.ParamName);
     }
     public void SetDead()
     {
-        m_pAnimator.SetTrigger(Dead);
+        m_pAnimator.SetTrigger(Dead.ParamName);
     }
 
     public bool CurrentClipPlayedOnce(in string _strName , int _iLayer = 0)
@@ -93,7 +109,7 @@ public class AnimationBridge : MonoBehaviour
             return false;
 
         int iHashId = -1;
-        if (m_hashNameToId.TryGetValue(ListAttack[_iIdx], out iHashId) == false)
+        if (m_hashNameToId.TryGetValue(ListAttack[_iIdx].Name, out iHashId) == false)
             return false;
 
         var tInfo = m_pAnimator.GetCurrentAnimatorStateInfo(_iLayer);

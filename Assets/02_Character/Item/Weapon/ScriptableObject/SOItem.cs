@@ -12,6 +12,9 @@ public class SOItem : ScriptableObject
 
     public float cooldown = 1.0f;
 
+    [SerializeField] private Values m_tBaseValues;
+    public Values BaseValues => m_tBaseValues;
+
     public SOItemEffect[] EquippedEffects;
     public SOItemEffect[] ReleaseEffects;
     public SOItemEffect[] UsingEffects;

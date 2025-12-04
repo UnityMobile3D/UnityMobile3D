@@ -4,28 +4,13 @@ using UnityEngine;
 
 
 
-public class SkillAttackObject : MonoBehaviour, IPoolAble
+public class SkillAttackObject : SkillObject
 {
-    protected SkillRunner m_pOwner = null;
-    public SkillRunner Owner => m_pOwner;
-
-    private Rigidbody m_pRigidbody = null;
-    private Collider m_pCollider = null;
-
-    private SOSKill m_pSkill = null;
-
-    private List<IChargeEvent> m_listChargeEvent = new List<IChargeEvent>();
-    public List<IChargeEvent> ChargeEvents => m_listChargeEvent;
-
     private bool m_bNearAttack = false;
     private float m_fMoveSpeed = 0.0f;
     private Vector3 m_vDir = Vector3.zero;
 
-    [SerializeField] private float m_fLifeTime = 10.0f;
-    private float m_fCurLifeTime = 0.0f;
-
-    private bool m_bIsAttackActive = false;
-    public bool IsAttackActive => m_bIsAttackActive;
+ 
 
     [SerializeField] private float m_fStartAttackTime = 0.0f;
     [SerializeField] private float m_fEndAttackTime = float.MaxValue;
@@ -35,34 +20,26 @@ public class SkillAttackObject : MonoBehaviour, IPoolAble
 
     private AttackInfo m_pAttackInfo = null;
 
-    private uint m_iCreateCount = 0;
-    private string m_strSpawnKey = string.Empty;
-
-    public void Awake()
+    protected override void Awake()
     {
-        m_pRigidbody = GetComponentInChildren<Rigidbody>(true);
-        m_pCollider = GetComponentInChildren<Collider>(true);
+        base.Awake();
         m_pAttackInfo = new AttackInfo();
-
-        var listEvent = GetComponentsInChildren<IChargeEvent>(true);
-        for(int i = 0; i<listEvent.Length; ++i)
-            m_listChargeEvent.Add(listEvent[i]);
     }
 
-    public void OnSpawn()
+    public override void OnSpawn()
     {
-        m_iCreateCount = 1;
-        if(m_fStartAttackTime <= 0.0f)
+        base.OnSpawn();
+
+        if (m_fStartAttackTime <= 0.0f)
             StartAttack();
         else
             EndAttack();
-
     }
-    public void OnDespawn()
+    public override void OnDespawn()
     {
-        m_iCreateCount = 0;
+        base.OnDespawn();
 
-        m_bIsAttackActive = false;
+        m_bIsSkillActive = false;
     }
     public void OnDisable()
     {
@@ -70,21 +47,12 @@ public class SkillAttackObject : MonoBehaviour, IPoolAble
         m_iCurAttackCount = 0;
     }
 
-    public void Update()
+    protected override void Update()
     {
-        m_fCurLifeTime += Time.deltaTime;
+        base.Update();
 
-        if(m_bIsAttackActive == false && m_fCurLifeTime >= m_fStartAttackTime)
+        if(m_bIsSkillActive == false && m_fCurLifeTime >= m_fStartAttackTime)
             StartAttack();
-        
-
-        if (m_fCurLifeTime >= m_fLifeTime)
-        {
-            //풀에 반납
-            m_fCurLifeTime = 0.0f;
-
-            PushPoolObject();
-        }
     }
 
 
@@ -97,31 +65,19 @@ public class SkillAttackObject : MonoBehaviour, IPoolAble
          m_pRigidbody.MovePosition(m_pRigidbody.position + vStep);
     }
 
-    public void PushPoolObject()
+ 
+    public override void SetInfo(SOSKill _pSkillInfo, string _strKey)
     {
-        if (m_iCreateCount == 0)
-            return;
-
-        m_iCreateCount = 0;
-        ObjectPoolManager.m_Instance.PushObject
-             (m_strSpawnKey, gameObject);
-    }
-
-    public void SetInfo(SOSKill _pSkillInfo, string _strKey)
-    {
-        m_pSkill = _pSkillInfo;
-
-
-        m_fLifeTime = _pSkillInfo.Option.lifeTime;
-        m_fMoveSpeed = _pSkillInfo.Option.moveSpeed;
+        base.SetInfo(_pSkillInfo, _strKey);
+        m_fMoveSpeed = _pSkillInfo.Damage.moveSpeed;
         m_pAttackInfo.Damage = (int)_pSkillInfo.Damage.baseDamage;
-        m_pAttackInfo.Power = (int)_pSkillInfo.Option.power;
-        m_iAttackCount = _pSkillInfo.Option.targetingProfile.MaxTargets;   
-        m_fStartAttackTime = _pSkillInfo.Option.startAttackTime;
-
+        m_pAttackInfo.Power = (int)_pSkillInfo.Damage.power;
+        m_iAttackCount = _pSkillInfo.Option.targetingProfile.MaxTargets;
+        m_fStartAttackTime = _pSkillInfo.Damage.startAttackTime;
         m_bNearAttack = m_fMoveSpeed > 0.0f ? false : true;
 
-        m_strSpawnKey = _strKey;
+        if(m_pOwner != null)
+            m_vDir = m_pOwner.transform.forward;
     }
 
     public void SetDir(in Vector3 _vDir)
@@ -130,19 +86,12 @@ public class SkillAttackObject : MonoBehaviour, IPoolAble
         m_vDir.Normalize();
     }
 
-    public void SetOwner(SkillRunner _pPlayerSkillRunner) { m_pOwner = _pPlayerSkillRunner; }
-
-    public void SetSpawnKey(string _strKey) { m_strSpawnKey = _strKey; }
-
-
-    void OnParticleSystemStopped()
-    {
-        PushPoolObject();
-    }
-
 
     public void OnTriggerEnter(Collider other)
     {
+        if (m_pSkill == null)
+            return;
+
         if ((m_pSkill.Option.targetingProfile.TargetLayers.value & (1 << other.gameObject.layer)) != 0)
         {
             Vector3 vHitPoint = other.ClosestPoint(transform.position);
@@ -177,12 +126,12 @@ public class SkillAttackObject : MonoBehaviour, IPoolAble
     {
         if(m_pCollider == true)
             m_pCollider.enabled = true;
-        m_bIsAttackActive = true;
+        m_bIsSkillActive = true;
     }
     public void EndAttack()
     {
         if (m_pCollider == true)
             m_pCollider.enabled = false;
-        m_bIsAttackActive = false;
+        m_bIsSkillActive = false;
     }
 }

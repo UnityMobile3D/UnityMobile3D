@@ -39,7 +39,7 @@ public class CooldownModule : MonoBehaviour
             {
                 ID = i,
                 CurCooldown = 0.0f,
-                MaxCooldown = pSkillInfo.skillinfo[i].CoolTime,
+                MaxCooldown = pSkillInfo.skillinfo[i].SkillOption.CoolTime,
             });
         }
     }

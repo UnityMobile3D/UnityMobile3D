@@ -18,9 +18,9 @@ public class EquipSlot : Slot
     //아이템이 컨텍스트를 들고있으면 해당 아이템을 들고있는 오브젝트를 슬롯이 들고있거나, 
     //아이템 컨텍스트를 슬롯에서 들고있어야한다. 아니면 사용할 때마다 가져오기..
     //아이템은 월드 오브젝트로 먹으면 풀에 다시 넣어야하는데 내가 여기서도 참조하고 있으면 꼬드가 굉장히 더러워질 수 있음
-    
+
     //아이템은 Value로만 계수를 들고있고 bind될 때 context에서 해당 값들 복사
-    //private EffectContext m_pItemEquipContext = null;
+    private EffectContext m_pItemEquipContext = new EffectContext();
 
     protected override void Awake()
     {
@@ -59,8 +59,7 @@ public class EquipSlot : Slot
     {
         if (m_pEquip != null)
         {
-            if (m_pEquipObject.TryGetComponent<Item>(out var pItem) == true)
-                ItemEffectRunner.ApplyEffectUsing(m_pEquip.m_pSOItem, pItem.EffectContext);
+            ItemEffectRunner.ApplyEffectUsing(m_pEquip.ItemData, m_pItemEquipContext);
         }
 
     }
@@ -69,24 +68,28 @@ public class EquipSlot : Slot
     {
         if (m_pEquipObject != null)
         {
-            if (m_pEquipObject.TryGetComponent<Item>(out var pPreItem) == true)
-                ItemEffectRunner.ApplyEffectRelease(m_pPreEquip.m_pSOItem, pPreItem.EffectContext);
+            ItemEffectRunner.ApplyEffectRelease(m_pPreEquip.ItemData, m_pItemEquipContext);
 
-            ObjectPoolManager.m_Instance.PushObject(m_pPreEquip.m_pSOItem.ItemObject.AssetGUID, m_pEquipObject);
+            ObjectPoolManager.m_Instance.PushObject(m_pPreEquip.ItemData.ItemObject.AssetGUID, m_pEquipObject);
         }
 
+        //임시로 넣은 코드 (아직 장비 데이터 준비가 안됨)
+        if (m_pEquip.ItemData == null)
+            return;
+
         GameObject pEquip =
-            ObjectPoolManager.m_Instance.GetObject(m_pEquip.m_pSOItem.ItemObject.AssetGUID, Vector3.zero, Vector3.zero);
+            ObjectPoolManager.m_Instance.GetObject(m_pEquip.ItemData.ItemObject.AssetGUID, Vector3.zero, Vector3.zero);
 
         if (pEquip == null)
             return;
 
+
         m_pEquipObject = pEquip;
-        if(pEquip.TryGetComponent<Item>(out var pItem) == true)
-        {
-            pItem.EffectContext.pTarget = GameManager.m_Instance.Player.gameObject;
-            ItemEffectRunner.ApplyEffectEquipped(m_pEquip.m_pSOItem, pItem.EffectContext);
-        }
+        m_pItemEquipContext.pTarget = GameManager.m_Instance.Player.gameObject;
+        m_pItemEquipContext.pOwner = m_pEquipObject;
+
+        ItemEffectRunner.ApplyEffectEquipped(m_pEquip.ItemData, m_pItemEquipContext);
+        
     }
 
     private void selete_equip_slot()

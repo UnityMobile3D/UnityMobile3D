@@ -32,7 +32,7 @@ public class Player : MonoBehaviour , IHealth
     private Rigidbody   _rigidbody;
     private Animator    _animator;
    
-    private SkillRunner       _skillRunner; //이거 스킬 러너로 교체하기
+    private SkillRunner       _skillRunner; 
     public Rigidbody RigidBody => _rigidbody;
     public Animator  Animator  => _animator;
     public SkillRunner SkillRunner => _skillRunner;
@@ -41,11 +41,10 @@ public class Player : MonoBehaviour , IHealth
     public ObjectInfo PlayerInfo => _playerInfo;
     // 이동 관련변수
     [Header("Move")]
-    //[SerializeField] private float Speed        = 2f;
     [SerializeField] private float rotateTime   = 0.1f;
 
     private float       rotateVel;
-    Vector3 moveDir;
+    private Vector3     moveDir;
 
     [SerializeField] private List<PlayerEquipPoint> m_listEquipPoint = new List<PlayerEquipPoint>((int)eEquipType.Weapon);
 
@@ -56,6 +55,8 @@ public class Player : MonoBehaviour , IHealth
     [Header("Hit")]
     private Coroutine _knockbackRoutine;
     [SerializeField] private float knockbackDamping = 3f;
+
+    public Func<AttackInfo, bool> m_pHitEvent;
 
     private void Awake()
     {
@@ -175,7 +176,7 @@ public class Player : MonoBehaviour , IHealth
         _hit = false;
     }
     
-
+   
     private void FixedUpdate()
     {
         MOVE();
@@ -204,10 +205,10 @@ public class Player : MonoBehaviour , IHealth
 
         vDir.Normalize();
 
-        transform.rotation = Quaternion.LookRotation(-vDir, Vector3.up);
+        transform.rotation = Quaternion.LookRotation(vDir, Vector3.up);
 
         //시간이 지나면서 점점 멈추게 (속도 감쇠)
-        _knockbackRoutine = StartCoroutine(knockback_coroutine(vDir, (int)_attackInfo.Power));
+        _knockbackRoutine = StartCoroutine(knockback_coroutine(-vDir, (int)_attackInfo.Power));
     }
 
     private IEnumerator knockback_coroutine(Vector3 _vDir, int _iPower)
@@ -241,12 +242,16 @@ public class Player : MonoBehaviour , IHealth
         if (_hit == true)
             return;
 
+        //쉴드나 여러 이벤트 관리하기 위해서 bool타입 매개변수를 넣으면 코드가 더러워질 수 있음
+        if (m_pHitEvent?.Invoke(_pAttackInfo) == false)
+            return;
+
         HIT();
 
         knockback(_pAttackInfo);
 
         _playerInfo.AddHP((int)_pAttackInfo.Damage * -1);
-        HealthManager.m_Instance.PlayerTakeDamage();
+        HealthManager.m_Instance.UpdateHP();
     }
     public void Heal(int _iAmount)
     {

@@ -14636,7 +14636,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b51374034ee26549a2161689c3a47b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_bAccVel: 0
+  m_fLifeTime: 10
+  m_fAttackTime: 0
+  m_fEndAttackTime: 3.4028235e+38
+  m_iAttackCount: 1
 --- !u!54 &8841667997388798060
 Rigidbody:
   m_ObjectHideFlags: 0

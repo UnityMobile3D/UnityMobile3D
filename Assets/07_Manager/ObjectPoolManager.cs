@@ -21,7 +21,7 @@ public class ObjectPoolManager : MonoBehaviour
     public class PoolBucket
     {
         public SOPoolEntry entry;                                     // 설정값 참조
-        public GameObject prefab;
+        public GameObject prefab;                                     // 프리팹
         public Queue<GameObject> pool = new Queue<GameObject>();      // 인스턴스 풀
     }
 

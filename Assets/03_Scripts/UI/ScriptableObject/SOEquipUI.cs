@@ -6,13 +6,14 @@ using static SOItemUI;
 [CreateAssetMenu(menuName = "UIData/Catalog/Equip UI", fileName = "SOEntryUI")]
 
 
-public class SOEquipUI : SOEntryUI
+public class SOEquipUI : SOEntryUI, IItemUI
 {
-  
+
+    [SerializeField] private SOItem itemdata;
     [SerializeField] private eEquipType equiptype;
     public eEquipType EquipType => equiptype;
 
-    public SOItem m_pSOItem;
+    public SOItem ItemData => itemdata;
 
     public override uint GetUIHashCode()
     {

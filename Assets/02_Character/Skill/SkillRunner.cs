@@ -14,7 +14,7 @@ public class SkillRunner : MonoBehaviour
     {
         public SkillRunner skill;                                          //SO를 들고있는 skill Comonent
         public Animator animator;                                             
-        public SkillAttackObject runSkillObject = null;                    //소환된 오브젝트
+        public SkillObject runSkillObject = null;                    //소환된 오브젝트
 
         public Vector3 designSpawnPostion = Vector3.zero;                  //스킬 소환 위치
 
@@ -121,7 +121,7 @@ public class SkillRunner : MonoBehaviour
     {
         //애니메이션 시작
         _player.PlayerInfo.AddMP((int)_runSkill.Option.manacost * -1);
-        HealthManager.m_Instance.PlayerConsumeMP();
+        HealthManager.m_Instance.UpdateMP();
 
 
         _runSkill.Loggic.startSkillLogic?.UpdateSkill(_skillContext);
@@ -163,9 +163,10 @@ public class SkillRunner : MonoBehaviour
         {
             if (_runSkill.Option.destroyOnCancel == true)
             {
-                SkillAttackObject pAttackObj = _skillContext.runSkillObject;
+                SkillObject pSkillObj = _skillContext.runSkillObject;
+
                 //공격이 아직 생성되지 않았다면
-                if (pAttackObj != null && pAttackObj.IsAttackActive == false)
+                if (pSkillObj != null && pSkillObj.IsSkillActive == false)
                     _skillContext.runSkillObject.PushPoolObject();
             }
         }

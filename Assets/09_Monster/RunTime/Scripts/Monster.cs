@@ -24,6 +24,8 @@ public class Monster : MonoBehaviour , IHealth , IPoolAble
     private ObjectInfo m_pMonsterInfo = null;
     private Coroutine m_pKnockbackRoutine = null;
 
+    [SerializeField] private SODropTable m_pDropTable = null;
+
     private string m_strPoolKey = "";
 
     protected bool m_bHit = false;
@@ -94,21 +96,23 @@ public class Monster : MonoBehaviour , IHealth , IPoolAble
      
         //몬스터 스킬 정보를 통해서 타겟 몬스터 어택 오브젝트 레퍼런스의 아이디를 가져오기
         MonsterSkillInfo pSkillInfo = m_SOMonsterInfo.skillinfo[iTargetIdx];
-        string strKey = pSkillInfo.SOPoolEntry.prefabRef.AssetGUID;
+        string strKey = pSkillInfo.SpawnOption.SOPoolEntry.prefabRef.AssetGUID;
 
+        MonsterSkillOption pSkillOption = pSkillInfo.SkillOption;
+        MonsterSpawnOption pSpawnOption = pSkillInfo.SpawnOption;
         //위치 방향 잡기
-        if (pSkillInfo.SpawnCurPos == true)
+        if (pSpawnOption.SpawnCurPos == true)
             _vSpawnPos = gameObject.transform.position;
-        else if (pSkillInfo.SpawnPlayerPos == true)
+        else if (pSpawnOption.SpawnPlayerPos == true)
             _vSpawnPos = m_pBlackbard.Target.transform.position;
 
-        Vector3 vDir = pSkillInfo.AttackDir;
-        if (pSkillInfo.PlayerDir == true)
+        Vector3 vDir = pSpawnOption.AttackDir;
+        if (pSpawnOption.PlayerDir == true)
             vDir = (m_pBlackbard.Target.transform.position - _vSpawnPos).normalized;
-        vDir *= pSkillInfo.SpawnDiff;
+        vDir *= pSpawnOption.SpawnDiff;
 
         GameObject pAttackObj = ObjectPoolManager.m_Instance.GetObject(
-            strKey, _vSpawnPos + vDir, pSkillInfo.SpawnRot);
+            strKey, _vSpawnPos + vDir, pSpawnOption.SpawnRot);
 
         if (pAttackObj == null)
             return null;
@@ -124,7 +128,7 @@ public class Monster : MonoBehaviour , IHealth , IPoolAble
         pAttack.SetOwner(this);
 
         //근접공격은 피격시 사라지고, 소환공격은 계속 유지되게
-        if (pSkillInfo.DestroyOnHit == true)
+        if (pSkillOption.DestroyOnHit == true)
             m_pBlackbard.SpawnObjects.Add(pAttack);
         
 
@@ -135,7 +139,7 @@ public class Monster : MonoBehaviour , IHealth , IPoolAble
         List<MonsterAttackObject> listAttack = m_pBlackbard.SpawnObjects;
         for(int i = 0; i<listAttack.Count; ++i)
         {
-            if (listAttack[i].MonsterSkillInfo.DestroyOnHit == true)
+            if (listAttack[i].MonsterSkillInfo.SkillOption.DestroyOnHit == true)
                 listAttack[i].PushPoolObject();
         }
         
@@ -161,9 +165,14 @@ public class Monster : MonoBehaviour , IHealth , IPoolAble
 
         m_pNavMeshAgent.isStopped = true;
     }
+    public void EndAttack()
+    {
+
+    }
     public void TakeDamage(AttackInfo _pAttackInfo)
     {
         m_pMonsterInfo.AddHP((int)_pAttackInfo.Damage * -1);
+        m_pBlackbard.HpRatio = (float)m_pMonsterInfo.HP / m_pMonsterInfo.MaxHp;
 
         ClearAttackObject();
         if (m_pMonsterInfo.HP <= 0.0f)
@@ -237,6 +246,8 @@ public class Monster : MonoBehaviour , IHealth , IPoolAble
     {
         m_bHit = true;
         m_pAnimator.SetTrigger("Dead");
+
+        ItemDataManager.m_Instance.Drop(m_pDropTable, transform.position);
     }
 
     public void PushObjectPool()

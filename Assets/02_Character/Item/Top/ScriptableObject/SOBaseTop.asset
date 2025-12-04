@@ -15,6 +15,10 @@ MonoBehaviour:
   ItemID: 1
   Level: 0
   cooldown: 1
+  m_tBaseValues:
+    Int: 0
+    Float: 0
+    Vector4: {x: 5, y: 0, z: 0, w: 0}
   EquippedEffects:
   - {fileID: 11400000, guid: 4f0e6d83093826543ba0088cb39afbf5, type: 2}
   ReleaseEffects:

@@ -32,13 +32,13 @@ public class TraceTarget : SONode
                 return STATE.FAILED;
 
             //거리 계산
-            _pBB.DistanceToTarget = GlobalAction.GetDisttance(_pBB.Self.position, _pBB.Target.position);
+            _pBB.DistanceToTarget = GlobalAction.GetDisttance(_pBB.Self.transform.position, _pBB.Target.position);
 
             //목적지에 도착했다면 
             if ( _pBB.DistanceToTarget <= m_pTraceTarget.m_fStopDistance)
             {
                 _pBB.AnimBridge.SetRun(false);
-                _pBB.Agent.isStopped = true;
+                _pBB.Agent.ResetPath();
 
                 return STATE.FAILED;
             }
@@ -55,7 +55,7 @@ public class TraceTarget : SONode
                     3.0f, m_pTraceTarget.m_iareaMask))
                 {
                     _pBB.AnimBridge.SetRun(true);
-                    _pBB.Agent.isStopped = false;
+                    _pBB.Agent.ResetPath();
                     _pBB.Agent.SetDestination(tHit.position);
 
                     return STATE.SUCCESS;

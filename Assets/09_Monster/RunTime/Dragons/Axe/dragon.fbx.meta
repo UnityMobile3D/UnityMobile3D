@@ -875,6 +875,14 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.981982
+        functionName: EndAttack
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: d8070b69a0da6b74f89d3f807e05a1b5,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1
@@ -2561,6 +2569,14 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.99836206
+        functionName: EndAttack
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: d8070b69a0da6b74f89d3f807e05a1b5,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1
@@ -2840,6 +2856,14 @@ ModelImporter:
       events:
       - time: 0.44435006
         functionName: SpawnAttackObject
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: d8070b69a0da6b74f89d3f807e05a1b5,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.9787061
+        functionName: EndAttack
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: d8070b69a0da6b74f89d3f807e05a1b5,
           type: 3}
@@ -3133,6 +3157,14 @@ ModelImporter:
         messageOptions: 0
       - time: 0.8283771
         functionName: EndCurAttack
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: d8070b69a0da6b74f89d3f807e05a1b5,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.985258
+        functionName: EndAttack
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: d8070b69a0da6b74f89d3f807e05a1b5,
           type: 3}

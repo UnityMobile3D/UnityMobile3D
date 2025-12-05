@@ -16,10 +16,7 @@ public class BehaviorTree : MonoBehaviour
     {
         m_pBlackboard = _pBB;
 
-        m_pBlackboard.Self = transform;
-        m_pBlackboard.Agent = GetComponent<NavMeshAgent>();
         m_pRuntimeRoot = m_pRoot.CreateRuntime();
-
         m_pBlackboard.AnimBridge.Init(GetComponent<Animator>());
 
         m_pOwner = _pMonster;

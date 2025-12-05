@@ -28,9 +28,10 @@ public abstract class CompositeRuntime : INode
 [Serializable]
 public class Blackboard
 {
-    public Transform Self;
+    public Monster Self;
     public Transform Target;
 
+    public float RunTime = 0.0f;
     public float DistanceToTarget;
     public float HpRatio;
 
@@ -39,7 +40,6 @@ public class Blackboard
     public AnimationBridge AnimBridge;
 
     public bool Attacking = false;
-    public int CurrentAttackIdx = -1;
     public List<MonsterAttackObject> SpawnObjects = new List<MonsterAttackObject>();
 }
 

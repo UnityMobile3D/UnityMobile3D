@@ -10,7 +10,6 @@ public class SkillAttackObject : SkillObject
     private float m_fMoveSpeed = 0.0f;
     private Vector3 m_vDir = Vector3.zero;
 
- 
 
     [SerializeField] private float m_fStartAttackTime = 0.0f;
     [SerializeField] private float m_fEndAttackTime = float.MaxValue;

@@ -10,6 +10,7 @@ using STATE = INode.STATE;
 public class SOCheckHP : SONode
 {
     public float m_fCheckHPRatio = 0.3f;
+    public bool m_bDown = true;
     public override INode CreateRuntime()
     {
         return new CheckHPRunTime(this);
@@ -24,10 +25,19 @@ public class SOCheckHP : SONode
         }
         public STATE Evaluate(Blackboard _pBB, float _fDT)
         {
-            //내가 지정한 피 양보다 작으면 
-            if(m_pOwner.m_fCheckHPRatio > _pBB.HpRatio)
+            if(m_pOwner.m_bDown == true)
             {
-                return STATE.SUCCESS;
+                if (m_pOwner.m_fCheckHPRatio > _pBB.HpRatio)
+                {
+                    return STATE.SUCCESS;
+                }
+            }
+            else
+            {
+                if (m_pOwner.m_fCheckHPRatio < _pBB.HpRatio)
+                {
+                    return STATE.SUCCESS;
+                }
             }
 
             return STATE.FAILED;

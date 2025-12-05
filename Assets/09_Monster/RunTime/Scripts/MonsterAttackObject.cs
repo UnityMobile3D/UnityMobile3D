@@ -69,6 +69,7 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
             }
         }
 
+        m_pOwner.ClearAttackObject();
         m_iCreateCount = 0;
     }
 

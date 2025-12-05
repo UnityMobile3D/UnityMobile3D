@@ -45,7 +45,7 @@ public class Monster : MonoBehaviour , IHealth , IPoolAble
 
     virtual protected void Awake()
     {
-        m_pBlackbard.Self = transform;
+        m_pBlackbard.Self = this;
         m_pBlackbard.Agent = GetComponent<NavMeshAgent>();
         m_pBlackbard.AnimBridge = GetComponent<AnimationBridge>();
         m_pBHTree= GetComponent<BehaviorTree>();
@@ -64,6 +64,7 @@ public class Monster : MonoBehaviour , IHealth , IPoolAble
 
         //objectinfo
         m_pNavMeshAgent.speed = m_pMonsterInfo.Speed;
+        m_pBlackbard.HpRatio = 1.0f;
     }
 
     virtual protected void Start()
@@ -144,7 +145,7 @@ public class Monster : MonoBehaviour , IHealth , IPoolAble
         }
         
         m_pBlackbard.SpawnObjects.Clear();
-        m_pBlackbard.CurrentAttackIdx = -1;
+        m_pBlackbard.Attacking = false;
     }
 
     protected virtual void OnTriggerEnter(Collider other)
@@ -155,7 +156,9 @@ public class Monster : MonoBehaviour , IHealth , IPoolAble
     public void EndHit()
     {
         m_bHit = false;
-        m_pNavMeshAgent.isStopped = true;
+        m_pNavMeshAgent.ResetPath();
+        m_pNavMeshAgent.updateRotation = true;
+        m_pBlackbard.Attacking = false;
     }
     //IHealth 구현
     public void Hit()
@@ -163,11 +166,16 @@ public class Monster : MonoBehaviour , IHealth , IPoolAble
         m_pAnimator.SetTrigger("Hit");
         m_bHit = true;
 
-        m_pNavMeshAgent.isStopped = true;
+        m_pBlackbard.Attacking = false;
+
+        Debug.Log($"{m_pBlackbard}데미지를 맞음");
+
+        m_pNavMeshAgent.ResetPath();
+        m_pNavMeshAgent.updateRotation = false;
     }
     public void EndAttack()
     {
-
+        m_pBlackbard.Attacking = false;
     }
     public void TakeDamage(AttackInfo _pAttackInfo)
     {

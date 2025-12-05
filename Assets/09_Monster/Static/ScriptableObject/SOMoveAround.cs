@@ -36,14 +36,14 @@ public class SOMoveAround : SONode
                 m_vRandomDir = RandomUnit2D();
                 _pBB.AnimBridge.SetRun(true);
             }
-            else if (m_vRandomDir != Vector2.zero)
-                return STATE.RUN;
-            
-            float step = m_pMoveAround.m_fStepDistance; // 예: 3~6m
-            
-            Vector3 cand = _pBB.Self.position + new Vector3(m_vRandomDir.x, 0f, m_vRandomDir.y) * step;
+            else
+                return STATE.FAILED;
 
-            if (NavMesh.SamplePosition(cand, out var hit, 0.1f, _pBB.Agent.areaMask))
+            float fStep = m_pMoveAround.m_fStepDistance; 
+            
+            Vector3 vNewPos = _pBB.Self.transform.position + new Vector3(m_vRandomDir.x, 0f, m_vRandomDir.y) * fStep;
+
+            if (NavMesh.SamplePosition(vNewPos, out var hit, 0.1f, _pBB.Agent.areaMask))
             {
                 _pBB.Agent.SetDestination(hit.position);
                 return STATE.SUCCESS;
@@ -52,10 +52,10 @@ public class SOMoveAround : SONode
             {
                 m_vRandomDir = Vector2.zero;
                 _pBB.AnimBridge.SetRun(false);
-                _pBB.Agent.isStopped = true;
+                _pBB.Agent.ResetPath();
                 return STATE.FAILED;
             }
-
+            
         }
        
         private Vector2 RandomUnit2D()

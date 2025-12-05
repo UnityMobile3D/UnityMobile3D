@@ -28,11 +28,13 @@ public class SOAttack : SONode
             else if(_pBB.CooldownModule.IsIsReady(m_iAttackID) == false)
                 return STATE.FAILED;
 
-            _pBB.CurrentAttackIdx = m_iAttackID;
-            _pBB.Agent.isStopped = true;
+            _pBB.Agent.ResetPath();
+            _pBB.Agent.updateRotation = false;
+            _pBB.Attacking = true;
 
             //쿨타임 초기화 및 어택 시작
             _pBB.CooldownModule.StartCooldown(m_iAttackID);
+            _pBB.AnimBridge.SetRun(false);
             _pBB.AnimBridge.SetAttack(m_iAttackID, true);
             _pBB.Self.transform.LookAt(_pBB.Target.position);
 

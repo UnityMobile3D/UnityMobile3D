@@ -192,9 +192,14 @@ public class SkillRunner : MonoBehaviour
     public void UpdateSkill() //스킬이 진행되는 동안
     {
         List<SOSkillLogic> listSkill = _runSkill.Loggic.skillLogic;
-        eSkillState eResult = listSkill[_iCurrentSkillIdx].UpdateSkill(_skillContext);
-        if (eResult == eSkillState.Success)
+        eSkillState eResult = eSkillState.Success;
+
+        while(eResult == eSkillState.Success)
         {
+            eResult = listSkill[_iCurrentSkillIdx].UpdateSkill(_skillContext);
+            if (eResult != eSkillState.Success)
+                break;
+
             ++_iCurrentSkillIdx;
             if (_iCurrentSkillIdx > listSkill.Count - 1)
             {
@@ -207,9 +212,13 @@ public class SkillRunner : MonoBehaviour
 
                 else
                     EndSkill();
+
+                break;
             }
+            
         }
-        else if (eResult == eSkillState.Failed)
+       
+        if (eResult == eSkillState.Failed)
         {
             EndSkill();
         }

@@ -196,19 +196,19 @@ public class Player : MonoBehaviour , IHealth
             _knockbackRoutine = null;
         }
 
-        Vector3 vMonsterPos = _rigidbody.position;
-        Vector3 vDir = vMonsterPos - _attackInfo.AttackerPosition;
+        Vector3 vPlayerPos = _rigidbody.position;
+        Vector3 vDir = vPlayerPos - _attackInfo.HitPoint;
         vDir.y = 0.0f;
 
-        if (vDir.sqrMagnitude < 0.001f)
+        if (vDir.sqrMagnitude < 0.01f)
             vDir = -transform.forward;
 
         vDir.Normalize();
 
-        transform.rotation = Quaternion.LookRotation(vDir, Vector3.up);
+        transform.rotation = Quaternion.LookRotation(-vDir, Vector3.up);
 
         //시간이 지나면서 점점 멈추게 (속도 감쇠)
-        _knockbackRoutine = StartCoroutine(knockback_coroutine(-vDir, (int)_attackInfo.Power));
+        _knockbackRoutine = StartCoroutine(knockback_coroutine(vDir, (int)_attackInfo.Power));
     }
 
     private IEnumerator knockback_coroutine(Vector3 _vDir, int _iPower)

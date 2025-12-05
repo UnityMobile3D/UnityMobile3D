@@ -15,7 +15,7 @@ MonoBehaviour:
   TargetLayers:
     serializedVersion: 2
     m_Bits: 64
-  CoolTime: 4
+  CoolTime: 8
   AttackRange: 0
   AttackDamage: 10
   AttackPower: 2

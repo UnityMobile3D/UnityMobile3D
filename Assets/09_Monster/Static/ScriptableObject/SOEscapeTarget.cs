@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 using STATE = INode.STATE;
 
 [CreateAssetMenu(menuName = "SO/ActionNode/EscapeTarget")]
@@ -9,7 +11,9 @@ using STATE = INode.STATE;
 public class SOEscapeTarget : SONode
 {
     public float m_fEscapeDistance = 6.0f;
-    public float m_fEscapeTime = 1.5f;
+    public float m_fEscapeTime = 3.0f;
+    public float[] m_listChachAngle = { -90.0f, -60.0f, -30.0f, 0.0f, 30.0f, 60.0f, 90.0f };
+
     public override INode CreateRuntime()
     {
         return new EscapeTargetRunTime(this);
@@ -29,32 +33,48 @@ public class SOEscapeTarget : SONode
         public STATE Evaluate(Blackboard _pBB, float _fDT)
         {
             Vector2 vTargetPos = new Vector2(_pBB.Target.position.x, _pBB.Target.position.z);
-            Vector2 vSelfPos = new Vector2(_pBB.Self.position.x, _pBB.Self.position.z);
+            Vector2 vSelfPos = new Vector2(_pBB.Self.transform.position.x, _pBB.Self.transform.position.z);
 
             float fDistance = Vector2.Distance(vSelfPos, vTargetPos);
-
+            
             m_fCurTime += _fDT;
             if (m_fCurTime >= m_pEscapeTarget.m_fEscapeTime)
             {
-                _pBB.AnimBridge.SetRun(true);
-                _pBB.Agent.isStopped = false;
+                m_fCurTime = 0;
 
-                m_fCurTime = m_pEscapeTarget.m_fEscapeTime;
-                Vector3 vDir = _pBB.Target.position - _pBB.Self.position;
+                Vector3 vDir = _pBB.Target.position - _pBB.Self.transform.position;
+                vDir.Normalize();
+                vDir.y = 0.0f;
+                Vector3 vDefaultDir = -vDir.normalized;
 
-                Vector3 vEscapePostition = _pBB.Self.position + vDir * m_pEscapeTarget.m_fEscapeDistance;
-                if(NavMesh.SamplePosition(vEscapePostition, out NavMeshHit tHit,
-                    0.1f, _pBB.Agent.areaMask) == true)
-                    _pBB.Agent.SetDestination(tHit.position);
 
-                return STATE.SUCCESS;
+                for (int i = 0; i < m_pEscapeTarget.m_listChachAngle.Length; ++i)
+                {
+                    float fAngle = m_pEscapeTarget.m_listChachAngle[i];
+                    Quaternion qRot = Quaternion.Euler(0.0f, fAngle, 0.0f);
+                    Vector3 vCurDir = qRot * vDefaultDir;
+                    vCurDir.Normalize();
+
+                    Vector3 vEscapePos = _pBB.Self.transform.position + vCurDir * m_pEscapeTarget.m_fEscapeDistance;
+
+                    if (NavMesh.SamplePosition(vEscapePos, out NavMeshHit tHit,
+                    1.0f, _pBB.Agent.areaMask) == true)
+                    {
+                        _pBB.AnimBridge.SetRun(true);
+                        _pBB.Agent.SetDestination(tHit.position);
+                        Debug.Log("도망감");
+                        return STATE.SUCCESS;
+                    }
+                }
+
+                return STATE.FAILED;
             }
 
-            //안정거리까지 이동 확인
+
             if (fDistance >= m_pEscapeTarget.m_fEscapeDistance)
                 return STATE.FAILED;
             else
-                return STATE.RUN;
+                return STATE.SUCCESS;
         }
 
 

@@ -17,8 +17,14 @@ using UnityEngine.Assertions;
 using System;
 
 
+
 public class InputManager : MonoBehaviour
 {
+    private static int CompareByType(PointerBinding a, PointerBinding b)
+    {
+        return a.ID.CompareTo(b.ID);
+    }
+
     //키보드 값과 맵핑하기 위해서 
     [System.Serializable]
     public enum eActionID
@@ -40,6 +46,7 @@ public class InputManager : MonoBehaviour
         End,
     }
 
+    //디바이스 인풋
     [System.Serializable]
     public class ActionBinding
     {
@@ -50,12 +57,24 @@ public class InputManager : MonoBehaviour
         public List<InputActionReference> listAction = new(); // <- 인스펙터에서 선택 가능
     }
 
+    [System.Serializable]
+    public class PointerBinding
+    {
+        public InputType ID = InputType.Tap;
+        public PED PointerFunctions = null;
+    }
+
+    public enum InputType
+    {
+        Tap, Stay, Swipe, Drag, Pinch, Rotate, End
+    };
+
     public struct tTouchEvent
     {
-        public string strType;     // "tap","stay","swipe","drag","pinch","rotate" 등 이벤트 타입
-        public Vector2 vDelta;     // 프레임 이동량(드래그/스와이프 등)
-        public float fValue;       // 핀치 스케일 변화/회전 각도/롱프레스 지속시간 등 추가 값
-        public bool bOverUI;       // 시작 시 UI 위였는지(정책: 시작 UI면 끝까지 UI)
+        public InputType eInputType;     // "tap","stay","swipe","drag","pinch","rotate" 등 이벤트 타입
+        public Vector2 vDelta;           // 프레임 이동량(드래그/스와이프 등)
+        public float fValue;             // 핀치 스케일 변화/회전 각도/롱프레스 지속시간 등 추가 값
+        public bool bOverUI;             // 시작 시 UI 위였는지(정책: 시작 UI면 끝까지 UI)
     }
 
     public static InputManager m_Instance = null;
@@ -65,6 +84,7 @@ public class InputManager : MonoBehaviour
 
    
     [SerializeField] private List<ActionBinding> m_listActions = new();
+    [SerializeField] private List<PointerBinding> m_listPointerActions = new();
 
     private readonly List<tTouchEvent> m_listTouchEvent = new(10);//프레임 버퍼
     private readonly PointerInputState m_pPointerState = new PointerInputState(); 
@@ -102,6 +122,10 @@ public class InputManager : MonoBehaviour
                 pActionRef.listAction[j].action.Enable();
             }
         }
+
+        
+        m_listPointerActions.Sort(CompareByType);
+
     }
 
     private void Update()
@@ -111,7 +135,7 @@ public class InputManager : MonoBehaviour
         if (listActiveTouch.Count> 0)
         {
             m_pTouchTracker.UpdateTouchPhase(ref listActiveTouch, m_listTouchEvent, m_pUIRayCaster);
-            m_pActionMapper.MapPointer(m_listTouchEvent, m_pPointerState);
+            m_pActionMapper.MapPointer(m_listTouchEvent, m_pPointerState, m_listPointerActions);
         }
 
         m_pActionState.Clear();
@@ -121,7 +145,6 @@ public class InputManager : MonoBehaviour
         //UGUI나 다른 다바이스 기기와 연동된 캐릭터 인풋 관련된 액션들
         m_pActionMapper.MapDevice(m_pActionState, m_listActions);
 
-        //m_pUGUIActionState.Clear();
     }
 
     private void LateUpdate()

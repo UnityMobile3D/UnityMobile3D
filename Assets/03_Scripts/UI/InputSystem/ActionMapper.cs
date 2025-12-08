@@ -9,9 +9,10 @@ using tTouchEvent = InputManager.tTouchEvent;
 using static InputManager;
 public class ActionMapper 
 {
-   
+    
     public sealed class PointerInputState
     {
+        public Vector2 vScreenPos; //마지막으로 손가락을 땐 위치
         public Vector2 vMove;      // 이동 벡터(정규화/클램프)
         public Vector2 vSwipeDelta; // 스와이프 벡터(프레임 이동량)
 
@@ -21,8 +22,6 @@ public class ActionMapper
         public bool bFireDown;     // 눌림 시작 트리거(한 프레임)
         public bool bFireHeld;     // (연속)
         public bool bFireUp;       // 해제 트리거(한 프레임)
-
-        public PointerInputState(){}
        
         public void ClearAction() { bFireDown = bFireUp = false; fZoomDelta = 0; fRotateDelta = 0; }
     }
@@ -114,7 +113,7 @@ public class ActionMapper
 
     
     //다른 디바이스와 맵핑
-    public void MapPointer(List<tTouchEvent> _listTouchEvent, PointerInputState _pState)
+    public void MapPointer(List<tTouchEvent> _listTouchEvent, PointerInputState _pState, List<PointerBinding> _listPointerBinding)
     {
         _pState.ClearAction();
 
@@ -123,37 +122,39 @@ public class ActionMapper
             if (tEve.bOverUI)
                 continue;
 
-            switch(tEve.strType)
+            switch(tEve.eInputType)
             {
-                case "drag":
+                case InputType.Drag:
                     //if(m_tLeft.Contains(tEve.vPos))
                     //_pState.vMove += tEve.vDelta / 100.0f;  // 왼쪽: 이동 벡터
                     _pState.vMove = Vector2.ClampMagnitude(_pState.vMove, 1.0f); // 이동 벡터 정규화
                     break;
 
-                case "swipe":
+                case InputType.Swipe:
                     _pState.vSwipeDelta += Vector2.ClampMagnitude(_pState.vMove, 1.0f); // 스와이프 벡터 누적
                     break;
 
-                case "tap":
+                case InputType.Tap:
+                    _pState.vScreenPos = tEve.vDelta;
                     //if (m_tLeft.Contains(tEve.vPos))
-                     _pState.bFireDown = true;  
+                    _pState.bFireDown = true;  
                     break;
 
-                case "stay":
+                case InputType.Stay:
                     //if (m_tRight.Contains(tEve.vPos))
                      _pState.bFireHeld = true;  // 롱프레스 유지
                     break;
 
-                case "pinch":
+                case InputType.Pinch:
                     _pState.fZoomDelta += tEve.fValue; // 두 손가락 회전 각도 변화량
                     break;
 
-                case "rotate":
+                case InputType.Rotate:
                     _pState.fRotateDelta += tEve.fValue; // 두 손가락 회전 각도 변화량
                     break;
-
             }
+
+            execute_pointer(tEve.eInputType, _listPointerBinding);
         }
     }
     public void MapDevice(ActionState _pState, List<ActionBinding> _listActionBindg)
@@ -196,6 +197,7 @@ public class ActionMapper
         {
             case InputActionType.Button:
 
+                //만약 UGUI에서 먼저 받았다면
                 if (_pState.GetBoolean(eID) == true)
                     return true;
 
@@ -204,7 +206,6 @@ public class ActionMapper
 
                 bResult = bPressed;
                 break;
-
             case InputActionType.Value:
 
                 if (_pState.GetVector2D(eID) != Vector2.zero)
@@ -219,6 +220,14 @@ public class ActionMapper
         }
 
         return bResult;
+    }
+    private void execute_pointer(InputType _eType, List<PointerBinding> _listPointerBinding)
+    {
+        PointerBinding pBindTarget = _listPointerBinding[(int)_eType];
+        if(pBindTarget != null)
+        {
+           pBindTarget.PointerFunctions?.Invoke();
+        }
     }
 }
 

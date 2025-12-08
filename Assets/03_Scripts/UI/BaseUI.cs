@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class BaseUI : MonoBehaviour
 {
+    [SerializeField] protected bool m_bWorldUI = false;
     [SerializeField] protected bool m_bRaycast = true;
     virtual protected void Awake()
     {
@@ -16,7 +18,6 @@ public class BaseUI : MonoBehaviour
         pGraphic.raycastTarget = m_bRaycast;
     }
 
-   
 
     public void SetRaycast(bool _bRaycast)
     {

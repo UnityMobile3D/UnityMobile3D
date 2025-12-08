@@ -6,6 +6,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
 [Serializable]
@@ -31,6 +32,7 @@ public class Player : MonoBehaviour , IHealth
     [Header("Component")]
     private Rigidbody   _rigidbody;
     private Animator    _animator;
+    private NavMeshAgent _agent;
    
     private SkillRunner       _skillRunner; 
     public Rigidbody RigidBody => _rigidbody;
@@ -41,6 +43,7 @@ public class Player : MonoBehaviour , IHealth
     public ObjectInfo PlayerInfo => _playerInfo;
     // 이동 관련변수
     [Header("Move")]
+    [SerializeField] private LayerMask _moveMask;
     [SerializeField] private float rotateTime   = 0.1f;
 
     private float       rotateVel;
@@ -51,6 +54,7 @@ public class Player : MonoBehaviour , IHealth
     // 상태 관리
     private bool        _hit = false;
     private bool        _run = false;
+    private bool        _navRun = false;
 
     [Header("Hit")]
     private Coroutine _knockbackRoutine;
@@ -62,17 +66,11 @@ public class Player : MonoBehaviour , IHealth
     {
         _rigidbody = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
+        _agent = GetComponent<NavMeshAgent>();
         _playerInfo = GetComponent<ObjectInfo>();
         _skillRunner = GetComponent<SkillRunner>();
 
-        // Rigidbody 세팅
-        //_rigidbody.useGravity = true;
-        //_rigidbody.drag = 0f;
-        //_rigidbody.angularDrag = 0f;
-        //_rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
-        //_rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
-        //_rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-
+        _agent.speed = _playerInfo.Speed;
         // Animator 세팅
         _animator = GetComponentInChildren<Animator>();
     }
@@ -104,13 +102,14 @@ public class Player : MonoBehaviour , IHealth
         //우선권은 스킬한테
         if(_skillRunner.RunSkill != null)
         {
+            RESETAGENT();
+
             _skillRunner.UpdateSkill();
         }
         else
         {
-            ROTATE();
+             ROTATE();
         }
-
     }
 
 
@@ -130,19 +129,32 @@ public class Player : MonoBehaviour , IHealth
         if (_hit == true || _skillRunner.RunSkill != null)
             return;
 
-        if (moveDir == Vector3.zero)
+        if (moveDir == Vector3.zero && _agent.velocity == Vector3.zero)
         {
             // 걷기 애니메이션 끄고
             _animator.SetBool("isWalk", false);
             return;
         }
 
+        //패드가 우선
+        if (moveDir != Vector3.zero)
+            RESETAGENT();
+        else if (_navRun == true)
+            return;
+        
+
         Vector3 vStep = moveDir * _playerInfo.Speed * Time.fixedDeltaTime;
         Vector3 vPos = _rigidbody.position;
 
         transform.position = (vPos + vStep);
-        //_rigidbody.MovePosition(vPos + vStep);
         _animator.SetBool("isWalk", true);
+        
+    }
+
+    private void RESETAGENT()
+    {
+        _navRun = false;
+        _agent.ResetPath();
     }
 
     private void ROTATE()
@@ -159,6 +171,48 @@ public class Player : MonoBehaviour , IHealth
         transform.rotation = Quaternion.Euler(0f, smoothY, 0f);
     }
   
+    //Touch Callback
+    public void NavigationMove()
+    {
+        Vector2 screenPoss = InputManager.m_Instance.PointerState.vScreenPos;
+        Ray ray = Camera.main.ScreenPointToRay(screenPoss);
+
+        RaycastHit hit;
+        
+        if (Physics.Raycast(ray, out hit, 100.0f, _moveMask))
+        {
+            const float MaxDistance = 3.0f;
+            if (NavMesh.SamplePosition(hit.point, out NavMeshHit navHit,
+                   MaxDistance, NavMesh.AllAreas))
+            {
+               
+                _navRun = true;
+                _animator.SetBool("isWalk", true);
+                _agent.SetDestination(navHit.position);
+            }
+        }
+    }
+
+    private bool IsArrived()
+    {
+        if (_agent.pathPending == true)
+            return false;
+
+        // 경로가 없으면 도착했다고 볼 수도 있지만 일반적으로 false 처리
+        if (_agent.hasPath == false)
+            return false;
+
+        if (_agent.remainingDistance > _agent.stoppingDistance)
+            return false;
+
+        // 남은 거리는 stoppingDistance 이하이지만,
+        // 아직 속도가 줄지 않고 있다면 '완전 도착'은 아님
+        if (_agent.velocity.sqrMagnitude > 0.001f)
+            return false;
+
+        //목적지 도달
+        return true;
+    }
     public void HIT(bool _bDown = false)
     {
         _hit = true;
@@ -169,7 +223,6 @@ public class Player : MonoBehaviour , IHealth
 
         if(_skillRunner.RunSkill != null)
             _skillRunner.CancelSkill();
-        
     }
     public void ENDHIT()
     {

@@ -12,15 +12,7 @@ public class SpeechTyper : MonoBehaviour
     private string m_strFullString = "";
     private float m_fInterval = 0.0f;
     private Coroutine m_pTypingCoroutine;
-    public string tem = "";
-
-    public void Update()
-    {
-        if(Input.anyKey)
-        {
-            ShowText(tem);
-        }
-    }
+ 
     public void ShowText(string _strMessage)
     {
         m_fInterval = 1.0f / charsPerSecond;
@@ -28,6 +20,7 @@ public class SpeechTyper : MonoBehaviour
         m_strFullString = _strMessage;
 
         m_pText.text = m_strFullString;
+        
 
         m_pText.ForceMeshUpdate();
         m_pText.maxVisibleCharacters = 0;

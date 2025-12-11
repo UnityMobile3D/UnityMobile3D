@@ -167,7 +167,7 @@ public class SkillRunner : MonoBehaviour
 
                 //공격이 아직 생성되지 않았다면
                 if (pSkillObj != null && pSkillObj.IsSkillActive == false)
-                    _skillContext.runSkillObject.PushPoolObject();
+                    _skillContext.runSkillObject.PushObjectPool();
             }
         }
 

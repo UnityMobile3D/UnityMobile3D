@@ -54,7 +54,7 @@ public class SkillObject : MonoBehaviour, IPoolAble
             //풀에 반납
             m_fCurLifeTime = 0.0f;
 
-            PushPoolObject();
+            PushObjectPool();
         }
     }
 
@@ -66,7 +66,7 @@ public class SkillObject : MonoBehaviour, IPoolAble
         m_strSpawnKey = _strKey;
     }
 
-    public void PushPoolObject()
+    public void PushObjectPool()
     {
         if (m_iCreateCount == 0)
             return;

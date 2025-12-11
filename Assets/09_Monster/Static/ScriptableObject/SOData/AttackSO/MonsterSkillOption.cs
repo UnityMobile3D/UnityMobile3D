@@ -15,5 +15,5 @@ public class MonsterSkillOption : ScriptableObject
     public float    AttackTime = 0.0f;
     public float    MoveSpeed = 0.0f;
     public bool     isDown = false;
-    public bool     DestroyOnHit = false;
+    public bool     DestroyOn = false;
 }

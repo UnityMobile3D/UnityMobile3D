@@ -14,25 +14,33 @@ public interface IRaycastEvent
 
 public class NPC : MonoBehaviour
 {
-    [SerializeField] private List<SOSpeech> m_listSpeech;
+    [SerializeField] private SOSpeech m_pSpeech;
     //SpeechManager두기
 
     private Animator m_pAnimator;
-    private LayerMask m_tPlayerMask;
+    [SerializeField] private LayerMask m_tPlayerMask;
 
     private void Awake()
     {
         m_pAnimator = GetComponent<Animator>();
-        m_tPlayerMask |= 1 << LayerMask.GetMask("Player");
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if ((m_tPlayerMask & (1 << collision.gameObject.layer)) != 0)
+        if ((m_tPlayerMask.value & (1 << collision.gameObject.layer)) != 0)
         {
-
+            Vector3 vQuestPos = transform.position + transform.up * 2.0f;
+            SpeechManager.m_Instance.ShowWSpeechUI(vQuestPos, m_pSpeech);
         }
     }
- 
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if ((m_tPlayerMask.value & (1 << collision.gameObject.layer)) != 0)
+        {
+            SpeechManager.m_Instance.CloseSpeechdUI();
+        }
+    }
+
 
 }

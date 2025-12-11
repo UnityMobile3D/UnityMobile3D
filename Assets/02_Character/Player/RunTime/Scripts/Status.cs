@@ -10,6 +10,7 @@ public class AttackInfo
     public float Power;
     public Vector3 AttackerPosition;
     public Vector3 HitPoint;
+    public bool Down;
 }
 
 public interface IHealth

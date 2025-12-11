@@ -29,17 +29,15 @@ public class SOFindTarget : SONode
 
             //거리 보다 멀다면 failed
             _pBB.DistanceToTarget = GlobalAction.GetDisttance(_pBB.Self.transform.position, _pBB.Target.position);
-            if(_pBB.DistanceToTarget > m_pFindTarget.m_fMaxDistance)
-            {
-                _pBB.Agent.ResetPath();
-                return STATE.FAILED;
-            }
 
             // 지정된 각도보다 안된다면 failed
-            float fAngle = 
-                GlobalAction.GetDirection(_pBB.Self.transform.forward, _pBB.Self.transform.position, _pBB.Target.position);
-            if (fAngle > m_pFindTarget.m_fFOV * 0.5f)
+            float fAngle =
+              GlobalAction.GetDirection(_pBB.Self.transform.forward, _pBB.Self.transform.position, _pBB.Target.position);
+
+            if (_pBB.DistanceToTarget > m_pFindTarget.m_fMaxDistance || 
+                fAngle > m_pFindTarget.m_fFOV * 0.5f)
             {
+                _pBB.AnimBridge.SetRun(false);
                 _pBB.Agent.ResetPath();
                 return STATE.FAILED;
             }

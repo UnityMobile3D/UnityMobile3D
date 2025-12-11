@@ -8,23 +8,42 @@ using UnityEngine.SceneManagement;
 
 using Vector3 = UnityEngine.Vector3;
 using Quaternion = UnityEngine.Quaternion;
+using System;
+
+[Serializable]
+public enum ePointType
+{
+    None,
+    Head,
+    RightHand,
+    LeftHand
+}
+
+[Serializable]
+public class MonsterPoint
+{
+    public ePointType ePointType;
+    public Transform pTrasnform;
+}
+
 public class Monster : MonoBehaviour , IHealth , IPoolAble
 {
     [SerializeField] protected Blackboard m_pBlackbard = new Blackboard();
     private BehaviorTree m_pBHTree = null;
     [SerializeField] protected SOMonsterInfo m_SOMonsterInfo = null;
+    [SerializeField] protected List<MonsterPoint> m_listPoint = new();
 
     protected Rigidbody m_pRigidbody = null;
     protected Animator m_pAnimator = null;
     protected NavMeshAgent m_pNavMeshAgent = null;
+    protected Collider m_pCollider = null;
     public SOMonsterInfo SOMonsterInfo => m_SOMonsterInfo;
 
     protected CooldownModule m_pCollDownModule = null;
-
-    private ObjectInfo m_pMonsterInfo = null;
-    private Coroutine m_pKnockbackRoutine = null;
-
+    protected ObjectInfo m_pMonsterInfo = null;
     [SerializeField] private SODropTable m_pDropTable = null;
+
+    private Coroutine m_pKnockbackRoutine = null;
 
     private string m_strPoolKey = "";
 
@@ -37,6 +56,7 @@ public class Monster : MonoBehaviour , IHealth , IPoolAble
     public void OnSpawn()
     {
         m_bHit = false;
+        m_pCollider.enabled = true;
     }
     public void OnDespawn()
     {
@@ -48,12 +68,14 @@ public class Monster : MonoBehaviour , IHealth , IPoolAble
         m_pBlackbard.Self = this;
         m_pBlackbard.Agent = GetComponent<NavMeshAgent>();
         m_pBlackbard.AnimBridge = GetComponent<AnimationBridge>();
+        
         m_pBHTree= GetComponent<BehaviorTree>();
 
         m_pMonsterInfo = GetComponent<ObjectInfo>();
         m_pRigidbody = GetComponent<Rigidbody>();
         m_pAnimator = GetComponent<Animator>();
         m_pNavMeshAgent = GetComponent<NavMeshAgent>();
+        m_pCollider = GetComponent<Collider>();
 
         m_pBHTree.Init(m_pBlackbard, this);
 
@@ -85,72 +107,33 @@ public class Monster : MonoBehaviour , IHealth , IPoolAble
         return m_SOMonsterInfo.skillinfo[_iIdx];
     }
 
+    public Transform GetMonsterPoint(ePointType _eType)
+    {
+        for(int i = 0; i<m_listPoint.Count; ++i)
+        {
+            if (m_listPoint[i].ePointType == _eType)
+                return m_listPoint[i].pTrasnform;
+        }
+
+        return null;
+    }
+
     //기본 몬스터 공격
     public void SpawnAttackObject()
     {
-        Spawn(Vector3.zero);
+        m_pBlackbard.HitAnimationEvent = true;
     }
 
-    public GameObject Spawn(Vector3 _vSpawnPos)
-    {
-        int iTargetIdx = m_pCollDownModule.TargetIdx;
-     
-        //몬스터 스킬 정보를 통해서 타겟 몬스터 어택 오브젝트 레퍼런스의 아이디를 가져오기
-        MonsterSkillInfo pSkillInfo = m_SOMonsterInfo.skillinfo[iTargetIdx];
-        string strKey = pSkillInfo.SpawnOption.SOPoolEntry.prefabRef.AssetGUID;
-
-        MonsterSkillOption pSkillOption = pSkillInfo.SkillOption;
-        MonsterSpawnOption pSpawnOption = pSkillInfo.SpawnOption;
-        //위치 방향 잡기
-        if (pSpawnOption.SpawnCurPos == true)
-            _vSpawnPos = gameObject.transform.position;
-        else if (pSpawnOption.SpawnPlayerPos == true)
-            _vSpawnPos = m_pBlackbard.Target.transform.position;
-
-        Vector3 vDir = pSpawnOption.AttackDir;
-        if (pSpawnOption.PlayerDir == true)
-            vDir = (m_pBlackbard.Target.transform.position - _vSpawnPos).normalized;
-        vDir *= pSpawnOption.SpawnDiff;
-
-        GameObject pAttackObj = ObjectPoolManager.m_Instance.GetObject(
-            strKey, _vSpawnPos + vDir, pSpawnOption.SpawnRot);
-
-        if (pAttackObj == null)
-            return null;
-
-        if (pAttackObj.TryGetComponent<MonsterAttackObject>(out var pAttack) == false)
-        {
-            ObjectPoolManager.m_Instance.PushObject(strKey, pAttackObj);
-            return null;
-        }
-
-        pAttack.SetInfo(pSkillInfo);
-        pAttack.SetDir(vDir);
-        pAttack.SetOwner(this);
-
-        //근접공격은 피격시 사라지고, 소환공격은 계속 유지되게
-        if (pSkillOption.DestroyOnHit == true)
-            m_pBlackbard.SpawnObjects.Add(pAttack);
-        
-
-        return pAttackObj;
-    }
     public void ClearAttackObject()
     {
         List<MonsterAttackObject> listAttack = m_pBlackbard.SpawnObjects;
         for(int i = 0; i<listAttack.Count; ++i)
         {
-            if (listAttack[i].MonsterSkillInfo.SkillOption.DestroyOnHit == true)
-                listAttack[i].PushPoolObject();
+            listAttack[i].PushObjectPool();
         }
         
         m_pBlackbard.SpawnObjects.Clear();
-        m_pBlackbard.Attacking = false;
-    }
-
-    protected virtual void OnTriggerEnter(Collider other)
-    {
-
+        
     }
 
     public void EndHit()
@@ -168,21 +151,20 @@ public class Monster : MonoBehaviour , IHealth , IPoolAble
 
         m_pBlackbard.Attacking = false;
 
-        Debug.Log($"{m_pBlackbard}데미지를 맞음");
-
         m_pNavMeshAgent.ResetPath();
         m_pNavMeshAgent.updateRotation = false;
     }
     public void EndAttack()
     {
+        //seq에서 1번이 통과하면 바로 2번 공격 실행 ->
+        Debug.Log($"공격끝남 {m_pBlackbard.CooldownModule.TargetIdx}");
         m_pBlackbard.Attacking = false;
+        m_pAnimator.speed = 1.0f;
     }
-    public void TakeDamage(AttackInfo _pAttackInfo)
+    public virtual void TakeDamage(AttackInfo _pAttackInfo)
     {
-        m_pMonsterInfo.AddHP((int)_pAttackInfo.Damage * -1);
-        m_pBlackbard.HpRatio = (float)m_pMonsterInfo.HP / m_pMonsterInfo.MaxHp;
+        MinusHP((int)_pAttackInfo.Damage * -1);
 
-        ClearAttackObject();
         if (m_pMonsterInfo.HP <= 0.0f)
         {
             Dead();
@@ -194,6 +176,7 @@ public class Monster : MonoBehaviour , IHealth , IPoolAble
             knockback(_pAttackInfo);
         }
 
+        ClearAttackObject();
     }
     public void Heal(int _iAmount)
     {
@@ -253,6 +236,7 @@ public class Monster : MonoBehaviour , IHealth , IPoolAble
     protected virtual void Dead()
     {
         m_bHit = true;
+        m_pCollider.enabled = false;
         m_pAnimator.SetTrigger("Dead");
 
         ItemDataManager.m_Instance.Drop(m_pDropTable, transform.position);
@@ -264,5 +248,12 @@ public class Monster : MonoBehaviour , IHealth , IPoolAble
             Destroy(gameObject);
         else
             ObjectPoolManager.m_Instance.PushObject(m_strPoolKey, gameObject);
+    }
+
+    public void MinusHP(int Damage)
+    {
+        m_pMonsterInfo.AddHP(Damage);
+        m_pBlackbard.HpRatio = (float)m_pMonsterInfo.HP / m_pMonsterInfo.MaxHp;
+
     }
 }

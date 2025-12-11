@@ -74,13 +74,14 @@ public class TouchTracker
 
 
     private void add_touch_event(List<tTouchEvent> _listTouchEvent, InputType _eInputType, 
-             in Vector2 _vDelta , float _fValue, bool _bOverUI, /*Test*/ int _iID)
+              Vector2 _vDelta , Vector2 _vDeltaDrag, float _fValue, bool _bOverUI, /*Test*/ int _iID)
     {
         _listTouchEvent.Add(new tTouchEvent
         {
             eInputType = _eInputType,
             vDelta = _vDelta,
-            fValue = _fValue, 
+            vDeltaDrag = _vDeltaDrag,
+            fValue = _fValue,
             bOverUI = _bOverUI
         });
 
@@ -98,7 +99,7 @@ public class TouchTracker
         float fScale = fCurDist / fStartDist;                                                                   //핀치 스케일 변화
 
         add_touch_event(_listTouchEvent, InputType.Pinch, 
-             Vector2.zero, fScale,
+             Vector2.zero, Vector2.zero, fScale,
             m_listTouchOverUI[iFirstID] && m_listTouchOverUI[iSecondID], iFirstID | iSecondID);
 
     }
@@ -111,18 +112,18 @@ public class TouchTracker
 
         //과거에 있들어왔던 터치시간과 비교
         float fDeltaTime = (float)(_tTouch.time - _tTouch.startTime);
-        Vector2 vDeltaDist = _tTouch.screenPosition - _tTouch.startScreenPosition;
-
-        if (fDeltaTime >= m_fLongPressTime && vDeltaDist.magnitude < m_fDragStartDist)
+        Vector2 vDist = _tTouch.screenPosition - _tTouch.startScreenPosition;
+      
+        if (fDeltaTime >= m_fLongPressTime && vDist.magnitude < m_fDragStartDist)
         {
             add_touch_event(_listTouchEvent, InputType.Stay,
-                Vector2.zero, fDeltaTime, m_listTouchOverUI[iID], iID);
+                Vector2.zero, _tTouch.delta, fDeltaTime, m_listTouchOverUI[iID], iID);
         }
 
-        else if (vDeltaDist.magnitude >= m_fDragStartDist) //일정거리 이상 이동 드래그
+        else if (vDist.magnitude >= m_fDragStartDist) //일정거리 이상 이동 드래그
         {
             add_touch_event(_listTouchEvent, InputType.Drag,
-                vDeltaDist, fDeltaTime, m_listTouchOverUI[iID], iID);
+                vDist, _tTouch.delta, fDeltaTime, m_listTouchOverUI[iID], iID);
         }
     }
 
@@ -136,20 +137,20 @@ public class TouchTracker
         }
 
         float fDeltaTime = (float)(_tTouch.time - _tTouch.startTime);
-        Vector2 vDeltaDist = _tTouch.screenPosition - _tTouch.startScreenPosition;
+        Vector2 vDist = _tTouch.screenPosition - _tTouch.startScreenPosition;
 
         //짧은 시간, 적은 이동량
-        if (fDeltaTime <= m_fTapMaxTime && vDeltaDist.magnitude < m_fTapMaxMove)                 
+        if (fDeltaTime <= m_fTapMaxTime && vDist.magnitude < m_fTapMaxMove)                 
         {
             add_touch_event(_listTouchEvent, InputType.Tap,
-               _tTouch.screenPosition, fDeltaTime, m_listTouchOverUI[iID], iID);
+               _tTouch.screenPosition, Vector2.zero, fDeltaTime, m_listTouchOverUI[iID], iID);
         }
 
         //큰 이동량
-        else if (vDeltaDist.magnitude >= m_fSwipeMinDist) //스와이프 인식
+        else if (vDist.magnitude >= m_fSwipeMinDist) //스와이프 인식
         {
-            add_touch_event(_listTouchEvent, InputType.Swipe, 
-                vDeltaDist, fDeltaTime, m_listTouchOverUI[iID], iID);
+            add_touch_event(_listTouchEvent, InputType.Swipe,
+                vDist, _tTouch.delta, fDeltaTime, m_listTouchOverUI[iID], iID);
         }
 
         m_listTouchOverUI[iID] = false; 

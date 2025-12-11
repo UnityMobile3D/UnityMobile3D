@@ -14,9 +14,9 @@ public class CategoryData
 {
     public List<SOEntryUI> m_ListData = new List<SOEntryUI>();
 
-    [SerializeField] private bool m_bCanDuplication = true; //중복 허용할지(장비 템 창, 스킬 창)
-   
     public int m_iCurrentRemnantData = 0;
+
+    [SerializeField] private bool m_bCanDuplication = true; //중복 허용할지(장비 템 창, 스킬 창)
     public bool IsCanDuplication => m_bCanDuplication;
     public bool IsFull => m_iCurrentRemnantData <= 0;
     public int m_iCategoryIdx = 0;
@@ -78,7 +78,6 @@ public class Container : ButtonUI
     private RectTransform m_pFrameRectTrasnform;
     private Image m_pFrameImage;
 
-    
     [Header("SLOT")]
     [SerializeField] private int m_iSlotColCount = 3;
     [SerializeField] private int m_iSlotRowCount = 2;
@@ -213,6 +212,7 @@ public class Container : ButtonUI
     }
   
 
+    //에디터에서 가장 처음에 실행
     public void Build()
     {
         clear_data();
@@ -321,7 +321,6 @@ public class Container : ButtonUI
 
         m_vContaninerSize.x = vStep.x * m_iColCount;
         m_vContaninerSize.y = vStep.y * iRowSize;
-
 
     }
 

@@ -51,7 +51,7 @@ public class Item : MonoBehaviour, IPoolAble
         }
     }
 
-    private void PushObjectPool()
+    public void PushObjectPool()
     {
         if (m_iPushPoolCount <= 0)
             return;

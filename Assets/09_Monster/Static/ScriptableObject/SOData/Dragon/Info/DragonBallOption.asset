@@ -22,4 +22,4 @@ MonoBehaviour:
   AttackTime: 0
   MoveSpeed: 0
   isDown: 0
-  DestroyOnHit: 0
+  DestroyOn: 0

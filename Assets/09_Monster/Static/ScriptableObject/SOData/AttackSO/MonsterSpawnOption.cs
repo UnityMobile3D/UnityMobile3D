@@ -7,11 +7,14 @@ using UnityEngine;
 public class MonsterSpawnOption : ScriptableObject
 {
     [Header("Spawn Options")]
+    public ePointType SpawnPoint;
     public bool SpawnPlayerPos = false;
     public bool SpawnCurPos = false;
+    public bool SpawnRandomPos = false;
     public bool PlayerDir = false;
     public float SpawnDiff = 1.0f;
     public float LifeTime = 0.0f;
+
 
     //처음에 생성될때만 설정 
     [Header("Spawn Position Options")]

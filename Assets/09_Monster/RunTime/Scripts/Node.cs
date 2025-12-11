@@ -35,6 +35,11 @@ public class Blackboard
     public float DistanceToTarget;
     public float HpRatio;
 
+    public bool HitAnimationEvent; 
+    public Vector3 AttackSpawnPos;
+    public Vector3 AttackSpawnRot;
+    public Vector3 AttackDir;
+
     public CooldownModule CooldownModule;
     public NavMeshAgent Agent;
     public AnimationBridge AnimBridge;

@@ -4,19 +4,20 @@ using UnityEngine;
 using STATE = INode.STATE;
 
 
-[CreateAssetMenu(menuName = "SO/ActionNode/AttackTarget")]
-public class SOAttackTarget : SONode
+[CreateAssetMenu(menuName = "SO/ActionNode/MonsterWaitAnimEnd")]
+public class SOMonsterWaitAnimEnd : SONode
 {
     public override INode CreateRuntime()
     {
-        return new AttackTargetRuntime(this);
+        return new WaitAnimEndRuntime(this);
     }
 
-    private class AttackTargetRuntime : INode
+    private class WaitAnimEndRuntime : INode
     {
-        private SOAttackTarget m_pAttackTarget = null;
+        private SOMonsterWaitAnimEnd m_pAttackTarget = null;
         private float m_fCurTime;
-        public AttackTargetRuntime(SOAttackTarget _pOwner)
+
+        public WaitAnimEndRuntime(SOMonsterWaitAnimEnd _pOwner)
         {
             m_pAttackTarget = _pOwner;
             m_fCurTime = 0.0f;
@@ -28,9 +29,9 @@ public class SOAttackTarget : SONode
             if (_pBB.Target == null || _pBB.Attacking == false)
             {
                 _pBB.AnimBridge.SetAttack(_pBB.CooldownModule.TargetIdx, false);
-                _pBB.Self.ClearAttackObject();
+                _pBB.AnimBridge.m_pAnimator.speed = 1.0f;
                 _pBB.Agent.updateRotation = true;
-                return STATE.FAILED;
+                return STATE.SUCCESS;
             }
 
             else

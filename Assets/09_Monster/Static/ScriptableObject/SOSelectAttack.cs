@@ -30,10 +30,8 @@ public class SOSelectAttack : SONode
             if (iAttackIdx == -1)
                 return STATE.FAILED;
 
-
             _pBB.Attacking = true;
-            Debug.Log($"{_pBB} 공격 시작함");
-
+           
             _pBB.CooldownModule.StartCooldown(iAttackIdx);
             _pBB.Agent.ResetPath();
             _pBB.Agent.updateRotation = false;

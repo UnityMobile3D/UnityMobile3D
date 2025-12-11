@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba810cf42923aa047b553311ad9459c1, type: 3}
   m_Name: DragonBallSpawn
   m_EditorClassIdentifier: 
+  SpawnPoint: 0
   SpawnPlayerPos: 1
   SpawnCurPos: 0
+  SpawnRandomPos: 1
   PlayerDir: 0
   SpawnDiff: 0
   LifeTime: 3

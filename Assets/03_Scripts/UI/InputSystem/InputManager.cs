@@ -72,7 +72,8 @@ public class InputManager : MonoBehaviour
     public struct tTouchEvent
     {
         public InputType eInputType;     // "tap","stay","swipe","drag","pinch","rotate" 등 이벤트 타입
-        public Vector2 vDelta;           // 프레임 이동량(드래그/스와이프 등)
+        public Vector2 vDelta;           // 처음 프레임부터 이동량(드래그/스와이프 등)
+        public Vector2 vDeltaDrag;       // 이전프레임과 비용 그래그 양
         public float fValue;             // 핀치 스케일 변화/회전 각도/롱프레스 지속시간 등 추가 값
         public bool bOverUI;             // 시작 시 UI 위였는지(정책: 시작 UI면 끝까지 UI)
     }
@@ -93,7 +94,7 @@ public class InputManager : MonoBehaviour
     //UGUI 이벤트 시스템과 내 InputManager에 데이터를 동기화하기 위한 임시 데이터
     private ActionState m_pUGUIActionState = new ActionState();
     
-    public PointerInputState PointerState => m_pPointerState; //외부 참조용 eadonly 필드 + get-only 프로퍼티
+    public PointerInputState PointerState => m_pPointerState; //외부 참조용 readonly 필드 + get-only 프로퍼티
     public ActionState ActionState => m_pActionState;
     
     [SerializeField] private EventSystem m_pEventSystem;             // UGUI EventSystem 참조

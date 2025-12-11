@@ -126,15 +126,14 @@ public class Player : MonoBehaviour , IHealth
 
     private void MOVE()
     {
-        if (_hit == true || _skillRunner.RunSkill != null)
-            return;
-
-        if (moveDir == Vector3.zero && _agent.velocity == Vector3.zero)
+        if (moveDir == Vector3.zero && (_agent.velocity.sqrMagnitude < 0.0001f))
         {
             // 걷기 애니메이션 끄고
             _animator.SetBool("isWalk", false);
             return;
         }
+        else
+            _animator.SetBool("isWalk", true);
 
         //패드가 우선
         if (moveDir != Vector3.zero)
@@ -153,8 +152,11 @@ public class Player : MonoBehaviour , IHealth
 
     private void RESETAGENT()
     {
+        if (_agent.isActiveAndEnabled == true)
+            _agent.ResetPath();
+
         _navRun = false;
-        _agent.ResetPath();
+        _agent.enabled = false;
     }
 
     private void ROTATE()
@@ -179,44 +181,45 @@ public class Player : MonoBehaviour , IHealth
 
         RaycastHit hit;
         
-        if (Physics.Raycast(ray, out hit, 100.0f, _moveMask))
+        if (Physics.Raycast(ray, out hit, 200.0f, _moveMask))
         {
-            const float MaxDistance = 3.0f;
+            const float MaxDistance = 10.0f;
             if (NavMesh.SamplePosition(hit.point, out NavMeshHit navHit,
                    MaxDistance, NavMesh.AllAreas))
             {
-               
+                _agent.enabled = true;
                 _navRun = true;
-                _animator.SetBool("isWalk", true);
                 _agent.SetDestination(navHit.position);
             }
         }
     }
 
-    private bool IsArrived()
-    {
-        if (_agent.pathPending == true)
-            return false;
+    //private bool IsArrived()
+    //{
+    //    if (_agent.pathPending == true)
+    //        return false;
 
-        // 경로가 없으면 도착했다고 볼 수도 있지만 일반적으로 false 처리
-        if (_agent.hasPath == false)
-            return false;
+    //    // 경로가 없으면 도착했다고 볼 수도 있지만 일반적으로 false 처리
+    //    if (_agent.hasPath == false)
+    //        return false;
 
-        if (_agent.remainingDistance > _agent.stoppingDistance)
-            return false;
+    //    if (_agent.remainingDistance > _agent.stoppingDistance)
+    //        return false;
 
-        // 남은 거리는 stoppingDistance 이하이지만,
-        // 아직 속도가 줄지 않고 있다면 '완전 도착'은 아님
-        if (_agent.velocity.sqrMagnitude > 0.001f)
-            return false;
+    //    // 남은 거리는 stoppingDistance 이하이지만,
+    //    // 아직 속도가 줄지 않고 있다면 '완전 도착'은 아님
+    //    if (_agent.velocity.sqrMagnitude > 0.001f)
+    //        return false;
 
-        //목적지 도달
-        return true;
-    }
+    //    //목적지 도달
+    //    return true;
+    //}
     public void HIT(bool _bDown = false)
     {
         _hit = true;
-        if(_bDown == true)
+
+        RESETAGENT();
+        if (_bDown == true)
             _animator.SetTrigger("down");
         else
             _animator.SetTrigger("hit");
@@ -232,6 +235,9 @@ public class Player : MonoBehaviour , IHealth
    
     private void FixedUpdate()
     {
+        if (_hit == true || _skillRunner.RunSkill != null)
+            return;
+
         MOVE();
     }
 
@@ -298,6 +304,8 @@ public class Player : MonoBehaviour , IHealth
         //쉴드나 여러 이벤트 관리하기 위해서 bool타입 매개변수를 넣으면 코드가 더러워질 수 있음
         if (m_pHitEvent?.Invoke(_pAttackInfo) == false)
             return;
+
+       
 
         HIT();
 

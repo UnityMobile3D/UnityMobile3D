@@ -52,7 +52,7 @@ public class SkillShieldObject : SkillObject
 
         if(m_fCurDefend > m_fDefendValue || m_iCurShielCount > m_iShielCount)
         {
-            PushPoolObject();
+            PushObjectPool();
             return true;
         }
 

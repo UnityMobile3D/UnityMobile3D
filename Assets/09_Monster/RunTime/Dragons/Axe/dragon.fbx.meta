@@ -866,23 +866,7 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events:
-      - time: 0.16567543
-        functionName: SpawnAttackObject
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: d8070b69a0da6b74f89d3f807e05a1b5,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.981982
-        functionName: EndAttack
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: d8070b69a0da6b74f89d3f807e05a1b5,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
+      events: []
       transformMask:
       - path: 
         weight: 1
@@ -2545,35 +2529,17 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.6006796
-        functionName: SpawnObject
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: d8070b69a0da6b74f89d3f807e05a1b5,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
       - time: 0.20645706
-        functionName: SpawnObject
+        functionName: SpawnAttackObject
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: d8070b69a0da6b74f89d3f807e05a1b5,
-          type: 3}
+        objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.9916411
-        functionName: SpawnObject
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: d8070b69a0da6b74f89d3f807e05a1b5,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.99836206
+      - time: 0.97845
         functionName: EndAttack
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: d8070b69a0da6b74f89d3f807e05a1b5,
-          type: 3}
+        objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
@@ -2857,16 +2823,14 @@ ModelImporter:
       - time: 0.44435006
         functionName: SpawnAttackObject
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: d8070b69a0da6b74f89d3f807e05a1b5,
-          type: 3}
+        objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.9787061
         functionName: EndAttack
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: d8070b69a0da6b74f89d3f807e05a1b5,
-          type: 3}
+        objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
@@ -3148,26 +3112,23 @@ ModelImporter:
       curves: []
       events:
       - time: 0.34919283
-        functionName: Breath
+        functionName: SpawnAttackObject
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: d8070b69a0da6b74f89d3f807e05a1b5,
-          type: 3}
+        objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.8283771
-        functionName: EndCurAttack
+        functionName: ClearAttackObject
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: d8070b69a0da6b74f89d3f807e05a1b5,
-          type: 3}
+        objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.985258
         functionName: EndAttack
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: d8070b69a0da6b74f89d3f807e05a1b5,
-          type: 3}
+        objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6699352115427477424}
   - component: {fileID: 6033881003764245189}
   - component: {fileID: 5562336583099384119}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: DerisFire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4745,7 +4745,7 @@ GameObject:
   - component: {fileID: 4166839022133541669}
   - component: {fileID: 9146003994921145258}
   - component: {fileID: 6544541514927174137}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9645,7 +9645,7 @@ GameObject:
   - component: {fileID: 5957015360871545469}
   - component: {fileID: 1778525746623913399}
   - component: {fileID: 6470936413632607220}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Embers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14419,7 +14419,7 @@ GameObject:
   - component: {fileID: 6840529402410446650}
   - component: {fileID: 1655584585607372469}
   - component: {fileID: 2159377153293515119}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: DebrisSmoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19171,7 +19171,7 @@ GameObject:
   - component: {fileID: 1100090542205101322}
   - component: {fileID: 1743094770580574246}
   - component: {fileID: 5752937912143177929}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23938,7 +23938,7 @@ GameObject:
   - component: {fileID: 6091867689320379484}
   - component: {fileID: 5357057502656763689}
   - component: {fileID: 7994709701781737355}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BossExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28697,7 +28697,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.2
+  m_Radius: 1.5
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -28716,7 +28716,7 @@ MonoBehaviour:
   m_fLifeTime: 2.5
   m_fAttackTime: 0
   m_fEndAttackTime: 3.4028235e+38
-  m_bAccVel: 0
+  m_iAttackCount: 1
 --- !u!1 &7006865611691869639
 GameObject:
   m_ObjectHideFlags: 0
@@ -28728,7 +28728,7 @@ GameObject:
   - component: {fileID: 2752304209045811127}
   - component: {fileID: 1104094929257238829}
   - component: {fileID: 4541304929941599685}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Debris
   m_TagString: Untagged
   m_Icon: {fileID: 0}

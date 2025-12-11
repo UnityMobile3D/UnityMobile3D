@@ -15,11 +15,11 @@ MonoBehaviour:
   TargetLayers:
     serializedVersion: 2
     m_Bits: 64
-  CoolTime: 6
+  CoolTime: 15
   AttackRange: 0
   AttackDamage: 15
   AttackPower: 4
   AttackTime: 0
   MoveSpeed: 0
   isDown: 0
-  DestroyOnHit: 0
+  DestroyOn: 1

@@ -1,19 +1,49 @@
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class SpeechTyper : MonoBehaviour
+public class SpeechTyper : ButtonUI
 {
-    [SerializeField] private TMP_Text m_pText;         
+    [SerializeField] private TMP_Text m_pText;
+
+    [SerializeField] private TMP_Text m_pPositiveText =null;
+    [SerializeField] private ButtonUI m_pPositiveButton =null;
+
+    [SerializeField] private TMP_Text m_pNagativeText =null;
+    [SerializeField] private ButtonUI m_pNagativeButton =null;
+
     [SerializeField] private float charsPerSecond = 20f;
 
+    private SOSpeech m_pCurSpeech = null;
     private float m_fCurTime = 0.0f;
-
+   
     private string m_strFullString = "";
+    private int m_iToalCount = -1;
+    private int m_iVisibleCount = -1;
+
     private float m_fInterval = 0.0f;
     private Coroutine m_pTypingCoroutine;
- 
-    public void ShowText(string _strMessage)
+
+    public void Init()
+    { 
+        OnClickEvt += NextText;
+
+
+        m_pPositiveButton.OnClickEvt += PositiveAction;
+        m_pPositiveButton.gameObject.SetActive(false);
+
+        m_pNagativeButton.OnClickEvt += CloseSpeech;
+        m_pNagativeButton.gameObject.SetActive(false);
+    }
+
+    public void StartSpeech(SOSpeech _pRootSpeech)
+    {
+        m_pCurSpeech = _pRootSpeech;
+        ShowText(m_pCurSpeech.Message);
+    }
+        
+    private void ShowText(string _strMessage)
     {
         m_fInterval = 1.0f / charsPerSecond;
 
@@ -21,7 +51,6 @@ public class SpeechTyper : MonoBehaviour
 
         m_pText.text = m_strFullString;
         
-
         m_pText.ForceMeshUpdate();
         m_pText.maxVisibleCharacters = 0;
 
@@ -35,22 +64,103 @@ public class SpeechTyper : MonoBehaviour
 
     private IEnumerator TypeRoutine()
     {
-        int iTotalChar = m_pText.textInfo.characterCount;
-        int iVisibleCount = 0;
+        m_iToalCount = m_pText.textInfo.characterCount;
+        m_iVisibleCount = 0;
 
-        while (iVisibleCount < iTotalChar)
+        while (m_iVisibleCount < m_iToalCount)
         {
             m_fCurTime += Time.deltaTime;
-            while (m_fCurTime >= m_fInterval && iVisibleCount < iTotalChar)
+            while (m_fCurTime >= m_fInterval && m_iVisibleCount < m_iToalCount)
             {
                 m_fCurTime -= m_fInterval;
-                iVisibleCount++;
-                m_pText.maxVisibleCharacters = iVisibleCount;
+                m_iVisibleCount++;
+                m_pText.maxVisibleCharacters = m_iVisibleCount;
             }
             yield return null;
-
         }
 
+        Completed();
         m_pTypingCoroutine = null;
     }
+
+
+    private void NextText()
+    {
+        //다음칸으로 넘기기
+        if(m_iVisibleCount < m_iToalCount)
+        {
+            if(m_pTypingCoroutine != null)
+                StopCoroutine(m_pTypingCoroutine);
+
+            m_pText.maxVisibleCharacters = m_iToalCount;
+            Completed();
+        }
+        
+    }
+    
+    //마지막까지 다 완료가 된다면 선택 창이 있다면 선택하고 없다면 다음 Text로
+    private void Completed()
+    {
+        string strPositive = m_pCurSpeech.Choice.PositiveText;
+        string strNagative = m_pCurSpeech.Choice.NegativeText;
+
+        //긍정 부정에 대답이 없다면 다음으로 가거나 끄기
+        if (strPositive == null && strNagative == null)
+        {
+            if (m_pCurSpeech.Choice != null && m_pCurSpeech.Choice.NextSpeech != null)
+                StartSpeech(m_pCurSpeech.Choice.NextSpeech);
+            else
+                CloseSpeech();
+
+            return;
+        }
+
+        //긍정 텍스트를 누르면 다음 칸으로 가던가 어떤 해동을 하고 부정이면 거의 창 닫는용도
+        if(strPositive != null)
+        {
+            m_pPositiveButton.gameObject.SetActive(true);
+            m_pPositiveText.text = strPositive;
+        }
+        if (strNagative != null)
+        {
+            m_pNagativeButton.gameObject.SetActive(true);
+            m_pNagativeText.text = strNagative;
+        }
+
+    }
+
+
+    private void PositiveAction()
+    {
+        //지금은 분기가 적으니깐 switch -> 나중에는 함수 포인터로
+        switch(m_pCurSpeech.Choice.Action)
+        {
+            case eSpeechAction.Store:
+                {
+                    DataService.m_Instance.SetVisibleContainer(eContainerType.Store, true);
+                }
+                break;
+            case eSpeechAction.Quest:
+                {
+
+                }
+                break;
+        }
+
+        if (m_pCurSpeech.Choice != null && m_pCurSpeech.Choice.NextSpeech != null)
+            StartSpeech(m_pCurSpeech.Choice.NextSpeech);
+        else
+            CloseSpeech();
+    }
+
+    private void CloseSpeech()
+    {
+        //리빌딩 예약
+        m_pNagativeButton.gameObject.SetActive(false);
+        m_pPositiveButton.gameObject.SetActive(false);
+
+        SpeechManager.m_Instance.CloseSpeechdUI();
+    }
+
+
 }

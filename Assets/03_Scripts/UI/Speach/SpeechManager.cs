@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class SpeechManager : MonoBehaviour
 {
-    [SerializeField] private SpeechTyper m_pSpeechTyper;
+
+    [SerializeField] private SpeechTyper m_pSpeechTyper = null;
+    private SOSpeech m_pSpeech = null;
+    [SerializeField] private GameObject m_pWorldUI = null;
+    [SerializeField] private Canvas m_pSpeechCanvas = null;
 
     static public SpeechManager m_Instance;
 
@@ -17,11 +21,32 @@ public class SpeechManager : MonoBehaviour
         }
 
         m_Instance = this;
+        m_pSpeechTyper.Init();
     }
 
-
-    public void SettingSpeech(SOSpeech m_pTarget)
+    public void ShowText()
+    {   
+        m_pSpeechCanvas.gameObject.SetActive(true);
+        m_pSpeechTyper.StartSpeech(m_pSpeech);
+    }
+    public void ShowWSpeechUI(in Vector3 _vTargetPos , SOSpeech _pSpeech)
     {
-        //m_pSpeechTyper.ShowText();
+        m_pWorldUI.SetActive(true);
+        m_pWorldUI.transform.position = _vTargetPos;
+
+        m_pSpeech = _pSpeech;
+    }
+
+    public void CloseSpeechdUI()
+    {
+        CloseWorldUI();
+        m_pSpeechCanvas.gameObject.SetActive(false);
+       
+        m_pSpeech = null;
+    }
+
+    public void CloseWorldUI()
+    {
+        m_pWorldUI.SetActive(false);
     }
 }

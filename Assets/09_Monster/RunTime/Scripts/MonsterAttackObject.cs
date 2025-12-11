@@ -27,6 +27,7 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
     [SerializeField] private float m_fAttackTime = 0.0f;
     [SerializeField] private float m_fEndAttackTime = float.MaxValue;
 
+    private bool m_bOnDestroy = false;
     private float m_fCurLifeTime = 0.0f;
 
     [SerializeField] private int m_iAttackCount = 1;
@@ -63,13 +64,16 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
 
                 if (pSpawnObj.TryGetComponent<MonsterAttackObject>(out var pAttackObj) == true)
                 {
+                    pAttackObj.SetOwner(m_pOwner);
                     pAttackObj.SetInfo(pEndSpawn);
                     pAttackObj.SetSpawnKey(pSpawnEntry.prefabRef.AssetGUID);
                 }
             }
         }
 
-        m_pOwner.ClearAttackObject();
+        if(m_bOnDestroy == true)
+            m_pOwner.ClearAttackObject();
+
         m_iCreateCount = 0;
     }
 
@@ -77,7 +81,8 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
     {
         m_fCurLifeTime = 0.0f;
         m_vDir = Vector3.zero;
-        m_pCollider.enabled = false;
+        if(m_pCollider != null)
+            m_pCollider.enabled = false;
     }
 
     public void Update()
@@ -88,14 +93,17 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
             //풀에 반납
             m_fCurLifeTime = 0.0f;
 
-            PushPoolObject();
+            PushObjectPool();
         }
 
 
-        if (m_fCurLifeTime >= m_fAttackTime)
-            m_pCollider.enabled = true;
-        else if(m_fCurLifeTime >= m_fEndAttackTime)
-            m_pCollider.enabled = false;
+        if (m_pCollider != null)
+        {
+            if (m_fCurLifeTime >= m_fAttackTime)
+                m_pCollider.enabled = true;
+            else if (m_fCurLifeTime >= m_fEndAttackTime)
+                m_pCollider.enabled = false;
+        }
     }
 
 
@@ -109,7 +117,7 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
         
     }
 
-    public void PushPoolObject()
+    public void PushObjectPool()
     {
         if (m_iCreateCount == 0)
             return;
@@ -126,13 +134,14 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
         m_fAttackTime = _pSkillInfo.SkillOption.AttackTime;
         m_fMoveSpeed = _pSkillInfo.SkillOption.MoveSpeed;
         m_bNearAttack = m_fMoveSpeed > 0.0f ? false : true; 
-    
         m_vDir = _pSkillInfo.SpawnOption.AttackDir.normalized;
-        m_strSpawnKey = _pSkillInfo.SpawnOption.SOPoolEntry.prefabRef.AssetGUID;
 
+        m_strSpawnKey = _pSkillInfo.SpawnOption.SOPoolEntry.prefabRef.AssetGUID;
+        m_bOnDestroy = _pSkillInfo.SkillOption.DestroyOn;
 
         m_pAttackInfo.Power = _pSkillInfo.SkillOption.AttackPower;
         m_pAttackInfo.Damage = _pSkillInfo.SkillOption.AttackDamage;
+        m_pAttackInfo.Down = _pSkillInfo.SkillOption.isDown;
     }
 
     public void SetDir(in Vector3 _vDir)
@@ -163,6 +172,8 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
             m_pAttackInfo.HitPoint = vAttackerPos;
             m_pAttackInfo.HitPoint.y = 0.0f;
             other.GetComponent<IHealth>().TakeDamage(m_pAttackInfo);
+
+            Debug.Log(gameObject.name);
         }
     }
 

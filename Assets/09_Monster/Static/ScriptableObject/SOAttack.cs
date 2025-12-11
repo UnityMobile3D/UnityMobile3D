@@ -22,21 +22,22 @@ public class SOAttack : SONode
 
         public STATE Evaluate(Blackboard _pBB, float _fDT)
         {
-            //타켓이나 쿨타임이 다 되지 않았다면
-            if (_pBB.Target == null) 
+            //쿨타임이 다 되지 않았다면
+            if (_pBB.Target == null || _pBB.Attacking == true) 
                 return STATE.FAILED;
             else if(_pBB.CooldownModule.IsIsReady(m_iAttackID) == false)
                 return STATE.FAILED;
 
+            _pBB.Attacking = true;
             _pBB.Agent.ResetPath();
             _pBB.Agent.updateRotation = false;
-            _pBB.Attacking = true;
 
+            Debug.Log($"공격시작 {m_iAttackID}");
             //쿨타임 초기화 및 어택 시작
             _pBB.CooldownModule.StartCooldown(m_iAttackID);
             _pBB.AnimBridge.SetRun(false);
             _pBB.AnimBridge.SetAttack(m_iAttackID, true);
-            _pBB.Self.transform.LookAt(_pBB.Target.position);
+            //_pBB.Self.transform.LookAt(_pBB.Target.position);
 
             return STATE.SUCCESS;
         }

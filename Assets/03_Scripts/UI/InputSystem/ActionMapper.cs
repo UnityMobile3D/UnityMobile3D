@@ -12,8 +12,9 @@ public class ActionMapper
     
     public sealed class PointerInputState
     {
-        public Vector2 vScreenPos; //마지막으로 손가락을 땐 위치
-        public Vector2 vMove;      // 이동 벡터(정규화/클램프)
+        public Vector2 vScreenPos;  // 마지막으로 손가락을 땐 위치
+        public Vector2 vMove;       // 이동 벡터(정규화/클램프)
+        public Vector2 vDelta;      // 이전프레임과 비교 이동 벡터
         public Vector2 vSwipeDelta; // 스와이프 벡터(프레임 이동량)
 
         public float fZoomDelta;   // 핀치로 인한 줌 변화량 누적
@@ -127,11 +128,12 @@ public class ActionMapper
                 case InputType.Drag:
                     //if(m_tLeft.Contains(tEve.vPos))
                     //_pState.vMove += tEve.vDelta / 100.0f;  // 왼쪽: 이동 벡터
-                    _pState.vMove = Vector2.ClampMagnitude(_pState.vMove, 1.0f); // 이동 벡터 정규화
+                    _pState.vMove = Vector2.ClampMagnitude(tEve.vDelta, 1.0f); // 이동 벡터 정규화
+                    _pState.vDelta = Vector2.ClampMagnitude(tEve.vDeltaDrag, 1.0f);
                     break;
 
                 case InputType.Swipe:
-                    _pState.vSwipeDelta += Vector2.ClampMagnitude(_pState.vMove, 1.0f); // 스와이프 벡터 누적
+                    _pState.vSwipeDelta += Vector2.ClampMagnitude(tEve.vDelta, 1.0f); // 스와이프 벡터 누적
                     break;
 
                 case InputType.Tap:

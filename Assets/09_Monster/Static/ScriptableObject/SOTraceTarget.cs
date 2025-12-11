@@ -39,7 +39,7 @@ public class TraceTarget : SONode
             {
                 _pBB.AnimBridge.SetRun(false);
                 _pBB.Agent.ResetPath();
-
+               
                 return STATE.FAILED;
             }
 

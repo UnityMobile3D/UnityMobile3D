@@ -26,11 +26,12 @@ public class UIRayCaster
 
         m_pPointerEventData.position = _vScreenPos;
 
+        //세밀하게 검사하기 위해서
         for (int i = 0; i < m_listRayCast.Count; ++i)
         {
             if (m_listRayCast[i].isActiveAndEnabled == false) 
                 continue;
-            //EventSystem.current.IsPointerOverGameObject(1);
+           
             m_listRayCast[i].Raycast(m_pPointerEventData, m_listRayResult);
             if (m_listRayResult.Count > 0)
                 return true; // UI 위에 있음

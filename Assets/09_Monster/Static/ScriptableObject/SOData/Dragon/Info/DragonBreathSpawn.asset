@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba810cf42923aa047b553311ad9459c1, type: 3}
   m_Name: DragonBreathSpawn
   m_EditorClassIdentifier: 
+  SpawnPoint: 1
   SpawnPlayerPos: 0
   SpawnCurPos: 0
+  SpawnRandomPos: 0
   PlayerDir: 0
   SpawnDiff: 0
   LifeTime: 3
@@ -21,6 +23,6 @@ MonoBehaviour:
   SpawnPos: {x: 0, y: 0, z: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   SOPoolEntry: {fileID: 11400000, guid: 23bc6f21b841d784ebf37d15e845b332, type: 2}
-  EndFrameSpawn:
-    SpawnObject: {fileID: 0}
-    Offset: {x: 0, y: 0, z: 0}
+  EndFrameSpawnSkill:
+    SkillOption: {fileID: 0}
+    SpawnOption: {fileID: 0}

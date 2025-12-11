@@ -14,4 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_listChild:
   - {fileID: 11400000, guid: 72fd81769f6bd2c418fbb0ece196d654, type: 2}
+  - {fileID: 11400000, guid: 7733ac331c5164244b35561c2a3afdc4, type: 2}
+  - {fileID: 11400000, guid: 12dd33d0255c0a74392880116dca1c15, type: 2}
+  - {fileID: 11400000, guid: 8d4610ad65358b740afe2e86ebe369f8, type: 2}
+  - {fileID: 11400000, guid: 55860f39d26c0814e98b8152e7fe907d, type: 2}
   - {fileID: 11400000, guid: ea9d618c8e8bc7b4ca5f6b78a9cafa6f, type: 2}
+  - {fileID: 11400000, guid: 1c72241b6f48ed0429cc69ace0644e21, type: 2}

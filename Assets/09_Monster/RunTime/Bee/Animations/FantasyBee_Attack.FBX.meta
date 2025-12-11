@@ -242,16 +242,14 @@ ModelImporter:
       - time: 0.4605993
         functionName: SpawnAttackObject
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 47bd59e8496f3554d931f1dd8e440aea,
-          type: 3}
+        objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.913186
         functionName: EndAttack
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 47bd59e8496f3554d931f1dd8e440aea,
-          type: 3}
+        objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0

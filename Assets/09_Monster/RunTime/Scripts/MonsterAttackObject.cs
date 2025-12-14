@@ -51,7 +51,7 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
     public void OnDespawn()
     {
         MonsterSkillInfo pEndSpawn = m_pMonsterSkillInfo.SpawnOption.EndFrameSpawnSkill;
-        MonsterSpawnOption pSpawnOption = pEndSpawn.SpawnOption;
+        MonsterSkillSpawnOption pSpawnOption = pEndSpawn.SpawnOption;
         //재귀적으로 호출, 마지막 프레임에 소환할 오브젝트가 있다면
         if (pSpawnOption != null)
         {
@@ -60,7 +60,7 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
             if (pSpawnEntry != null)
             {
                 GameObject pSpawnObj = 
-                    ObjectPoolManager.m_Instance.GetObject(pSpawnEntry.prefabRef.AssetGUID,transform.position, Vector3.zero);
+                    ObjectPoolManager.m_Instance.GetObject(ePoolType.Stack, pSpawnEntry.prefabRef.AssetGUID,transform.position, Vector3.zero);
 
                 if (pSpawnObj.TryGetComponent<MonsterAttackObject>(out var pAttackObj) == true)
                 {
@@ -123,8 +123,7 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
             return;
 
         m_iCreateCount = 0;
-        ObjectPoolManager.m_Instance.PushObject
-             (m_strSpawnKey, gameObject);
+        ObjectPoolManager.m_Instance.PushObject(ePoolType.Stack, m_strSpawnKey, gameObject);
     }
 
     public void SetInfo(MonsterSkillInfo _pSkillInfo)

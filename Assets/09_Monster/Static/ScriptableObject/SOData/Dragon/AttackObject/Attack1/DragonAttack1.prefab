@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8065669351150938806
 Transform:
   m_ObjectHideFlags: 0
@@ -71,4 +71,4 @@ MonoBehaviour:
   m_fLifeTime: 10
   m_fAttackTime: 0
   m_fEndAttackTime: 3.4028235e+38
-  m_bAccVel: 0
+  m_iAttackCount: 1

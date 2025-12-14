@@ -32,7 +32,7 @@ public class SOSettingSpawnPos : SONode
             int iTargetIdx = _pBB.CooldownModule.TargetIdx;
             MonsterSkillInfo pSkillInfo = _pBB.Self.SOMonsterInfo.skillinfo[iTargetIdx];
             MonsterSkillOption pSkillOption = pSkillInfo.SkillOption;
-            MonsterSpawnOption pSpawnOption = pSkillInfo.SpawnOption;
+            MonsterSkillSpawnOption pSpawnOption = pSkillInfo.SpawnOption;
 
             Vector3 vSpawnPos = Vector3.zero;
             Vector3 vSpawnRot = Vector3.zero;

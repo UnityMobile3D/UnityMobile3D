@@ -26,7 +26,7 @@ public class MonsterPoint
     public Transform pTrasnform;
 }
 
-public class Monster : MonoBehaviour , IHealth , IPoolAble
+public class Monster : MonoBehaviour, IHealth, IPoolAble
 {
     [SerializeField] protected Blackboard m_pBlackbard = new Blackboard();
     private BehaviorTree m_pBHTree = null;
@@ -41,7 +41,7 @@ public class Monster : MonoBehaviour , IHealth , IPoolAble
 
     protected CooldownModule m_pCollDownModule = null;
     protected ObjectInfo m_pMonsterInfo = null;
-    [SerializeField] private SODropTable m_pDropTable = null;
+
 
     private Coroutine m_pKnockbackRoutine = null;
 
@@ -61,6 +61,11 @@ public class Monster : MonoBehaviour , IHealth , IPoolAble
     public void OnDespawn()
     {
 
+    }
+
+    public void SetPoolKey(string _strKey)
+    {
+        m_strPoolKey = _strKey;
     }
 
     virtual protected void Awake()
@@ -239,15 +244,16 @@ public class Monster : MonoBehaviour , IHealth , IPoolAble
         m_pCollider.enabled = false;
         m_pAnimator.SetTrigger("Dead");
 
-        ItemDataManager.m_Instance.Drop(m_pDropTable, transform.position);
+        SODropTable pDropTable = m_SOMonsterInfo.DropTable;
+        if (pDropTable == null)
+            return;
+
+        ItemDataManager.m_Instance.Drop(pDropTable, transform.position);
     }
 
     public void PushObjectPool()
     {
-        if(string.IsNullOrEmpty(m_strPoolKey) == true)
-            Destroy(gameObject);
-        else
-            ObjectPoolManager.m_Instance.PushObject(m_strPoolKey, gameObject);
+       ObjectPoolManager.m_Instance.PushObject(ePoolType.Stack, m_strPoolKey, gameObject);
     }
 
     public void MinusHP(int Damage)

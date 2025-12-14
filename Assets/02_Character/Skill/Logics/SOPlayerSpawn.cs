@@ -30,7 +30,7 @@ public class SOPlayerSpawn : SOSkillLogic
         vSpawnPos+= pTargetPro.offset;
 
         GameObject pAttackObject = 
-            ObjectPoolManager.m_Instance.GetObject(AttackObjectReference.AssetGUID, vSpawnPos, Vector3.zero);
+            ObjectPoolManager.m_Instance.GetObject(ePoolType.Global, AttackObjectReference.AssetGUID, vSpawnPos, Vector3.zero);
 
         //플레이어가 바라보는 방향
         Vector3 vObjectAngle = pAttackObject.transform.eulerAngles;
@@ -55,7 +55,7 @@ public class SOPlayerSpawn : SOSkillLogic
         }
         else
         {
-            ObjectPoolManager.m_Instance.PushObject(AttackObjectReference.AssetGUID, pAttackObject);
+            ObjectPoolManager.m_Instance.PushObject(ePoolType.Global, AttackObjectReference.AssetGUID, pAttackObject);
             return eSkillState.Failed;
         } 
     }

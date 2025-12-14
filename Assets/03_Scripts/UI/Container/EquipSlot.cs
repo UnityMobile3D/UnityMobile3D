@@ -70,7 +70,7 @@ public class EquipSlot : Slot
         {
             ItemEffectRunner.ApplyEffectRelease(m_pPreEquip.ItemData, m_pItemEquipContext);
 
-            ObjectPoolManager.m_Instance.PushObject(m_pPreEquip.ItemData.ItemObject.AssetGUID, m_pEquipObject);
+            ObjectPoolManager.m_Instance.PushObject(ePoolType.Global, m_pPreEquip.ItemData.ItemObject.AssetGUID, m_pEquipObject);
         }
 
         //임시로 넣은 코드 (아직 장비 데이터 준비가 안됨)
@@ -78,7 +78,7 @@ public class EquipSlot : Slot
             return;
 
         GameObject pEquip =
-            ObjectPoolManager.m_Instance.GetObject(m_pEquip.ItemData.ItemObject.AssetGUID, Vector3.zero, Vector3.zero);
+            ObjectPoolManager.m_Instance.GetObject(ePoolType.Global, m_pEquip.ItemData.ItemObject.AssetGUID, Vector3.zero, Vector3.zero);
 
         if (pEquip == null)
             return;

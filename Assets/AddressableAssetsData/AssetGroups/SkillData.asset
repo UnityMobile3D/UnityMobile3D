@@ -17,6 +17,11 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 5f4b28469d29e274e84daa87725b6244
   m_SerializeEntries:
+  - m_GUID: 0f381f2687a934c49839a43fdd1dc7e0
+    m_Address: Assets/02_Character/Skill/SkillObject/HealSkill/HealBuff.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 11b5ba6f56af31e4ea7c40132cf68d98
     m_Address: Assets/02_Character/Skill/SkillObject/FireBall/FireBall.prefab
     m_ReadOnly: 0

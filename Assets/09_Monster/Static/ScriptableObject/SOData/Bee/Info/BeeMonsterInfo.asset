@@ -12,29 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 083f772ff5525444e93ec2f83974f054, type: 3}
   m_Name: BeeMonsterInfo
   m_EditorClassIdentifier: 
+  MonsterType: 0
+  DropTable: {fileID: 11400000, guid: 6806a2572d05dc74f9cf19ade552e0f3, type: 2}
   skillinfo:
-  - CoolTime: 3
-    AttackRange: 0
-    AttackDamage: 5
-    AttackPower: 1
-    isDown: 0
-    AttackTime: 0
-    MoveSpeed: 0
-    DestroyOnHit: 1
-    TargetLayers:
-      serializedVersion: 2
-      m_Bits: 64
-    SpawnPlayerPos: 0
-    SpawnCurPos: 1
-    PlayerDir: 1
-    SpawnDiff: 1
-    LifeTime: 0.1
-    AttackDir: {x: 0, y: 0, z: 0}
-    SpawnPos: {x: 0, y: 0, z: 0}
-    SpawnRot: {x: 0, y: 0, z: 0}
-    SOPoolEntry: {fileID: 11400000, guid: 57434e21db5a3a14a900f8b09d3610ff, type: 2}
-    EndFrameSpawn:
-      SpawnObject: {fileID: 0}
-      Offset: {x: 0, y: 0, z: 0}
-    SkillOption: {fileID: 11400000, guid: 5f6e8754633d1214f85901cf13546a21, type: 2}
+  - SkillOption: {fileID: 11400000, guid: 5f6e8754633d1214f85901cf13546a21, type: 2}
     SpawnOption: {fileID: 11400000, guid: 3bab3a94527f8684184284061366ac4c, type: 2}

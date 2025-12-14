@@ -14836,7 +14836,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3227977834592902913
 Transform:
   m_ObjectHideFlags: 0
@@ -19700,6 +19700,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_fLifeTime: 10
+  m_fStartAttackTime: 0
+  m_fEndAttackTime: 3.4028235e+38
   m_iAttackCount: 1
 --- !u!114 &6463037656561358250
 MonoBehaviour:

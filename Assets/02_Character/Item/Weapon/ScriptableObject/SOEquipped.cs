@@ -14,7 +14,8 @@ public class SOEquipped : SOItemEffect
         if (pPlayer == null || _tEffectCnt.pOwner == null)
             return;
 
-        Transform pTransform = pPlayer.GetEquipPoint(EquipType);
-        _tEffectCnt.pOwner.transform.SetParent(pTransform, false);
+        Transform pPointTransform = pPlayer.GetEquipPoint(EquipType);
+        _tEffectCnt.pOwner.transform.SetParent(pPointTransform, false);
+        _tEffectCnt.pOwner.transform.localPosition = Vector3.zero;
     }
 }

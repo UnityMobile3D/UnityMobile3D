@@ -6,7 +6,8 @@ using UnityEngine.AddressableAssets;
 [CreateAssetMenu(menuName = "Load/PoolEntry")]
 public class SOPoolEntry : ScriptableObject
 {
+    public ePoolType type;
     public AssetReferenceGameObject prefabRef;
     public int preload = 8;
-    public int max = 64;
+    public int max = 12;
 }

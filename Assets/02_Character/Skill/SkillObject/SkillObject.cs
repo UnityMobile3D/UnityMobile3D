@@ -72,8 +72,7 @@ public class SkillObject : MonoBehaviour, IPoolAble
             return;
 
         m_iCreateCount = 0;
-        ObjectPoolManager.m_Instance.PushObject
-             (m_strSpawnKey, gameObject);
+        ObjectPoolManager.m_Instance.PushObject(ePoolType.Global, m_strSpawnKey, gameObject);
     }
 
 

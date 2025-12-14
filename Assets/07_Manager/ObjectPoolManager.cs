@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading;
@@ -15,19 +16,30 @@ public interface IPoolAble
     void OnDespawn();        // 정리(파티클 Stop&Clear, 물리값 리셋 등)
     void PushObjectPool();
 }
+
+public enum ePoolType
+{
+    Global,
+    Stack,
+    End,
+}
+
 public class ObjectPoolManager : MonoBehaviour
 {
     public class PoolBucket
     {
         public SOPoolEntry entry;                                     // 설정값 참조
         public GameObject prefab;                                     // 프리팹
+        public AsyncOperationHandle<GameObject> handle;               // 핸들 저장 (나중에 지우기 위해)
         public Queue<GameObject> pool = new Queue<GameObject>();      // 인스턴스 풀
     }
 
-    private Dictionary<string, PoolBucket> m_hashPoolBucket = new Dictionary<string, PoolBucket>();
+    private List<Dictionary<string, PoolBucket>> m_listPoolBucket;
     [SerializeField] private List<SOPoolEntry> m_listFixed = new List<SOPoolEntry>();
     [SerializeField] private List<SOPoolEntry> m_listFixedItem = new List<SOPoolEntry>();
-    private readonly SemaphoreSlim m_pSemaphore = new SemaphoreSlim(4, 4); // 동시 Instantiate 
+
+    private List<string> m_listDeleteName = new List<string>();
+    //private readonly SemaphoreSlim m_pSemaphore = new SemaphoreSlim(4, 4); // 동시 Instantiate 
     public static ObjectPoolManager m_Instance { get; private set; }
 
     public static bool CompletedLoad = false;
@@ -35,6 +47,10 @@ public class ObjectPoolManager : MonoBehaviour
     {
         m_Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        m_listPoolBucket = new List<Dictionary<string, PoolBucket>>();
+        for (int i = 0; i < (int)ePoolType.End; ++i)
+            m_listPoolBucket.Add(new Dictionary<string, PoolBucket>());
 
         var listTask = new List<Task>();
         for(int i = 0; i<m_listFixed.Count; i++)
@@ -55,55 +71,70 @@ public class ObjectPoolManager : MonoBehaviour
         if (prefabRef == null)
             return null;
 
-        if (m_hashPoolBucket.TryGetValue(prefabRef.AssetGUID, out var pPool) == true)
+        var hashPoolBucket = m_listPoolBucket[(int)_pPoolEntry.type];
+        if (hashPoolBucket.TryGetValue(prefabRef.AssetGUID, out var pPool) == true)
             return pPool;
 
         var pBucket  = new PoolBucket();
         pBucket.entry = _pPoolEntry;
 
         GameObject pPrefab = null;
-        for(int i = 0; i<_pPoolEntry.preload; ++i)
-        {
-            await m_pSemaphore.WaitAsync();
-            try
-            {
-                var tInsHandle = Addressables.InstantiateAsync(_pPoolEntry.prefabRef);
-                var pGameObject = await tInsHandle.Task;
-                pPrefab = pGameObject;
+        pBucket.handle = _pPoolEntry.prefabRef.LoadAssetAsync();
+        pPrefab = await pBucket.handle.Task;
+        pBucket.prefab = pPrefab;
 
-                pGameObject.SetActive(false);
-                pBucket.pool.Enqueue(pGameObject);
-            }
-            finally
-            {
-                m_pSemaphore.Release();
-            }
+        for (int i = 0; i<_pPoolEntry.preload; ++i)
+        {            
+            GameObject pGameObject = GameObject.Instantiate(pPrefab);
+            pGameObject.SetActive(false);
+
+            pGameObject.transform.SetParent(gameObject.transform);
+            pBucket.pool.Enqueue(pGameObject);
         }
 
-        pBucket.prefab = pPrefab;
-        m_hashPoolBucket[prefabRef.AssetGUID] = pBucket;
+        hashPoolBucket[prefabRef.AssetGUID] = pBucket;
         return pBucket;
     }
 
  
-    public void DeleteObject(string _strKey)
+    public void DeleteObject(ePoolType _eType)
     {
-        if (m_hashPoolBucket.ContainsKey(_strKey) == false)
-            return;
-
-        //오브젝트 제거
-        var pBucket = m_hashPoolBucket[_strKey];
-        while (pBucket.pool.Count > 0)
-            Addressables.ReleaseInstance(pBucket.pool.Dequeue());
-
-        m_hashPoolBucket.Remove(_strKey);
+        StartCoroutine(DeleteObjectAsync(_eType));
     }
 
-  
-
-    public GameObject GetObject(string _strKey , in Vector3 _vPosition, in Vector3 _vRot)
+    private IEnumerator DeleteObjectAsync(ePoolType type)
     {
-        if (m_hashPoolBucket.TryGetValue(_strKey, out var pBucket) == false)
+        var hashPoolBucket = m_listPoolBucket[(int)type];
+        if (hashPoolBucket == null)
+            yield break;
+
+        List<string> lisKey = new List<string>(hashPoolBucket.Keys);
+
+        foreach (var key in lisKey)
+        {
+            var pBucket = hashPoolBucket[key];
+
+            while (pBucket.pool.Count > 0)
+            {
+                var pObj = pBucket.pool.Dequeue();
+                if (pObj != null)
+                    GameObject.Destroy(pObj);
+
+                // 한 프레임에 너무 많이 Destroy하지 않게
+                yield return null;
+            }
+
+            Addressables.Release(pBucket.handle);
+            hashPoolBucket.Remove(key);
+        }
+    }
+
+
+
+    public GameObject GetObject(ePoolType _eType, string _strKey , in Vector3 _vPosition, in Vector3 _vRot)
+    {
+        var hashPoolBucket = m_listPoolBucket[(int)_eType];
+        if (hashPoolBucket.TryGetValue(_strKey, out var pBucket) == false)
             return null;
 
         GameObject pObject = null;
@@ -132,12 +163,13 @@ public class ObjectPoolManager : MonoBehaviour
         return pObject;
     }
 
-    public void PushObject(string _strKey, GameObject _pObject)
+    public void PushObject(ePoolType _eType, string _strKey, GameObject _pObject)
     {
         if (_pObject.TryGetComponent<IPoolAble>(out var IPoolCom) == true)
             IPoolCom.OnDespawn();
 
-        if (m_hashPoolBucket.TryGetValue(_strKey, out var pBucket) == false)
+        var hashPoolBucket = m_listPoolBucket[(int)_eType];
+        if (hashPoolBucket.TryGetValue(_strKey, out var pBucket) == false)
         {
             Destroy(_pObject);
             return;
@@ -145,7 +177,5 @@ public class ObjectPoolManager : MonoBehaviour
 
         _pObject.SetActive(false);
         pBucket.pool.Enqueue(_pObject);
-
-
     }
 }

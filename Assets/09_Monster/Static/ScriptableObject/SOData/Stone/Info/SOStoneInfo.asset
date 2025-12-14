@@ -12,29 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 083f772ff5525444e93ec2f83974f054, type: 3}
   m_Name: SOStoneInfo
   m_EditorClassIdentifier: 
+  MonsterType: 0
+  DropTable: {fileID: 11400000, guid: 702b697e69218a14dac6387293aa0d2b, type: 2}
   skillinfo:
-  - CoolTime: 4
-    AttackRange: 0
-    AttackDamage: 10
-    AttackPower: 1
-    isDown: 0
-    AttackTime: 0
-    MoveSpeed: 5
-    DestroyOnHit: 0
-    TargetLayers:
-      serializedVersion: 2
-      m_Bits: 64
-    SpawnPlayerPos: 0
-    SpawnCurPos: 1
-    PlayerDir: 1
-    SpawnDiff: 2
-    LifeTime: 3
-    AttackDir: {x: 0, y: 0, z: 0}
-    SpawnPos: {x: 0, y: 0, z: 0}
-    SpawnRot: {x: 0, y: 0, z: 0}
-    SOPoolEntry: {fileID: 11400000, guid: 7a00f4e211afba84bb53ed673498ed1d, type: 2}
-    EndFrameSpawn:
-      SpawnObject: {fileID: 0}
-      Offset: {x: 0, y: 0, z: 0}
-    SkillOption: {fileID: 11400000, guid: d215eb2c314097a47a921653498f939b, type: 2}
+  - SkillOption: {fileID: 11400000, guid: d215eb2c314097a47a921653498f939b, type: 2}
     SpawnOption: {fileID: 11400000, guid: 9965f083cb9d5db4caebfc5300c7df0b, type: 2}

@@ -80,7 +80,7 @@ public class ItemDataManager : MonoBehaviour
 
         // 1) SOItem이 들고 있는 프리팹으로 생성
         GameObject pItemObj =
-            ObjectPoolManager.m_Instance.GetObject(pItem.ItemObject.AssetGUID, vPos, Vector3.zero);
+            ObjectPoolManager.m_Instance.GetObject(ePoolType.Global, pItem.ItemObject.AssetGUID, vPos, Vector3.zero);
     }
 
 }

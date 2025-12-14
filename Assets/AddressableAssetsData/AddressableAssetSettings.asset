@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 09b4621665fce804da0e9945ebaae759
   m_currentHash:
     serializedVersion: 2
-    Hash: c3fb91689e5c0b13e31582bb666fc763
+    Hash: 6c5bd966601586eb88e97eb41f5f7f4e
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -47,8 +47,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dc0431a934291e342aaf9d86c0f5d757, type: 2}
   - {fileID: 11400000, guid: 5ac65abbf9240534d814ffa98ffb8177, type: 2}
   - {fileID: 11400000, guid: 4649a867f2086c04395b00b56e061789, type: 2}
-  - {fileID: 11400000, guid: b96de82273bcc7a48af7880a7f884fef, type: 2}
   - {fileID: 11400000, guid: 8664e034eff350c4cab11e9219319d6c, type: 2}
+  - {fileID: 11400000, guid: 30c5b15e2f31b8e4eb3ac33921b025a6, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -91,6 +91,8 @@ MonoBehaviour:
     m_LabelNames:
     - default
     - Equip
+    - BossMap
+    - TownMap
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: d8ee4fed6cec9fc44b94a6fc14e342a1, type: 2}

@@ -39,6 +39,8 @@ public class Player : MonoBehaviour , IHealth
     public Animator  Animator  => _animator;
     public SkillRunner SkillRunner => _skillRunner;
 
+    public NavMeshAgent Agent => _agent;
+
     [SerializeField] private ObjectInfo _playerInfo;
     public ObjectInfo PlayerInfo => _playerInfo;
     // 이동 관련변수
@@ -152,11 +154,9 @@ public class Player : MonoBehaviour , IHealth
 
     private void RESETAGENT()
     {
-        if (_agent.isActiveAndEnabled == true)
-            _agent.ResetPath();
+       _agent.ResetPath();
 
         _navRun = false;
-        _agent.enabled = false;
     }
 
     private void ROTATE()
@@ -187,7 +187,6 @@ public class Player : MonoBehaviour , IHealth
             if (NavMesh.SamplePosition(hit.point, out NavMeshHit navHit,
                    MaxDistance, NavMesh.AllAreas))
             {
-                _agent.enabled = true;
                 _navRun = true;
                 _agent.SetDestination(navHit.position);
             }

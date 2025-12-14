@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 using STATE = INode.STATE;
@@ -25,12 +26,12 @@ public class SOSpawnMonsterAttack : SONode
             MonsterSkillInfo pSkillInfo = _pBB.Self.SOMonsterInfo.skillinfo[iTargetIdx];
             string strKey = pSkillInfo.SpawnOption.SOPoolEntry.prefabRef.AssetGUID;
 
-            GameObject pAttackObj = ObjectPoolManager.m_Instance.GetObject(
+            GameObject pAttackObj = ObjectPoolManager.m_Instance.GetObject(ePoolType.Stack,
                 strKey, _pBB.AttackSpawnPos + _pBB.AttackDir, _pBB.AttackSpawnRot);
 
             if (pAttackObj.TryGetComponent<MonsterAttackObject>(out var pAttack) == false)
             {
-                ObjectPoolManager.m_Instance.PushObject(strKey, pAttackObj);
+                ObjectPoolManager.m_Instance.PushObject(ePoolType.Stack, strKey, pAttackObj);
                 return STATE.FAILED;
             }
 

@@ -57,6 +57,6 @@ public class Item : MonoBehaviour, IPoolAble
             return;
 
         --m_iPushPoolCount;
-        ObjectPoolManager.m_Instance.PushObject(m_pItem.ItemObject.AssetGUID, gameObject);
+        ObjectPoolManager.m_Instance.PushObject(ePoolType.Global, m_pItem.ItemObject.AssetGUID, gameObject);
     }
 }

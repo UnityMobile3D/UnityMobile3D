@@ -17,11 +17,6 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 09b4621665fce804da0e9945ebaae759
   m_SerializeEntries:
-  - m_GUID: 0f381f2687a934c49839a43fdd1dc7e0
-    m_Address: Assets/02_Character/Skill/SkillObject/HealSkill/HealBuff.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 50a2051543a1b12419f46d4ad0d563e1
     m_Address: Assets/09_Monster/Static/ScriptableObject/SOData/Dragon/AttackObject/Attack2/Explosion.prefab
     m_ReadOnly: 0
@@ -41,6 +36,18 @@ MonoBehaviour:
     m_Address: Assets/09_Monster/Static/ScriptableObject/SOData/Dragon/AttackObject/DragonAttack1.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c850ee8c3b14cc8459e7e186857cf567
+    m_Address: Assets/01_Scenes/Town/Town.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - TownMap
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c9e30e1e40e5f6a47aa6053500404e37
+    m_Address: Assets/01_Scenes/BossMap/BossMap.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BossMap
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e478c3b70df328545aa17b091c07280d
     m_Address: Assets/09_Monster/Static/ScriptableObject/SOData/Stone/AttackObj/FireBall.prefab

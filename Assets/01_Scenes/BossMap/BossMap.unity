@@ -421,7 +421,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &329484982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52206,6 +52206,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BeeMonster
+      objectReference: {fileID: 0}
+    - target: {fileID: 7722095890004545660, guid: c7b8b1e8186bded4ca1259dc5e26ce23,
+        type: 3}
+      propertyPath: avoidancePriority
+      value: 40
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

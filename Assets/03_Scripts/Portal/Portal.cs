@@ -34,11 +34,8 @@ public class Portal : MonoBehaviour
     public void EnterPlayer()
     {
         Player pPlayer = GameManager.m_Instance.Player;
-        //위치를 이동해도 그 다음 프레임에 에이전트가 “마지막 경로 기준 위치”로 다시 덮어씀
-        pPlayer.Agent.Warp(m_pSpawnPos.position);
-
-        pPlayer.transform.position = m_pSpawnPos.position;
-        pPlayer.transform.rotation = m_pSpawnPos.rotation;
+        pPlayer.EnterPlayer(m_pSpawnPos);
+       
     }
 
   

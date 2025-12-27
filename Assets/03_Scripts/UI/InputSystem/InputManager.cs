@@ -1,20 +1,19 @@
+using System;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
-
-using TouchPhase = UnityEngine.InputSystem.TouchPhase;
-using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
-
-using PointerInputState = ActionMapper.PointerInputState;
-using ActionState = ActionMapper.ActionState;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 using UnityEditor.PackageManager;
+using UnityEngine;
+using UnityEngine.Assertions;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.EnhancedTouch;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
-using UnityEngine.Assertions;
-using System;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
+using ActionState = ActionMapper.ActionState;
+using PointerInputState = ActionMapper.PointerInputState;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 
 
@@ -133,6 +132,7 @@ public class InputManager : MonoBehaviour
     { 
         //패드랑 관련 없는 바탕, 그래드 관련된 액션들
         var listActiveTouch = Touch.activeTouches;
+
         if (listActiveTouch.Count> 0)
         {
             m_pTouchTracker.UpdateTouchPhase(ref listActiveTouch, m_listTouchEvent, m_pUIRayCaster);

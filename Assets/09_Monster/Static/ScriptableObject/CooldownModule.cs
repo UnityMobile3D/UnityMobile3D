@@ -9,7 +9,7 @@ public class CoolDownData
     public float MaxCooldown;
 }
 
-public class CooldownModule : MonoBehaviour
+public class CooldownModule 
 {
     private List<CoolDownData> m_listCooldown = new List<CoolDownData>();
     private Monster m_pOwner;

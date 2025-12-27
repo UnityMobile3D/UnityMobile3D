@@ -8,6 +8,7 @@ using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.EnhancedTouch;
 
 [Serializable]
 public enum eEquipType
@@ -114,6 +115,16 @@ public class Player : MonoBehaviour , IHealth
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (_hit == true || _skillRunner.RunSkill != null)
+            return;
+
+        MOVE();
+    }
+
+
+
 
     public Transform GetEquipPoint(eEquipType _eType)
     {
@@ -145,16 +156,17 @@ public class Player : MonoBehaviour , IHealth
         
 
         Vector3 vStep = moveDir * _playerInfo.Speed * Time.fixedDeltaTime;
-        Vector3 vPos = _rigidbody.position;
-
-        transform.position = (vPos + vStep);
+      
+        transform.position = (transform.position + vStep);
         _animator.SetBool("isWalk", true);
         
     }
 
     private void RESETAGENT()
     {
-       _agent.ResetPath();
+        _agent.isStopped = true;
+        _agent.ResetPath();
+        _agent.velocity = Vector3.zero;
 
         _navRun = false;
     }
@@ -193,26 +205,27 @@ public class Player : MonoBehaviour , IHealth
         }
     }
 
-    //private bool IsArrived()
-    //{
-    //    if (_agent.pathPending == true)
-    //        return false;
+    public void EnterPlayer(Transform _pNextPos)
+    {
+        RESETAGENT();
 
-    //    // 경로가 없으면 도착했다고 볼 수도 있지만 일반적으로 false 처리
-    //    if (_agent.hasPath == false)
-    //        return false;
+        _agent.Warp(_pNextPos.position);
+        _agent.nextPosition = _pNextPos.position;  
+        _agent.velocity = Vector3.zero;
 
-    //    if (_agent.remainingDistance > _agent.stoppingDistance)
-    //        return false;
+        moveDir = Vector3.zero;
 
-    //    // 남은 거리는 stoppingDistance 이하이지만,
-    //    // 아직 속도가 줄지 않고 있다면 '완전 도착'은 아님
-    //    if (_agent.velocity.sqrMagnitude > 0.001f)
-    //        return false;
+        if (_rigidbody != null)
+        {
+            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.angularVelocity = Vector3.zero;
+            _rigidbody.position = _pNextPos.position;
+            _rigidbody.rotation = _pNextPos.rotation;
+        }
 
-    //    //목적지 도달
-    //    return true;
-    //}
+        transform.rotation = _pNextPos.rotation;
+    }
+  
     public void HIT(bool _bDown = false)
     {
         _hit = true;
@@ -232,14 +245,6 @@ public class Player : MonoBehaviour , IHealth
     }
     
    
-    private void FixedUpdate()
-    {
-        if (_hit == true || _skillRunner.RunSkill != null)
-            return;
-
-        MOVE();
-    }
-
     
     private void OnTriggerEnter(Collider other)
     {
@@ -276,10 +281,9 @@ public class Player : MonoBehaviour , IHealth
         while (_hit == true && fElapsed <= 1.0f)
         {
             float fRevElaps = 1.0f - fElapsed;
-            Vector3 vVelocity = _vDir * _iPower * fRevElaps;
-            Vector3 vNextPos = _rigidbody.position + vVelocity * Time.fixedDeltaTime;
+            Vector3 vDelta = _vDir.normalized * _iPower * fRevElaps * Time.deltaTime;
 
-            _rigidbody.MovePosition(vNextPos);
+            transform.position += vDelta;
 
             fElapsed += Time.fixedDeltaTime;
 

@@ -225,10 +225,9 @@ public class Monster : MonoBehaviour, IHealth, IPoolAble
         while (m_bHit == true && fElapsed <=1.0f)
         {
             float fRevElaps = 1.0f - fElapsed;
-            Vector3 vVelocity = _vDir * _iPower * fRevElaps;
-            Vector3 vNextPos = m_pRigidbody.position + vVelocity * Time.fixedDeltaTime;
+            Vector3 vDelta = _vDir.normalized * _iPower * fRevElaps * Time.deltaTime;
 
-            m_pRigidbody.MovePosition(vNextPos);
+            transform.position += vDelta;
 
             fElapsed += Time.fixedDeltaTime;
 

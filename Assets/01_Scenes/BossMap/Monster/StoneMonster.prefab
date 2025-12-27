@@ -53,7 +53,7 @@ NavMeshAgent:
   m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 8
-  avoidancePriority: 50
+  avoidancePriority: 40
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
@@ -163,7 +163,6 @@ MonoBehaviour:
     SpawnObjects: []
   m_SOMonsterInfo: {fileID: 11400000, guid: 334a0c20e24148944a8adc685ecbfe6a, type: 2}
   m_listPoint: []
-  m_pDropTable: {fileID: 11400000, guid: 702b697e69218a14dac6387293aa0d2b, type: 2}
 --- !u!114 &1405914560464668532
 MonoBehaviour:
   m_ObjectHideFlags: 0

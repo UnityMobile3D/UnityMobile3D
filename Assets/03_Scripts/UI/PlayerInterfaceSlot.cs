@@ -65,6 +65,13 @@ public class PlayerInterfaceSlot : BaseUI, IContainer
 
     public bool AddData(SOEntryUI _pSOData, int _iAmount, int _iCategoryIdx = 0)
     {
+        if (m_hashItemCount.TryGetValue(_pSOData.Id, out int iAmount) == true)
+        {
+            m_hashItemCount[_pSOData.Id] += _iAmount;
+            m_pSlotContainer.UpdateItemCount(m_hashItemCount[_pSOData.Id]);
+            return true;
+        }
+
         return false;
     }
 

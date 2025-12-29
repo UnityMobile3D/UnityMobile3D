@@ -10747,6 +10747,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: forestpack_roadSign_westEast_1
       objectReference: {fileID: 0}
+    - target: {fileID: 1252687729517630, guid: a8cba3361c8f7724e8899289f1efa8cc, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 4009941363576130, guid: a8cba3361c8f7724e8899289f1efa8cc, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -51901,7 +51905,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2110604699}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Sign
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51917,7 +51921,7 @@ Transform:
   m_GameObject: {fileID: 2110604698}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -2.59, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -52015,6 +52019,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: dragon
+      objectReference: {fileID: 0}
+    - target: {fileID: 4223633847621454931, guid: 4364044276657424dbe5c5ee691df3a4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7896138511552620902, guid: 4364044276657424dbe5c5ee691df3a4,
         type: 3}

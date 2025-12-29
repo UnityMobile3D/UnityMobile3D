@@ -71,6 +71,8 @@ public class SkillAttackObject : SkillObject
         m_fMoveSpeed = _pSkillInfo.Damage.moveSpeed;
         m_pAttackInfo.Damage = (int)_pSkillInfo.Damage.baseDamage;
         m_pAttackInfo.Power = (int)_pSkillInfo.Damage.power;
+        m_pAttackInfo.AttackVariance = _pSkillInfo.Damage.damageVariance;
+
         m_iAttackCount = _pSkillInfo.Option.targetingProfile.MaxTargets;
         m_fStartAttackTime = _pSkillInfo.Damage.startAttackTime;
         m_bNearAttack = m_fMoveSpeed > 0.0f ? false : true;

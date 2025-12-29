@@ -23,7 +23,9 @@ public class BossMonster : Monster
 
     public override void TakeDamage(AttackInfo _pAttackInfo)
     {
-        MinusHP((int)_pAttackInfo.Damage * -1);
+        DamageManager.m_Instance.Damaged(m_pMonsterInfo, _pAttackInfo);
+
+        m_pBlackbard.HpRatio = (float)m_pMonsterInfo.HP / m_pMonsterInfo.MaxHp;
 
         if (m_pMonsterInfo.HP <= 0.0f)
         {

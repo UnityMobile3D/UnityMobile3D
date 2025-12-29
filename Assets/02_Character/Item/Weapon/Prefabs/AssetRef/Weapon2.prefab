@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 8784839953519140959}
   - component: {fileID: 8156239645450375079}
   - component: {fileID: -6423334224985459408}
-  m_Layer: 0
+  - component: {fileID: -4173504574393549606}
+  m_Layer: 12
   m_Name: Weapon2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,3 +99,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_pItem: {fileID: 11400000, guid: c23d784e7ffc2dc45ba8d772996222f7, type: 2}
   m_bDontDestroy: 1
+--- !u!65 &-4173504574393549606
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2481575706427970861}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}

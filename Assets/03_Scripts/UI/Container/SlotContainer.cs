@@ -68,6 +68,14 @@ public class SlotContainer : MonoBehaviour
         return -1;
     }
 
+    public void AddData(SOEntryUI _pSOData, int _iCeategoryIdx = 0)
+    {
+        int iDataIdx = GetDataIdx(_pSOData);
+        if (iDataIdx != -1)
+            return;
+
+        AddData(iDataIdx, _pSOData, _iCeategoryIdx);
+    }
     public void AddData(int _iDataIdx, SOEntryUI _pSOData, int _iCeategoryIdx = 0)
     {
         if (_iDataIdx >= m_listSlot.Count)
@@ -92,6 +100,28 @@ public class SlotContainer : MonoBehaviour
         return m_listSlot[_iDataIdx].SOTarget;
     }
 
+    
+    public int GetDataIdx(SOEntryUI _pData)
+    {
+        for(int i = 0; i< m_listSlot.Count; ++i)
+        {
+            if (m_listSlot[i].SOTarget == _pData)
+                return i;
+        }
+        return -1;
+    }
 
+    public void UpdateItemCount(int _iAmount)
+    {
+        for(int i = 0; i<m_listSlot.Count; ++i)
+        {
+            if (m_listSlot[i].eUIType == eUIType.Item)
+            {
+                ItemSlot pTargetSlot = m_listSlot[i] as ItemSlot;
+                pTargetSlot.UpdateCount(_iAmount);
+            }
+        }
+
+    }
 
 }

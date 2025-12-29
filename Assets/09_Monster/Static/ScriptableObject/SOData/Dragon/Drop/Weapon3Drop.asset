@@ -9,14 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b04dc63f80150604ea12fcedb87f46e4, type: 3}
-  m_Name: BluePotionPool
+  m_Script: {fileID: 11500000, guid: 702512f14d2ddfc47898e24d7407ecc9, type: 3}
+  m_Name: Weapon3Drop
   m_EditorClassIdentifier: 
-  type: 0
-  prefabRef:
-    m_AssetGUID: 84e11f3e5de2f564cae835d9767a214e
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  preload: 3
-  max: 5
+  DropEntries:
+  - Item: {fileID: 11400000, guid: cafc90dffdc76354394b0f470452dc9f, type: 2}
+    Probability: 100
+    MinCount: 1
+    MaxCount: 1

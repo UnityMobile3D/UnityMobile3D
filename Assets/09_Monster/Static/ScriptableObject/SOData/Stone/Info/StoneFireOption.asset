@@ -18,8 +18,9 @@ MonoBehaviour:
   CoolTime: 8
   AttackRange: 0
   AttackDamage: 10
-  AttackPower: 2
+  AttackPower: 3
+  AttackVariance: 2
   AttackTime: 0
   MoveSpeed: 5
   isDown: 0
-  DestroyOnHit: 0
+  DestroyOn: 0

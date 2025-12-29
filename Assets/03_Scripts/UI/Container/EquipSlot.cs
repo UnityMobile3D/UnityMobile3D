@@ -59,6 +59,7 @@ public class EquipSlot : Slot
     {
         if (m_pEquip != null)
         {
+            m_pItemEquipContext.pTarget = GameManager.m_Instance.Player.gameObject;
             ItemEffectRunner.ApplyEffectUsing(m_pEquip.ItemData, m_pItemEquipContext);
         }
 

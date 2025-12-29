@@ -168,7 +168,9 @@ public class Monster : MonoBehaviour, IHealth, IPoolAble
     }
     public virtual void TakeDamage(AttackInfo _pAttackInfo)
     {
-        MinusHP((int)_pAttackInfo.Damage * -1);
+        DamageManager.m_Instance.Damaged(m_pMonsterInfo, _pAttackInfo);
+
+        m_pBlackbard.HpRatio = (float)m_pMonsterInfo.HP / m_pMonsterInfo.MaxHp;
 
         if (m_pMonsterInfo.HP <= 0.0f)
         {
@@ -258,7 +260,6 @@ public class Monster : MonoBehaviour, IHealth, IPoolAble
     public void MinusHP(int Damage)
     {
         m_pMonsterInfo.AddHP(Damage);
-        m_pBlackbard.HpRatio = (float)m_pMonsterInfo.HP / m_pMonsterInfo.MaxHp;
-
+        
     }
 }

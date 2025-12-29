@@ -113,6 +113,8 @@ public class Player : MonoBehaviour , IHealth
         {
              ROTATE();
         }
+
+
     }
 
     private void FixedUpdate()
@@ -308,14 +310,12 @@ public class Player : MonoBehaviour , IHealth
         if (m_pHitEvent?.Invoke(_pAttackInfo) == false)
             return;
 
-       
-
         HIT();
 
         knockback(_pAttackInfo);
 
-        _playerInfo.AddHP((int)_pAttackInfo.Damage * -1);
-        HealthManager.m_Instance.UpdateHP();
+        DamageManager.m_Instance.Damaged(_playerInfo, _pAttackInfo);
+
     }
     public void Heal(int _iAmount)
     {

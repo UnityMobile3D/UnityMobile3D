@@ -34,7 +34,6 @@ public class Inventory : BaseUI, IContainer
     Dictionary<uint, CategoryData> m_hashCategoryData = new Dictionary<uint, CategoryData>();
 
     //Test
-    [SerializeField] private SOEntryUI[] m_arrTestData;
 
     [SerializeField] private Color m_pBaseColor;
 
@@ -270,6 +269,10 @@ public class Inventory : BaseUI, IContainer
         }
         else
         {
+            //들어왔을 때 아이템이 슬롯 인터페이스에 있는지 확인
+            if (DataService.m_Instance.TryAddData(eContainerType.Interface, _pSOData, _iAmount) == true)
+                return true;
+
             return m_pInevenContainer.AddData(_pSOData, iCategoryIdx);
         }
     }

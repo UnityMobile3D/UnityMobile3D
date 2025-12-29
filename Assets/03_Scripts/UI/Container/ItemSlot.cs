@@ -34,13 +34,14 @@ public class ItemSlot : Slot
 
     public override void Bind(SOEntryUI _pSOTarget)
     {
+       
         base.Bind(_pSOTarget);
 
         if (_pSOTarget != null)
         {
             m_pSOItem = _pSOTarget as SOItemUI;
             SetCoolTime(m_pSOItem.ItemData.cooldown);
-            update_count();
+            UpdateCount();
         } 
         else
         {
@@ -63,17 +64,21 @@ public class ItemSlot : Slot
         
         ItemEffectRunner.ApplyEffectUsing(m_pSOItem.ItemData, m_pItemEquipContext);
 
-        update_count();
+        UpdateCount();
     }
     private void selete_item_slot()
     {
         DataService.m_Instance.TryDropDataAndSwap(m_pOwner, SlotIdx);
     }
 
-    private void update_count()
+    public void UpdateCount(int _iAmount = 0)
     {
-        int iCount = m_pOwner?.GetDataAmount(m_pSOTarget) ?? 0;
-     
+        int iCount = 0;
+        if(_iAmount > 0)
+            iCount = _iAmount;
+        else
+            iCount = m_pOwner?.GetDataAmount(m_pSOTarget) ?? 0;
+
         bool bShow = iCount > 1; // 1개 이하면 보통 표기 안 함
         if (bShow)
         {

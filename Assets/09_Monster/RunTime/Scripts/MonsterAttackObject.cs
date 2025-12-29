@@ -21,6 +21,7 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
 
     private bool m_bNearAttack = false;
     private float m_fMoveSpeed = 0.0f;
+ 
     private Vector3 m_vDir = Vector3.zero;
 
     [SerializeField] private float m_fLifeTime = 10.0f;
@@ -52,6 +53,7 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
     {
         MonsterSkillInfo pEndSpawn = m_pMonsterSkillInfo.SpawnOption.EndFrameSpawnSkill;
         MonsterSkillSpawnOption pSpawnOption = pEndSpawn.SpawnOption;
+
         //재귀적으로 호출, 마지막 프레임에 소환할 오브젝트가 있다면
         if (pSpawnOption != null)
         {
@@ -132,12 +134,14 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
         m_fLifeTime = _pSkillInfo.SpawnOption.LifeTime;
         m_fAttackTime = _pSkillInfo.SkillOption.AttackTime;
         m_fMoveSpeed = _pSkillInfo.SkillOption.MoveSpeed;
-        m_bNearAttack = m_fMoveSpeed > 0.0f ? false : true; 
         m_vDir = _pSkillInfo.SpawnOption.AttackDir.normalized;
+
+        m_bNearAttack = m_fMoveSpeed > 0.0f ? false : true; 
 
         m_strSpawnKey = _pSkillInfo.SpawnOption.SOPoolEntry.prefabRef.AssetGUID;
         m_bOnDestroy = _pSkillInfo.SkillOption.DestroyOn;
 
+        m_pAttackInfo.AttackVariance = _pSkillInfo.SkillOption.AttackVariance;
         m_pAttackInfo.Power = _pSkillInfo.SkillOption.AttackPower;
         m_pAttackInfo.Damage = _pSkillInfo.SkillOption.AttackDamage;
         m_pAttackInfo.Down = _pSkillInfo.SkillOption.isDown;
@@ -170,9 +174,10 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
 
             m_pAttackInfo.HitPoint = vAttackerPos;
             m_pAttackInfo.HitPoint.y = 0.0f;
+
             other.GetComponent<IHealth>().TakeDamage(m_pAttackInfo);
 
-            Debug.Log(gameObject.name);
+
         }
     }
 

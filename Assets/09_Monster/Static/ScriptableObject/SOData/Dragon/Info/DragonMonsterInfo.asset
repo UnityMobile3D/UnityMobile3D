@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DragonMonsterInfo
   m_EditorClassIdentifier: 
   MonsterType: 1
-  MonsterOption: {fileID: 0}
+  DropTable: {fileID: 11400000, guid: 853541c056be40241b86e6bb8394c9da, type: 2}
   skillinfo:
   - SkillOption: {fileID: 11400000, guid: fa102aaca3ad3f341b62c537419ef60a, type: 2}
     SpawnOption: {fileID: 11400000, guid: 48cd37861dc11e24298c33b929d8523d, type: 2}

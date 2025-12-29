@@ -17,7 +17,7 @@ public class SOEntryUI : ScriptableObject
 
     [SerializeField] private string name = "";
     [SerializeField] private int id;                    // 고정 키
-    [SerializeField] protected Sprite icon;               // 아이콘
+    [SerializeField] protected Sprite icon;             // 아이콘
     [SerializeField] private eUIType type;
     [SerializeField] private int sortKey = 0;           // 정렬 우선순위(작을수록 앞)
 

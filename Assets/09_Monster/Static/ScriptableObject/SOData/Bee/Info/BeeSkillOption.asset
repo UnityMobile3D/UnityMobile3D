@@ -19,6 +19,7 @@ MonoBehaviour:
   AttackRange: 0
   AttackDamage: 5
   AttackPower: 1
+  AttackVariance: 1
   AttackTime: 0
   MoveSpeed: 0
   isDown: 0

@@ -31,9 +31,7 @@ public class SkillTree : BaseUI, IContainer
     {
         base.Awake();
 
-        //close selete 함수 바인딩
-        m_pCloseButton.OnUpEvt += close_tap;
-
+       
         //컨테이너에서 스킬 눌렸다면 가져올 수 있게
         m_pSkillContainer.OnSelectEvt += select_skill;
     }
@@ -47,7 +45,7 @@ public class SkillTree : BaseUI, IContainer
     {
         m_pSlotContainer.UnActiveSlot();
     }
-    private void close_tap()
+    public void CloseTap()
     {
         //레이까지 제거하기 위해서
         gameObject.SetActive(false);

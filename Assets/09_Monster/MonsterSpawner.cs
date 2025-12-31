@@ -21,6 +21,7 @@ public class SpawnUpdate
     public int SpawnCount = 0;
     public float CurrentSpawnTime = 0.0f;
 }
+
 public class MonsterSpawner : MonoBehaviour
 {
     [SerializeField] private List<MonsterSpawnInfo> m_listMonsterSpawn = 
@@ -83,6 +84,8 @@ public class MonsterSpawner : MonoBehaviour
             pMonster.SetPoolKey(_pSpawnInfo.MonsterAsset.AssetGUID);
 
             ++_pSpawnUpdate.SpawnCount;
+
+            MonsterManager.m_Instance.RegisterMonster(pMonster);
         }
     }
 }

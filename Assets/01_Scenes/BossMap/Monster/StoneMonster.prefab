@@ -39,6 +39,7 @@ Transform:
   m_Children:
   - {fileID: 3970620834176888655}
   - {fileID: 754229470326411261}
+  - {fileID: 2530598800655786888}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!195 &2215379004428589776
@@ -156,13 +157,15 @@ MonoBehaviour:
     AttackSpawnPos: {x: 0, y: 0, z: 0}
     AttackSpawnRot: {x: 0, y: 0, z: 0}
     AttackDir: {x: 0, y: 0, z: 0}
-    CooldownModule: {fileID: 0}
     Agent: {fileID: 0}
     AnimBridge: {fileID: 0}
     Attacking: 0
     SpawnObjects: []
   m_SOMonsterInfo: {fileID: 11400000, guid: 334a0c20e24148944a8adc685ecbfe6a, type: 2}
-  m_listPoint: []
+  m_listPoint:
+  - ePointType: 1
+    pTrasnform: {fileID: 2530598800655786888}
+  m_pMonsterHPBar: {fileID: 0}
 --- !u!114 &1405914560464668532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,6 +260,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1575881056241690007}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2053693833305493231
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2530598800655786888}
+  m_Layer: 7
+  m_Name: Head
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2530598800655786888
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2053693833305493231}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.882, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1706635220605421862}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2098058797692614715
 GameObject:

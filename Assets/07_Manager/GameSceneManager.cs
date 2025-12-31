@@ -122,8 +122,9 @@ public class GameSceneManager : MonoBehaviour
             //Addressables.UnloadSceneAsync(tSceneInst);
             m_tCurScene = null;
         }
+        MonsterManager.m_Instance.ClearMonsters();
 
-        foreach(var tHandle  in m_hashLabelValue)
+        foreach (var tHandle  in m_hashLabelValue)
         {
             if (tHandle.Value.IsValid())
                 Addressables.Release(tHandle.Value);

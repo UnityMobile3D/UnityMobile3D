@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 
 
@@ -10,6 +11,8 @@ public class SkillAttackObject : SkillObject
     private float m_fMoveSpeed = 0.0f;
     private Vector3 m_vDir = Vector3.zero;
 
+    [SerializeField] private AssetReferenceGameObject m_pHitEffectRef = null;
+    private GameObject m_pHitEffect = null;
 
     [SerializeField] private float m_fStartAttackTime = 0.0f;
     [SerializeField] private float m_fEndAttackTime = float.MaxValue;
@@ -106,6 +109,10 @@ public class SkillAttackObject : SkillObject
             m_pAttackInfo.AttackerPosition = vAttackerPos;
 
             other.GetComponent<IHealth>()?.TakeDamage(m_pAttackInfo);
+
+           
+            StartEffect(vHitPoint);
+            
         }
     }
 
@@ -134,5 +141,19 @@ public class SkillAttackObject : SkillObject
         if (m_pCollider == true)
             m_pCollider.enabled = false;
         m_bIsSkillActive = false;
+    }
+
+    private void StartEffect(Vector3 _vPoint)
+    {
+        if(m_pHitEffectRef == null)
+            return;
+        m_pHitEffect = ObjectPoolManager.m_Instance.GetObject(ePoolType.Global, m_pHitEffectRef.AssetGUID, _vPoint, Vector3.zero);
+        ParticleCallback pCallback = m_pHitEffect.GetComponent<ParticleCallback>();
+        if (pCallback != null)
+            pCallback.SetCompletedAction(PushEffectPool);
+    }
+    private void PushEffectPool()
+    {
+        ObjectPoolManager.m_Instance.PushObject(ePoolType.Global, m_pHitEffectRef.AssetGUID, m_pHitEffect);
     }
 }

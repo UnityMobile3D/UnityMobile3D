@@ -34171,6 +34171,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_fLifeTime: 10
+  m_pHitEffectRef:
+    m_AssetGUID: 9e59038de397032448cf9b329c247777
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   m_fStartAttackTime: 0.6
   m_fEndAttackTime: 3.4028235e+38
   m_iAttackCount: 1

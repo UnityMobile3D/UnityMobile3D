@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.AddressableAssets.HostingServices;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -23,6 +24,9 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
     private float m_fMoveSpeed = 0.0f;
  
     private Vector3 m_vDir = Vector3.zero;
+
+    [SerializeField] private AssetReferenceGameObject m_pHitEffectRef = null;
+    private GameObject m_pHitEffect = null;
 
     [SerializeField] private float m_fLifeTime = 10.0f;
     [SerializeField] private float m_fAttackTime = 0.0f;
@@ -177,7 +181,7 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
 
             other.GetComponent<IHealth>().TakeDamage(m_pAttackInfo);
 
-
+            StartEffect(vAttackerPos);
         }
     }
 
@@ -198,6 +202,21 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
         return true;
     }
 
-  
+    private void StartEffect(Vector3 _vPoint)
+    {
+        if (m_pHitEffectRef == null)
+            return;
+
+        m_pHitEffect = ObjectPoolManager.m_Instance.GetObject(ePoolType.Global, m_pHitEffectRef.AssetGUID, _vPoint, Vector3.zero);
+        ParticleCallback pCallback = m_pHitEffect.GetComponent<ParticleCallback>();
+        if (pCallback != null)
+            pCallback.SetCompletedAction(PushEffectPool);
+    }
+    private void PushEffectPool()
+    {
+        ObjectPoolManager.m_Instance.PushObject(ePoolType.Global, m_pHitEffectRef.AssetGUID, m_pHitEffect);
+    }
+
+
 }
 

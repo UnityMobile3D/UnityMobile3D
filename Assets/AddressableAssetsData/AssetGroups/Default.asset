@@ -17,6 +17,11 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 09b4621665fce804da0e9945ebaae759
   m_SerializeEntries:
+  - m_GUID: 05609566f0df27848962c113cb77d33c
+    m_Address: Assets/04_Prefabs/Particle/Hit_1/Hit_1_Normal.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 10396fe6dd1753542b6534b55dd052b6
     m_Address: Assets/04_Prefabs/UI/DamageFont.prefab
     m_ReadOnly: 0
@@ -34,6 +39,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 98c1e720430463643a2b744a19d910cb
     m_Address: Assets/09_Monster/Static/ScriptableObject/SOData/Dragon/AttackObject/Attack2/BossFireBall.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9e59038de397032448cf9b329c247777
+    m_Address: Assets/04_Prefabs/Particle/Hit_4/Hit_4_Blue.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -64,8 +74,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f40db358de8027b40a465c9b3026ce5d
+    m_Address: Assets/04_Prefabs/Particle/Hit_3/Hit_3_Red.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f72a9eb7ca5cb4a42864bce51827c7a1
     m_Address: Assets/09_Monster/Static/ScriptableObject/SOData/Mushroom_Monster/Info/MushAttack.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ffb7095b6c513194886bdeef32be59ea
+    m_Address: Assets/09_Monster/MonsterHPBar.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

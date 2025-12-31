@@ -32,6 +32,7 @@ public class Monster : MonoBehaviour, IHealth, IPoolAble
     private BehaviorTree m_pBHTree = null;
     [SerializeField] protected SOMonsterInfo m_SOMonsterInfo = null;
     [SerializeField] protected List<MonsterPoint> m_listPoint = new();
+    [SerializeField] protected MonsterHPBar m_pMonsterHPBar = null;
 
     protected Rigidbody m_pRigidbody = null;
     protected Animator m_pAnimator = null;
@@ -46,7 +47,7 @@ public class Monster : MonoBehaviour, IHealth, IPoolAble
     private Coroutine m_pKnockbackRoutine = null;
 
     private string m_strPoolKey = "";
-
+    
     protected bool m_bHit = false;
     //IHealth
     public int CurrentHP => m_pMonsterInfo.HP;
@@ -99,12 +100,31 @@ public class Monster : MonoBehaviour, IHealth, IPoolAble
         //나중에 네트워크로 가면 문제
         m_pBlackbard.Target = GameManager.m_Instance.Player.gameObject.transform;
     }
-    virtual protected void Update()
+
+    private void OnDisable()
+    {
+        PushHpBarObjectPool();
+    }
+    private void OnDestroy()
+    {
+        PushHpBarObjectPool();
+    }
+
+    virtual public void MonsterUpdate()
     {
         m_pCollDownModule.UpdateCooldown();
 
-        if(m_bHit == false)
+        if (m_bHit == false)
             m_pBHTree.Evaluate();
+    }
+   
+    virtual public void MonsterLateUpdate()
+    {
+        Transform pHeadTr = GetMonsterPoint(ePointType.Head);
+        float y = pHeadTr.position.y + 1.0f;
+        m_pMonsterHPBar.transform.position = new Vector3(transform.position.x, y, transform.position.z);
+
+        m_pMonsterHPBar?.Billboard();
     }
 
     MonsterSkillInfo GetMonsterSkillInfo(int _iIdx)
@@ -166,10 +186,16 @@ public class Monster : MonoBehaviour, IHealth, IPoolAble
         m_pBlackbard.Attacking = false;
         m_pAnimator.speed = 1.0f;
     }
+
+    public void RegisterHpBar(MonsterHPBar _pHPBar)
+    {
+        m_pMonsterHPBar = _pHPBar;
+    }
+
     public virtual void TakeDamage(AttackInfo _pAttackInfo)
     {
-        DamageManager.m_Instance.Damaged(m_pMonsterInfo, _pAttackInfo);
 
+        DamageManager.m_Instance.Damaged(m_pMonsterInfo, _pAttackInfo);
         m_pBlackbard.HpRatio = (float)m_pMonsterInfo.HP / m_pMonsterInfo.MaxHp;
 
         if (m_pMonsterInfo.HP <= 0.0f)
@@ -183,6 +209,7 @@ public class Monster : MonoBehaviour, IHealth, IPoolAble
             knockback(_pAttackInfo);
         }
 
+        m_pMonsterHPBar?.UpdateHPBar(m_pMonsterInfo.HP, m_pMonsterInfo.MaxHp);
         ClearAttackObject();
     }
     public void Heal(int _iAmount)
@@ -254,7 +281,18 @@ public class Monster : MonoBehaviour, IHealth, IPoolAble
 
     public void PushObjectPool()
     {
+       //애니메이션 이벤트로 등록
        ObjectPoolManager.m_Instance.PushObject(ePoolType.Stack, m_strPoolKey, gameObject);
+    }
+
+   
+    public void PushHpBarObjectPool()
+    {
+        if (m_pMonsterHPBar != null)
+        {
+            MonsterManager.m_Instance.PushHpBarPoolObject(m_pMonsterHPBar.gameObject);
+            m_pMonsterHPBar = null;
+        }
     }
 
     public void MinusHP(int Damage)

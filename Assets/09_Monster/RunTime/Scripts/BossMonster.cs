@@ -16,11 +16,11 @@ public class BossMonster : Monster
         base.Start();
     }
 
-    override protected void Update()
+    override public void MonsterUpdate()
     {
-        base.Update();
+        base.MonsterUpdate();
     }
-
+   
     public override void TakeDamage(AttackInfo _pAttackInfo)
     {
         DamageManager.m_Instance.Damaged(m_pMonsterInfo, _pAttackInfo);

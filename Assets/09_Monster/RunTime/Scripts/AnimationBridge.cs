@@ -26,6 +26,7 @@ public class AnimationBridge : MonoBehaviour
     [SerializeField] private AnimationInfo Run = new AnimationInfo("Run", "Run", false);
     [SerializeField] private AnimationInfo Hit = new AnimationInfo("Hit", "Hit", false);
     [SerializeField] private AnimationInfo Dead = new AnimationInfo("Dead", "Dead", false);
+    [SerializeField] private AnimationInfo Defend = new AnimationInfo("Defend", "Defend", false);
 
     private int m_iSpeedHash;
     private List<int> m_listAttack = new List<int>();
@@ -75,6 +76,10 @@ public class AnimationBridge : MonoBehaviour
         m_pAnimator.SetBool(Run.ParamName, _bOn);
     }
 
+    public void SetDefend(bool _bOn)
+    {
+        m_pAnimator.SetBool(Defend.ParamName, _bOn);
+    }
     public void SetHit()
     {
         m_pAnimator.SetTrigger(Hit.ParamName);
@@ -83,6 +88,7 @@ public class AnimationBridge : MonoBehaviour
     {
         m_pAnimator.SetTrigger(Dead.ParamName);
     }
+
 
     public bool CurrentClipPlayedOnce(in string _strName , int _iLayer = 0)
     {

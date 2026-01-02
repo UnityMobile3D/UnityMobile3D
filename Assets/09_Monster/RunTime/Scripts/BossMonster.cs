@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class BossMonster : Monster
 {
-   
     override protected void Awake()
     {
         base.Awake();
@@ -16,11 +15,22 @@ public class BossMonster : Monster
         base.Start();
     }
 
+    override protected void OnDisable()
+    {
+        base.OnDisable();
+        m_pNavMeshAgent.isStopped = false;
+    }
+   
     override public void MonsterUpdate()
     {
         base.MonsterUpdate();
     }
-   
+
+    override public void MonsterLateUpdate()
+    {
+        base.MonsterLateUpdate();
+    }
+
     public override void TakeDamage(AttackInfo _pAttackInfo)
     {
         DamageManager.m_Instance.Damaged(m_pMonsterInfo, _pAttackInfo);
@@ -30,6 +40,8 @@ public class BossMonster : Monster
         if (m_pMonsterInfo.HP <= 0.0f)
         {
             ClearAttackObject();
+
+            m_pNavMeshAgent.isStopped = true;
             Dead();
         } 
     }

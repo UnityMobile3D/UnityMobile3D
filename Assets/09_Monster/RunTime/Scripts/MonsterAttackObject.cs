@@ -173,7 +173,7 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
                 return;
             
             Vector3 vAttackerPos = transform.position;
-            if (m_bNearAttack == true)
+            if (m_bNearAttack == true)  
                 vAttackerPos = m_pOwner.transform.position;
 
             m_pAttackInfo.HitPoint = vAttackerPos;
@@ -181,7 +181,7 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
 
             other.GetComponent<IHealth>().TakeDamage(m_pAttackInfo);
 
-            StartEffect(vAttackerPos);
+            StartEffect(other.transform.position);
         }
     }
 

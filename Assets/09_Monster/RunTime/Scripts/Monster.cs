@@ -101,15 +101,23 @@ public class Monster : MonoBehaviour, IHealth, IPoolAble
         m_pBlackbard.Target = GameManager.m_Instance.Player.gameObject.transform;
     }
 
-    private void OnDisable()
+    virtual protected void OnDisable()
     {
         PushHpBarObjectPool();
     }
-    private void OnDestroy()
+    virtual protected void OnDestroy()
     {
         PushHpBarObjectPool();
     }
 
+    private void Update()
+    {
+        MonsterUpdate();
+    }
+    private void LateUpdate()
+    {
+        
+    }
     virtual public void MonsterUpdate()
     {
         m_pCollDownModule.UpdateCooldown();

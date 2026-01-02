@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4c95e79b8737184fa7d3ed5a3860a50, type: 3}
   m_Name: ThunderDamage
   m_EditorClassIdentifier: 
-  baseDamage: 0
+  baseDamage: 20
   coefficient: 0
   criticalChance: 0
   criticalMultiplier: 0
-  damageVariance: 0
+  damageVariance: 5
   power: 5
   startAttackTime: 0.6
   moveSpeed: 0

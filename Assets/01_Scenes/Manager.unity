@@ -16005,6 +16005,7 @@ MonoBehaviour:
   m_listSceneLoad:
   - {fileID: 11400000, guid: 25682f477b83c2247bd4b2d788b63770, type: 2}
   - {fileID: 11400000, guid: 3a908f9dd50511f44a86b3f94f4bb0af, type: 2}
+  - {fileID: 11400000, guid: 1d3489d20e32819498bc51b5b6584a90, type: 2}
   m_pLoadingOverlay: {fileID: 429639129}
 --- !u!4 &997374079
 Transform:
@@ -16425,7 +16426,7 @@ Transform:
   m_GameObject: {fileID: 1014201812}
   serializedVersion: 2
   m_LocalRotation: {x: 0.46174863, y: -0, z: -0, w: 0.8870109}
-  m_LocalPosition: {x: -24.335571, y: 18.119524, z: 4.569888}
+  m_LocalPosition: {x: -29.335571, y: 18.289524, z: 23.40989}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -23117,7 +23118,7 @@ Transform:
   m_GameObject: {fileID: 1466845746}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 25, y: 21.56, z: 10}
+  m_LocalPosition: {x: 20, y: 21.73, z: 28.84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

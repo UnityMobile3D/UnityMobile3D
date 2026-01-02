@@ -22,8 +22,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 26be9d718ee523847a329122831ce998
+    m_Address: Assets/09_Monster/RunTime/Turtle/TurtleMonster.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4364044276657424dbe5c5ee691df3a4
     m_Address: Assets/01_Scenes/BossMap/Monster/dragon.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 62ce852c342ec5d4c96de2d3302f6bce
+    m_Address: Assets/09_Monster/RunTime/Slime/SlimeMonster.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8df8731b977540146a1c90a255af9c3d
+    m_Address: Assets/09_Monster/Static/ScriptableObject/SOData/Turtle/Info/TurtleAttack.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

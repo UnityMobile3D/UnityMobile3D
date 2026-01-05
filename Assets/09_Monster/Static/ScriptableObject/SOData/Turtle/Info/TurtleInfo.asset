@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 083f772ff5525444e93ec2f83974f054, type: 3}
   m_Name: TurtleInfo
   m_EditorClassIdentifier: 
-  MonsterType: 1
+  MonsterType: 0
   DropTable: {fileID: 0}
   skillinfo:
   - SkillOption: {fileID: 11400000, guid: 6820262d7f317bb49b4d58b347d8697d, type: 2}

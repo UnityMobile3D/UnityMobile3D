@@ -204,7 +204,7 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
 
     private void StartEffect(Vector3 _vPoint)
     {
-        if (m_pHitEffectRef == null)
+        if (m_pHitEffectRef.editorAsset == null)
             return;
 
         m_pHitEffect = ObjectPoolManager.m_Instance.GetObject(ePoolType.Global, m_pHitEffectRef.AssetGUID, _vPoint, Vector3.zero);

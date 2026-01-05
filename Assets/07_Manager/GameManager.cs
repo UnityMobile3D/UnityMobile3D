@@ -8,11 +8,14 @@ public class GameManager : MonoBehaviour
     public Player Player { get { return m_pPlayer; } }
 
     public static GameManager m_Instance = null; 
+
+  
     private void Awake()
     {
         if(m_Instance!=null)
             Destroy(m_Instance);
 
         m_Instance = this;
+
     }
 }

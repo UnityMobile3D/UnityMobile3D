@@ -43,6 +43,7 @@ public class Blackboard
     public CooldownModule CooldownModule;
     public NavMeshAgent Agent;
     public AnimationBridge AnimBridge;
+    public ObjectInfo ObjectInfo;
 
     public bool Attacking = false;
     public List<MonsterAttackObject> SpawnObjects = new List<MonsterAttackObject>();

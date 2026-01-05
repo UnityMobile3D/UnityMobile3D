@@ -20572,7 +20572,7 @@ MonoBehaviour:
     SpawnOption: {fileID: 11400000, guid: 336e9e20e9ea00c4c8e6bd9a65d08cdc, type: 2}
     SpawnPosition: {fileID: 1555153385}
   - MonsterAsset:
-      m_AssetGUID: 26be9d718ee523847a329122831ce998
+      m_AssetGUID: 09f972149de28a747b0e90f137a2eb6e
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0

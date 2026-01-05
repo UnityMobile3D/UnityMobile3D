@@ -32,6 +32,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4ea7d3694af46b04282ece3dae4586cb
+    m_Address: Assets/01_Scenes/Title/TitleScene.unity
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 50a2051543a1b12419f46d4ad0d563e1
     m_Address: Assets/09_Monster/Static/ScriptableObject/SOData/Dragon/AttackObject/Attack2/Explosion.prefab
     m_ReadOnly: 0

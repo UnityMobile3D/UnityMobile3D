@@ -9,14 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b04dc63f80150604ea12fcedb87f46e4, type: 3}
-  m_Name: TurtlePool
+  m_Script: {fileID: 11500000, guid: d7b4cff8249a9ad47b95b7a8bbe0d66f, type: 3}
+  m_Name: WaitDefendCoolTime
   m_EditorClassIdentifier: 
-  type: 1
-  prefabRef:
-    m_AssetGUID: 09f972149de28a747b0e90f137a2eb6e
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  preload: 1
-  max: 1
+  m_fWaitTime: 4

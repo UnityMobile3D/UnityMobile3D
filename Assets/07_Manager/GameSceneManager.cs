@@ -35,6 +35,22 @@ public class GameSceneManager : MonoBehaviour
         Addressables.InitializeAsync();
     }
 
+    public async Task StartScene(SOPortal _pStartScene)
+    {
+        m_pLoadingOverlay.ShowLoadingImage();
+
+        var pResultHandle = _pStartScene.NextScene.LoadSceneAsync(LoadSceneMode.Single);
+        while (pResultHandle.IsDone == false)
+        {
+            m_pLoadingOverlay.SetProgress(pResultHandle.PercentComplete);
+            await Task.Yield();
+        }
+        m_tCurScene = pResultHandle.Result;
+     
+        FindPortal(_pStartScene.ePortalID);
+
+        m_pLoadingOverlay.CompletedLoading();
+    }
 
     public async Task LoadScene(SOPortal _pNextScenePortal, CancellationToken _tCT = default)
     {
@@ -122,6 +138,7 @@ public class GameSceneManager : MonoBehaviour
             //Addressables.UnloadSceneAsync(tSceneInst);
             m_tCurScene = null;
         }
+        
         MonsterManager.m_Instance.ClearMonsters();
 
         foreach (var tHandle  in m_hashLabelValue)

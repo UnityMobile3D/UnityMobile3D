@@ -17,7 +17,7 @@ MonoBehaviour:
   SpawnCurPos: 1
   SpawnRandomPos: 0
   PlayerDir: 1
-  SpawnDiff: 2
+  SpawnDiff: 1.5
   LifeTime: 0.1
   AttackDir: {x: 0, y: 0, z: 0}
   SpawnPos: {x: 0, y: 0, z: 0}

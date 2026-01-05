@@ -17,13 +17,13 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: ac783c0fe0c867f4085db9cbbd7749da
   m_SerializeEntries:
-  - m_GUID: 1c7f99ef724997342a1922fdc39826c4
-    m_Address: Assets/01_Scenes/BossMap/Monster/StoneMonster.prefab
+  - m_GUID: 09f972149de28a747b0e90f137a2eb6e
+    m_Address: Assets/09_Monster/RunTime/Turtle/TurtleMonster.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 26be9d718ee523847a329122831ce998
-    m_Address: Assets/09_Monster/RunTime/Turtle/TurtleMonster.prefab
+  - m_GUID: 1c7f99ef724997342a1922fdc39826c4
+    m_Address: Assets/01_Scenes/BossMap/Monster/StoneMonster.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

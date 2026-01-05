@@ -43,7 +43,6 @@ public class Monster : MonoBehaviour, IHealth, IPoolAble
     protected CooldownModule m_pCollDownModule = null;
     protected ObjectInfo m_pMonsterInfo = null;
 
-
     private Coroutine m_pKnockbackRoutine = null;
 
     private string m_strPoolKey = "";
@@ -71,24 +70,23 @@ public class Monster : MonoBehaviour, IHealth, IPoolAble
 
     virtual protected void Awake()
     {
-        m_pBlackbard.Self = this;
-        m_pBlackbard.Agent = GetComponent<NavMeshAgent>();
-        m_pBlackbard.AnimBridge = GetComponent<AnimationBridge>();
-        
-        m_pBHTree= GetComponent<BehaviorTree>();
-
         m_pMonsterInfo = GetComponent<ObjectInfo>();
         m_pRigidbody = GetComponent<Rigidbody>();
         m_pAnimator = GetComponent<Animator>();
         m_pNavMeshAgent = GetComponent<NavMeshAgent>();
         m_pCollider = GetComponent<Collider>();
 
+        m_pBlackbard.Self = this;
+        m_pBlackbard.Agent = m_pNavMeshAgent;
+        m_pBlackbard.AnimBridge = GetComponent<AnimationBridge>();
+        m_pBlackbard.ObjectInfo = m_pMonsterInfo;
+
+        m_pBHTree = GetComponent<BehaviorTree>();
         m_pBHTree.Init(m_pBlackbard, this);
 
         m_pCollDownModule = new CooldownModule();
         m_pCollDownModule.Init(this);
         m_pBlackbard.CooldownModule = m_pCollDownModule;
-
 
         //objectinfo
         m_pNavMeshAgent.speed = m_pMonsterInfo.Speed;
@@ -110,14 +108,7 @@ public class Monster : MonoBehaviour, IHealth, IPoolAble
         PushHpBarObjectPool();
     }
 
-    private void Update()
-    {
-        MonsterUpdate();
-    }
-    private void LateUpdate()
-    {
-        
-    }
+   
     virtual public void MonsterUpdate()
     {
         m_pCollDownModule.UpdateCooldown();
@@ -166,7 +157,6 @@ public class Monster : MonoBehaviour, IHealth, IPoolAble
         }
         
         m_pBlackbard.SpawnObjects.Clear();
-        
     }
 
     public void EndHit()

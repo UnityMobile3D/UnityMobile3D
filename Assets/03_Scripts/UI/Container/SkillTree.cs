@@ -13,7 +13,6 @@ public class SkillTree : BaseUI, IContainer
 
     [SerializeField] private SlotContainer m_pSlotContainer;
 
-    //그냥 static canvas에서 slot 관리 여기서 slotManager에 SO를 던져주면 거기서 해당 슬롯 SkillType에 맞는 슬롯 활성화
     [SerializeField] private eContainerType m_eContainerType = eContainerType.SkillTree; // ← 인스펙터에 드롭다운으로 보임
     public eContainerType ContainerType { get => m_eContainerType; }
 
@@ -25,7 +24,9 @@ public class SkillTree : BaseUI, IContainer
 
     public void SetVisible(bool _bOn)
     {
+        m_pSkillContainer.ClearTarget();
         gameObject.SetActive(_bOn);
+
     }
     protected override void Awake()
     {
@@ -47,9 +48,7 @@ public class SkillTree : BaseUI, IContainer
     }
     public void CloseTap()
     {
-        //레이까지 제거하기 위해서
-        gameObject.SetActive(false);
-        
+        gameObject.SetActive(false);   
     }
     private void select_skill()
     {

@@ -20,7 +20,6 @@ public class SlotView : ButtonUI
 
     protected Container m_pContainer = null;
 
-
     public SOEntryUI SOEntryUI { get => m_pTargetSO; }
     public int SlotIdx { get => m_iSlotIdx; }
 

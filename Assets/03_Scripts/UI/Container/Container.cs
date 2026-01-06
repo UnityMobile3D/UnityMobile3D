@@ -149,14 +149,22 @@ public class Container : ButtonUI
                     Conatiner
      *////////////////////////////////////
 
-    private SOEntryUI find_data_idx(int _iDataIdx, int _iCategoryIdx = 0)
-    {
-        CategoryData pCategoryData = GetCategoryData(_iCategoryIdx);
+    //빈공간 없이 정렬
+   public void SortData()
+   {
+        for(int i = 1; i<m_listView.Count; ++i)
+        {
+            SlotView pTarget = m_listView[i];
+            int pre = i - 1;
 
-        if(pCategoryData == null)
-            return null;
+            while (pre >= 0 && m_listView[pre] != null)
+            { 
+                m_listView[pre] = pTarget;
+                pre = -1;
+            }
+        }
 
-        return pCategoryData.m_ListData[_iDataIdx];
+        BindData(m_iCurrentCategoryIdx);
     }
 
     public bool DeleteData(int _iDataIdx, int _iCategoryIdx = 0)

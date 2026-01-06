@@ -13,6 +13,7 @@ public enum eContainerType
     Interface = 2,
     SkillTree = 3,
     Store = 4,
+    QuestState = 5,
 }
 
 public interface IContainer

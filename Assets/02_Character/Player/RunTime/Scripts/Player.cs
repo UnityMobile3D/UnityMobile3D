@@ -150,6 +150,7 @@ public class Player : MonoBehaviour , IHealth
         else
             _animator.SetBool("isWalk", true);
 
+
         //패드가 우선
         if (moveDir != Vector3.zero)
             RESETAGENT();
@@ -164,7 +165,7 @@ public class Player : MonoBehaviour , IHealth
         
     }
 
-    private void RESETAGENT()
+    public void RESETAGENT()
     {
         _agent.isStopped = true;
         _agent.ResetPath();

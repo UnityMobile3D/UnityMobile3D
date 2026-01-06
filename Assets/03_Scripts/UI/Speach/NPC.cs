@@ -29,6 +29,8 @@ public class NPC : MonoBehaviour
     {
         if ((m_tPlayerMask.value & (1 << collision.gameObject.layer)) != 0)
         {
+            collision.gameObject.GetComponent<Player>().RESETAGENT();
+
             Vector3 vQuestPos = transform.position + transform.up * 2.0f;
             SpeechManager.m_Instance.ShowWSpeechUI(vQuestPos, m_pSpeech);
         }

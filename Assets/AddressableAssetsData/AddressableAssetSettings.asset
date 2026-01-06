@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 09b4621665fce804da0e9945ebaae759
   m_currentHash:
     serializedVersion: 2
-    Hash: 126913c11ed12088e412be51f0749a98
+    Hash: 58ac4df911b5c9e67c5770d4b069db5f
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -45,8 +45,12 @@ MonoBehaviour:
   m_overridePlayerVersion: '[UnityEditor.PlayerSettings.bundleVersion]'
   m_GroupAssets:
   - {fileID: 11400000, guid: dc0431a934291e342aaf9d86c0f5d757, type: 2}
+  - {fileID: 11400000, guid: 6987f198a99e5a142a42b28928a85cab, type: 2}
+  - {fileID: 11400000, guid: 782a78cc27ad93f4baf3d2cf45702593, type: 2}
   - {fileID: 11400000, guid: 5ac65abbf9240534d814ffa98ffb8177, type: 2}
+  - {fileID: 11400000, guid: ba4b7fa1fe1693844a6bd77fb14a7896, type: 2}
   - {fileID: 11400000, guid: 4649a867f2086c04395b00b56e061789, type: 2}
+  - {fileID: 11400000, guid: 0f18ae2b99f89c74ab7a651a90b87335, type: 2}
   - {fileID: 11400000, guid: 8664e034eff350c4cab11e9219319d6c, type: 2}
   - {fileID: 11400000, guid: 30c5b15e2f31b8e4eb3ac33921b025a6, type: 2}
   - {fileID: 11400000, guid: ed246f13b8472ab4ead9de727cb0ffe2, type: 2}
@@ -94,6 +98,10 @@ MonoBehaviour:
     - Equip
     - BossMap
     - TownMap
+    - Locale
+    - Locale-en
+    - Locale-ko-KR
+    - Preload
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: d8ee4fed6cec9fc44b94a6fc14e342a1, type: 2}

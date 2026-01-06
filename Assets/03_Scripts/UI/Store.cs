@@ -61,7 +61,7 @@ public class Store : BaseUI, IContainer
         if (pTarget == null)
             return;
 
-        SOShapItem pShapItem = pTarget.SOEntryUI as SOShapItem;
+        SOShopItem pShapItem = pTarget.SOEntryUI as SOShopItem;
         if (pShapItem != null)
         {
            //데이터 매니저에서 플레이어 코인 값 가져오기 가져왔다면 비교 후 DataService를 통해서 전달

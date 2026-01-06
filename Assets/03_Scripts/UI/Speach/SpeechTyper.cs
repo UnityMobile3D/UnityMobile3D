@@ -40,7 +40,7 @@ public class SpeechTyper : ButtonUI
     public void StartSpeech(SOSpeech _pRootSpeech)
     {
         m_pCurSpeech = _pRootSpeech;
-        ShowText(m_pCurSpeech.Message);
+        ShowText(m_pCurSpeech.Message.GetLocalizedString());
     }
         
     private void ShowText(string _strMessage)
@@ -86,14 +86,23 @@ public class SpeechTyper : ButtonUI
 
     private void NextText()
     {
-        //다음칸으로 넘기기
-        if(m_iVisibleCount < m_iToalCount)
-        {
-            if(m_pTypingCoroutine != null)
-                StopCoroutine(m_pTypingCoroutine);
+        if (m_pTypingCoroutine != null)
+            StopCoroutine(m_pTypingCoroutine);
 
+        //다음칸으로 넘기기
+        if (m_iVisibleCount == m_iToalCount)
+        {
             m_pText.maxVisibleCharacters = m_iToalCount;
             Completed();
+        }
+        else
+        {
+            m_iVisibleCount = m_iToalCount;
+            m_pText.maxVisibleCharacters = m_iVisibleCount;
+
+
+            if (m_pCurSpeech.Choice.NextSpeech == null)
+                Completed();
         }
         
     }
@@ -101,29 +110,30 @@ public class SpeechTyper : ButtonUI
     //마지막까지 다 완료가 된다면 선택 창이 있다면 선택하고 없다면 다음 Text로
     private void Completed()
     {
-        string strPositive = m_pCurSpeech.Choice.PositiveText;
-        string strNagative = m_pCurSpeech.Choice.NegativeText;
+        string strPositive = "";
+        string strNagative = "";
 
-        //긍정 부정에 대답이 없다면 다음으로 가거나 끄기
-        if (strPositive == null && strNagative == null)
+        //긍정 부정에 대답이 없다면 다음으로 가기
+        if (m_pCurSpeech.Choice.PositiveText.IsEmpty == true && m_pCurSpeech.Choice.NegativeText.IsEmpty == true)
         {
-            if (m_pCurSpeech.Choice != null && m_pCurSpeech.Choice.NextSpeech != null)
+          
+            if (string.IsNullOrEmpty(strPositive) != false && string.IsNullOrEmpty(strNagative) != false)
                 StartSpeech(m_pCurSpeech.Choice.NextSpeech);
-            else
-                CloseSpeech();
-
+         
             return;
         }
 
         //긍정 텍스트를 누르면 다음 칸으로 가던가 어떤 해동을 하고 부정이면 거의 창 닫는용도
-        if(strPositive != null)
+        if(m_pCurSpeech.Choice.PositiveText.IsEmpty == false)
         {
             m_pPositiveButton.gameObject.SetActive(true);
+            strPositive = m_pCurSpeech.Choice.PositiveText.GetLocalizedString();
             m_pPositiveText.text = strPositive;
         }
-        if (strNagative != null)
+        if (m_pCurSpeech.Choice.NegativeText.IsEmpty == false)
         {
             m_pNagativeButton.gameObject.SetActive(true);
+            strNagative = m_pCurSpeech.Choice.NegativeText.GetLocalizedString();
             m_pNagativeText.text = strNagative;
         }
 

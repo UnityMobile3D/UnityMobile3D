@@ -57,6 +57,7 @@ public class Monster : MonoBehaviour, IHealth, IPoolAble
     {
         m_bHit = false;
         m_pCollider.enabled = true;
+        m_pNavMeshAgent.avoidancePriority = 40;
     }
     public void OnDespawn()
     {
@@ -268,6 +269,7 @@ public class Monster : MonoBehaviour, IHealth, IPoolAble
     {
         m_bHit = true;
         m_pCollider.enabled = false;
+        m_pNavMeshAgent.avoidancePriority = 99;
         m_pAnimator.SetTrigger("Dead");
 
         SODropTable pDropTable = m_SOMonsterInfo.DropTable;

@@ -42,6 +42,10 @@ MonoBehaviour:
     m_Localized: Acceptance
     m_Metadata:
       m_Items: []
+  - m_Id: 1050501605199872
+    m_Localized: Using the store
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

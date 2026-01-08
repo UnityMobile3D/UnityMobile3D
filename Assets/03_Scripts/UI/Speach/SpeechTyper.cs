@@ -7,17 +7,19 @@ public class SpeechTyper : ButtonUI
 {
     [SerializeField] private TMP_Text m_pText;
 
-    [SerializeField] private TMP_Text m_pPositiveText =null;
-    [SerializeField] private ButtonUI m_pPositiveButton =null;
+    [SerializeField] private TMP_Text m_pPositiveText = null;
+    [SerializeField] private ButtonUI m_pPositiveButton = null;
 
-    [SerializeField] private TMP_Text m_pNagativeText =null;
-    [SerializeField] private ButtonUI m_pNagativeButton =null;
+    [SerializeField] private TMP_Text m_pNagativeText = null;
+    [SerializeField] private ButtonUI m_pNagativeButton = null;
 
     [SerializeField] private float charsPerSecond = 20f;
 
+    private SONPCSpeech m_pNPCSpeech = null;
     private SOSpeech m_pCurSpeech = null;
-    private float m_fCurTime = 0.0f;
    
+    private float m_fCurTime = 0.0f;
+
     private string m_strFullString = "";
     private int m_iToalCount = -1;
     private int m_iVisibleCount = -1;
@@ -26,7 +28,7 @@ public class SpeechTyper : ButtonUI
     private Coroutine m_pTypingCoroutine;
 
     public void Init()
-    { 
+    {
         OnClickEvt += NextText;
 
 
@@ -37,12 +39,17 @@ public class SpeechTyper : ButtonUI
         m_pNagativeButton.gameObject.SetActive(false);
     }
 
-    public void StartSpeech(SOSpeech _pRootSpeech)
+    public void ShowNPCSpeech(SONPCSpeech _pNPCSpeech)
+    {
+        m_pNPCSpeech = _pNPCSpeech;
+        StartSpeech(m_pNPCSpeech.Speech);
+    }
+    private void StartSpeech(SOSpeech _pRootSpeech)
     {
         m_pCurSpeech = _pRootSpeech;
         ShowText(m_pCurSpeech.Message.GetLocalizedString());
     }
-        
+
     private void ShowText(string _strMessage)
     {
         m_fInterval = 1.0f / charsPerSecond;
@@ -152,7 +159,7 @@ public class SpeechTyper : ButtonUI
                 break;
             case eSpeechAction.Quest:
                 {
-
+                    QuestManager.m_Instance.AddQuest(m_pNPCSpeech.SpeechInfo);
                 }
                 break;
         }

@@ -84,6 +84,10 @@ public class Slot : ButtonUI
     {
         m_pSOTarget = _pSOTarget;
 
+
+        if (m_pIcon == null)
+            return;
+
         if(m_pSOTarget == null)
         {
             m_pIcon.enabled = false;

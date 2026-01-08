@@ -16,11 +16,11 @@ MonoBehaviour:
   m_TableCollectionNameGuidString: 53050776b5f17c8449e6b26f20f6eaf6
   m_Entries:
   - m_Id: 418247839744
-    m_Key: QuestMonster0_title
+    m_Key: NPCQuest_Monster0_Title
     m_Metadata:
       m_Items: []
   - m_Id: 591338377216
-    m_Key: QuestMonster0_desc
+    m_Key: NPCQuest_Monster0_Desc
     m_Metadata:
       m_Items: []
   m_Metadata:

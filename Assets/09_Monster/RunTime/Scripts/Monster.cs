@@ -269,7 +269,7 @@ public class Monster : MonoBehaviour, IHealth, IPoolAble
     {
         m_bHit = true;
         m_pCollider.enabled = false;
-        m_pNavMeshAgent.avoidancePriority = 99;
+        m_pNavMeshAgent.avoidancePriority = 99; //min
         m_pAnimator.SetTrigger("Dead");
 
         SODropTable pDropTable = m_SOMonsterInfo.DropTable;
@@ -277,6 +277,7 @@ public class Monster : MonoBehaviour, IHealth, IPoolAble
             return;
 
         ItemDataManager.m_Instance.Drop(pDropTable, transform.position);
+        QuestManager.m_Instance.UpdateQuest(eQuestType.Kill, m_SOMonsterInfo.MonsterID, 1);
     }
 
     public void PushObjectPool()

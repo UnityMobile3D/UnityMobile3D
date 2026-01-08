@@ -19,7 +19,6 @@ public class SOEntryUI : ScriptableObject
     [SerializeField] private int id;                    // 고정 키
     [SerializeField] protected Sprite icon;             // 아이콘
     [SerializeField] private eUIType type;
-    [SerializeField] private int sortKey = 0;           // 정렬 우선순위(작을수록 앞)
 
     protected uint hashCode = (uint)eUIType.None;
 
@@ -27,7 +26,6 @@ public class SOEntryUI : ScriptableObject
     public int Id => id;
     public Sprite Icon => icon;
     public eUIType Type => type;
-    public int SortKey => sortKey;
 
 
     public virtual uint GetUIHashCode()

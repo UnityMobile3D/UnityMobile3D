@@ -19,11 +19,11 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 418247839744
-    m_Localized: the village chief's request
+    m_Localized: The village chief's request
     m_Metadata:
       m_Items: []
   - m_Id: 591338377216
-    m_Localized: Killing 5 Stone Monsters
+    m_Localized: Killing 2 bee monsters
     m_Metadata:
       m_Items: []
   references:

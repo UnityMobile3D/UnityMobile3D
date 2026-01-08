@@ -23,6 +23,7 @@ public class MonsterSkillInfo
 [CreateAssetMenu(menuName = "SO/Monster/MonsterInfo")]
 public class SOMonsterInfo : ScriptableObject
 {
+    public int MonsterID;
     public eMonsterType MonsterType;
     //뭐 나올지
     //몬스터 기본 옵션

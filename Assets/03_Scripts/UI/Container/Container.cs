@@ -332,7 +332,7 @@ public class Container : ButtonUI
 
     }
 
-    public void BindData(int _iCategoryIdx)
+    public void BindData(int _iCategoryIdx = 0)
     {
         List<SOEntryUI> pListData = GetListData(_iCategoryIdx);
         if (pListData == null)
@@ -352,6 +352,12 @@ public class Container : ButtonUI
         }
     }
   
+    public void ClearData(int _iCategoryData = 0)
+    {
+        m_listCategoryData[_iCategoryData].m_ListData.Clear();
+        BindData(_iCategoryData);
+    }
+
     public void ChanageSelect()
     {
         m_bOnSelect = !m_bOnSelect;

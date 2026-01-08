@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 083f772ff5525444e93ec2f83974f054, type: 3}
   m_Name: MushMonsterInfo
   m_EditorClassIdentifier: 
+  MonsterID: 2
+  MonsterType: 0
+  DropTable: {fileID: 0}
   skillinfo:
   - SkillOption: {fileID: 11400000, guid: 88ade27f322c0e9479770bd4d1c10ca4, type: 2}
     SpawnOption: {fileID: 11400000, guid: 148d2803139c3cf48b160559c33f7d4d, type: 2}

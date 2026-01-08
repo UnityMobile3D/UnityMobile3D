@@ -39,6 +39,10 @@ MonoBehaviour:
     m_Key: NPCQuest_positive
     m_Metadata:
       m_Items: []
+  - m_Id: 1050501605199872
+    m_Key: NPCShopTitle
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

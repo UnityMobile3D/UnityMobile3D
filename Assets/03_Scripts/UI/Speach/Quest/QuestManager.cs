@@ -1,0 +1,88 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+public class QuestManager : MonoBehaviour
+{
+    [SerializeField] private QuestState m_pQuestState;
+
+    private Dictionary<long, Quest> m_hashQuest =new();
+    private Dictionary<long, Quest> m_hashCompletedQuest = new();
+
+    public static QuestManager m_Instance = null;
+
+    private void Awake()
+    {
+        if(m_Instance != null)
+        {
+            Destroy(this);
+            return;
+        }
+        m_Instance = this;
+
+        m_pQuestState.Init();
+    }
+
+    //[ 32        이벤트 타입            ][ 32           타겟 ID              ]
+    public long GetHashCode(eQuestType _eType, int _iTargetID)
+    {
+        return (long)_eType << 32 | (long)_iTargetID;
+    }
+
+    public void AddQuest(SOSpeechInfoUI _pQuestSpeech)
+    {
+        long lHashCode = GetHashCode(_pQuestSpeech.QuestInfo.Type, _pQuestSpeech.QuestInfo.TargetId);
+        if (m_hashCompletedQuest.ContainsKey(lHashCode) == true)
+            return;
+
+        if (m_hashQuest.ContainsKey(lHashCode) == true)
+            return;
+
+        Quest pNewQuest = new Quest(_pQuestSpeech, 0);
+        m_hashQuest.Add(lHashCode, pNewQuest);
+        m_pQuestState.AddQuest(_pQuestSpeech);
+    }
+    public void DeleteQuest(SOSpeechInfoUI _pQuestSpeech)
+    {
+        long lHashCode = GetHashCode(_pQuestSpeech.QuestInfo.Type, _pQuestSpeech.QuestInfo.TargetId);
+        if (m_hashQuest.ContainsKey(lHashCode) == false)
+            return;
+
+        m_hashQuest.Remove(lHashCode);
+        m_pQuestState.DeleteQuest();
+    }
+
+    public void CompletedQuest(SOSpeechInfoUI _pQuestSpeech)
+    {
+        QuestReward pReward = _pQuestSpeech.QuestReward;
+
+        SOEntryUI pItemData = ItemDataManager.m_Instance.GetItemData(pReward.Item.ItemID);
+        DataService.m_Instance.TryAddData(eContainerType.Inventory, pItemData, pReward.Amount);
+    }
+
+    public void UpdateQuest(eQuestType _eType, int _iTargetID, int _iAmount)
+    {
+        long lHashCode = GetHashCode(_eType , _iTargetID);
+
+        if(m_hashQuest.TryGetValue(lHashCode, out Quest pQuest) == true)
+        {
+            pQuest.UpdateProgress(_iAmount);
+        }
+    }
+
+    public float GetProgress(SOSpeechInfoUI _pQuestSpeech)
+    {
+        long lHashCode = GetHashCode(_pQuestSpeech.QuestInfo.Type, _pQuestSpeech.QuestInfo.TargetId);
+        if (m_hashQuest.TryGetValue(lHashCode, out Quest pQuest) == true)
+            return pQuest.GetProgress();
+
+        return 0.0f;
+    }
+    
+    public void SetActive(bool _bOn)
+    {
+        m_pQuestState.gameObject.SetActive(_bOn);
+    }
+
+}

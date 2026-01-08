@@ -3,51 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class ProgressEvent
-{
-    public SOQuestUI Quest;
-    public int CurrentAmount = 0;
-    public int Amount = 0;
-}
-
 public class Quest 
 {
-    //targetID, 
-    Dictionary<int, ProgressEvent> m_hashQuestEvent = new();
 
-    public void Add(SOQuestUI _pQuest, int _iTargetID, int _iAmount)
-    { 
-        if (m_hashQuestEvent.ContainsKey(_iTargetID) == false)
-        {
-            ProgressEvent pEvent = new ProgressEvent();
-            pEvent.Amount = _iAmount;
-            pEvent.Quest = _pQuest;
-            m_hashQuestEvent.Add(_iTargetID, pEvent);
-        }
+    public SOSpeechInfoUI m_pSOQuestSpeech;
+    public int m_iCurrentAmount = 0;
+    public int m_iAmount = 0;
+
+
+    public Quest(SOSpeechInfoUI _pQuest, int _iCurrentAmount)
+    {
+        m_pSOQuestSpeech = _pQuest;
+        m_iAmount = _pQuest.QuestInfo.TargetAmount;
+        m_iCurrentAmount = _iCurrentAmount;
     }
 
 
-    public float GetProgress(int _iTargetID)
+    public float GetProgress()
     {
-        if (m_hashQuestEvent.ContainsKey(_iTargetID) == true)
-        {
-            ProgressEvent pEvent = m_hashQuestEvent[_iTargetID];
-            return pEvent.CurrentAmount / pEvent.Amount;
-        }
-        return 0.0f;
+        return (m_iCurrentAmount / m_iAmount) * 100.0f;
     }
 
-    public bool UpdateProgress(int _iTargetID, int _iAmount)
+    public bool UpdateProgress(int _iAmount)
     {
-        if (m_hashQuestEvent.TryGetValue(_iTargetID, out var Value) == true)
+        m_iCurrentAmount += _iAmount;
+        if(m_iCurrentAmount >= m_iAmount)
         {
-            Value.CurrentAmount += _iAmount;
-            if(Value.CurrentAmount >= Value.Amount)
-            {
-                //보상 UI 활성화
-                return true;
-            }
+            //보상 UI 활성화
+            return true;
         }
+        
         return false;
     }
 

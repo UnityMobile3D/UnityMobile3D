@@ -70,7 +70,7 @@ public class SlotView : ButtonUI
 
     protected void BindData(SOEntryUI _pEntryUI, int _iSlotIdx)
     {
-        //데이터 바인딩
+        
         if (_pEntryUI != null)
         {
             m_pTargetSO = _pEntryUI;

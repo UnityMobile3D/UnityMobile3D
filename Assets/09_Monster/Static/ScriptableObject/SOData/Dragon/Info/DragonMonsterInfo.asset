@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 083f772ff5525444e93ec2f83974f054, type: 3}
   m_Name: DragonMonsterInfo
   m_EditorClassIdentifier: 
+  MonsterID: 3
   MonsterType: 1
   DropTable: {fileID: 11400000, guid: 853541c056be40241b86e6bb8394c9da, type: 2}
   skillinfo:

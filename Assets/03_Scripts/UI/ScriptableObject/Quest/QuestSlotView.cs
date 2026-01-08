@@ -7,8 +7,8 @@ public class QuestSlotView : SlotView
 {
     private long QuestID = -1;
 
-    private SOQuestUI m_pSOQuest = null;
-    public SOQuestUI SOQuest { get => m_pSOQuest; }
+    private SOSpeechInfoUI m_pSOQuest = null;
+    public SOSpeechInfoUI SOQuest { get => m_pSOQuest; }
 
     override protected void Awake()
     {
@@ -17,13 +17,21 @@ public class QuestSlotView : SlotView
 
     public override void Bind(SOEntryUI _pEntryUI, int _iSlotIdx)
     {
-        m_pSOQuest = _pEntryUI as SOQuestUI;
+        m_pTargetSO = _pEntryUI;
+        m_iSlotIdx = _iSlotIdx;
+        m_pSOQuest = _pEntryUI as SOSpeechInfoUI;
         if (m_pSOQuest == null)
-            return;
-
-        base.Bind(m_pSOQuest, _iSlotIdx);
-
-        m_pTextMeshProUGUI.text = m_pSOQuest.QuestTitle.GetLocalizedString();
+        {
+            m_pIcon.enabled = false;
+            m_pTextMeshProUGUI.text = "";
+        }
+        else
+        {
+            m_pIcon.enabled = true;
+            string str = m_pSOQuest.SpeechTitle.GetLocalizedString();
+            string str2 = m_pSOQuest.SpeechDescription.GetLocalizedString();
+            m_pTextMeshProUGUI.text = m_pSOQuest.SpeechTitle.GetLocalizedString();
+        }
     }
 
 }

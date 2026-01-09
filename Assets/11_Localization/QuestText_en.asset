@@ -26,6 +26,14 @@ MonoBehaviour:
     m_Localized: Killing 2 bee monsters
     m_Metadata:
       m_Items: []
+  - m_Id: 1463875090485248
+    m_Localized: The village chief's request 2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1463878995382272
+    m_Localized: Killing 2 stone monsters
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

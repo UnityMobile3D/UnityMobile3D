@@ -58,5 +58,10 @@ public class QuestState : BaseUI
         m_pQuestContainer.SortData();
     }
 
+    public void UpdateProgress(float _fProgress)
+    {
+        //m_pQuestDescInfo.
+    }
+
    
 }

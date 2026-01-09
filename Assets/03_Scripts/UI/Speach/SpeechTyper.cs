@@ -41,6 +41,7 @@ public class SpeechTyper : ButtonUI
 
     public void ShowNPCSpeech(SONPCSpeech _pNPCSpeech)
     {
+        gameObject.SetActive(true);
         m_pNPCSpeech = _pNPCSpeech;
         StartSpeech(m_pNPCSpeech.Speech);
     }

@@ -43,6 +43,14 @@ MonoBehaviour:
     m_Key: NPCShopTitle
     m_Metadata:
       m_Items: []
+  - m_Id: 1420550987812864
+    m_Key: NPCQuest_Monster10
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1420827623133184
+    m_Key: NPCQuest_Monster11
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

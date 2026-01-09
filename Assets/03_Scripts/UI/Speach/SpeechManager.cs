@@ -40,6 +40,7 @@ public class SpeechManager : MonoBehaviour
 
     public void ShowQuest()
     {
+        m_pSpeechCanvas.gameObject.SetActive(true);
         m_pQuestChoice.ShowQuest(m_listNPCSpeech);
     }
 
@@ -67,9 +68,11 @@ public class SpeechManager : MonoBehaviour
     public void CloseSpeechdUI()
     {
         CloseWorldUI();
+        m_pSpeechTyper.gameObject.SetActive(false);
         m_pSpeechCanvas.gameObject.SetActive(false);
        
         m_pNPCSpeech = null;
+        m_listNPCSpeech = null;
     }
 
     public void CloseWorldUI()

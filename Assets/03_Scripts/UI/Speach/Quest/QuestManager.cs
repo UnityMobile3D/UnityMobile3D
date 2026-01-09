@@ -43,6 +43,17 @@ public class QuestManager : MonoBehaviour
         m_hashQuest.Add(lHashCode, pNewQuest);
         m_pQuestState.AddQuest(_pQuestSpeech);
     }
+
+    public void AddCompletedQuest(SOSpeechInfoUI _pQuestSpeech)
+    {
+        long lHashCode = GetHashCode(_pQuestSpeech.QuestInfo.Type, _pQuestSpeech.QuestInfo.TargetId);
+        if (m_hashCompletedQuest.ContainsKey(lHashCode) == true)
+            return;
+
+        if(m_hashQuest.TryGetValue(lHashCode, out Quest pQuest)==true)
+            m_hashCompletedQuest.Add(lHashCode, pQuest);
+        
+    }
     public void DeleteQuest(SOSpeechInfoUI _pQuestSpeech)
     {
         long lHashCode = GetHashCode(_pQuestSpeech.QuestInfo.Type, _pQuestSpeech.QuestInfo.TargetId);
@@ -59,6 +70,9 @@ public class QuestManager : MonoBehaviour
 
         SOEntryUI pItemData = ItemDataManager.m_Instance.GetItemData(pReward.Item.ItemID);
         DataService.m_Instance.TryAddData(eContainerType.Inventory, pItemData, pReward.Amount);
+
+        AddCompletedQuest(_pQuestSpeech);
+        DeleteQuest(_pQuestSpeech);
     }
 
     public void UpdateQuest(eQuestType _eType, int _iTargetID, int _iAmount)
@@ -80,6 +94,51 @@ public class QuestManager : MonoBehaviour
         return 0.0f;
     }
     
+    public Quest FindCompletedQuest(SOSpeechInfoUI _pQuestSpeech)
+    {
+        long lHashCode = GetHashCode(_pQuestSpeech.QuestInfo.Type, _pQuestSpeech.QuestInfo.TargetId);
+        if (m_hashCompletedQuest.TryGetValue(lHashCode, out Quest pQuest) == true)
+            return pQuest;
+        return null; 
+    }
+
+    public Quest FindQuest(SOSpeechInfoUI _pQuestSpeech)
+    {
+        long lHashCode = GetHashCode(_pQuestSpeech.QuestInfo.Type, _pQuestSpeech.QuestInfo.TargetId);
+        if (m_hashQuest.TryGetValue(lHashCode, out Quest pQuest) == true)
+            return pQuest;
+        return null;
+    }
+
+    public Quest FindCompletedQuest(long _lHashCode)
+    {
+        if (m_hashCompletedQuest.TryGetValue(_lHashCode, out Quest pQuest) == true)
+            return pQuest;
+        return null;
+    }
+
+    public Quest FindQuest(long _lHashCode)
+    {
+        if (m_hashQuest.TryGetValue(_lHashCode, out Quest pQuest) == true)
+            return pQuest;
+        return null;
+    }
+
+    public Quest FindQuestAll(SOSpeechInfoUI _pQuestSpeech)
+    {
+        long lHashCode = GetHashCode(_pQuestSpeech.QuestInfo.Type, _pQuestSpeech.QuestInfo.TargetId);
+        Quest pQuest = FindCompletedQuest(lHashCode);
+        if (pQuest != null)
+            return pQuest;
+
+        pQuest = FindQuest(lHashCode);
+        if (pQuest != null)
+            return pQuest;
+
+        return null;
+    }
+
+
     public void SetActive(bool _bOn)
     {
         m_pQuestState.gameObject.SetActive(_bOn);

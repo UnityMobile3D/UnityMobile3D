@@ -21,7 +21,7 @@ public class Quest
 
     public float GetProgress()
     {
-        return (m_iCurrentAmount / m_iAmount) * 100.0f;
+        return ((float)m_iCurrentAmount / m_iAmount) * 100.0f;
     }
 
     public bool UpdateProgress(int _iAmount)

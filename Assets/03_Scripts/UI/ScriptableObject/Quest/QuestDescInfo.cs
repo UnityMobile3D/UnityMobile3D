@@ -67,6 +67,15 @@ public class QuestDescInfo : BaseUI
     {
         float fProgress = QuestManager.m_Instance.GetProgress(m_pTargetQuest);
         if (fProgress >= 100.0f)
+        {
             QuestManager.m_Instance.CompletedQuest(m_pTargetQuest);
+            CloseTap();
+        }
+    }
+
+    public void CloseTap()
+    {
+        m_pTargetQuest = null;
+        gameObject.SetActive(false);
     }
 }

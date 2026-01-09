@@ -155,16 +155,19 @@ public class Container : ButtonUI
         for(int i = 1; i<m_listView.Count; ++i)
         {
             SlotView pTarget = m_listView[i];
+            if (pTarget.SOEntryUI == null)
+                continue;
+
             int pre = i - 1;
-
-            while (pre >= 0 && m_listView[pre] != null)
-            { 
-                m_listView[pre] = pTarget;
-                pre = -1;
+            while (pre >= 0 && m_listView[pre].SOEntryUI != null)
+            {
+                int iSwapIdx = pre;
+                --pre;
             }
-        }
 
-        BindData(m_iCurrentCategoryIdx);
+            m_listView[pre].Bind(pTarget.SOEntryUI, pre);
+            m_listView[i].Bind(null, i);
+        }
     }
 
     public bool DeleteData(int _iDataIdx, int _iCategoryIdx = 0)
@@ -354,7 +357,10 @@ public class Container : ButtonUI
   
     public void ClearData(int _iCategoryData = 0)
     {
-        m_listCategoryData[_iCategoryData].m_ListData.Clear();
+        List<SOEntryUI> listData = m_listCategoryData[_iCategoryData].m_ListData;
+        for(int i = 0; i<listData.Count; ++i)
+            listData[i] = null;
+        
         BindData(_iCategoryData);
     }
 

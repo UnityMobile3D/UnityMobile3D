@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: TurtleInfo
   m_EditorClassIdentifier: 
   MonsterID: 6
+  MonsterLevel: 30
   MonsterType: 0
   DropTable: {fileID: 0}
   skillinfo:

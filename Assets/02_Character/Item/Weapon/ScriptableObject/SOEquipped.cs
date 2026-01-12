@@ -18,4 +18,6 @@ public class SOEquipped : SOItemEffect
         _tEffectCnt.pOwner.transform.SetParent(pPointTransform, false);
         _tEffectCnt.pOwner.transform.localPosition = Vector3.zero;
     }
+
+
 }

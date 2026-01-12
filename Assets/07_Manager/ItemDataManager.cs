@@ -70,6 +70,9 @@ public class ItemDataManager : MonoBehaviour
         }
     }
 
+
+
+
     private void spawn_item(SOItem pItem, in Vector3 _vCenterPos)
     {
         //랜덤 위치

@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5fe0fbc7400f1e4bb9eadcb6751d489, type: 3}
   m_Name: ShopTop1
   m_EditorClassIdentifier: 
-  name: Top1 Item
+  name: "\uAE30\uBCF8 \uC0C1\uC758"
   id: 0
   icon: {fileID: 21300000, guid: 5105fe1d825990746b9a92407ea447ca, type: 3}
   type: 0
-  sortKey: 50
   itemui: {fileID: 11400000, guid: 5f5de7b82442d6b4ea544c216a92fa36, type: 2}
   coin: 1200

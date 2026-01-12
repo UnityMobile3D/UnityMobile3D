@@ -13,4 +13,6 @@ public class SODownAttack : SOItemEffect
         if (_tEffectCnt.pTarget.TryGetComponent<ObjectInfo>(out var pStatus) == true)
             pStatus.UpAttack(_tEffectCnt.Value.Int * -1);
     }
+
+
 }

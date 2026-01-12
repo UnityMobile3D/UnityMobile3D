@@ -47,6 +47,8 @@ public class ItemEffectRunner : MonoBehaviour
         for (int i = 0; i < _pSOItem.UsingEffects.Length; ++i)
             _pSOItem.UsingEffects[i].Apply(_pCtx);   
     }
+    
+
 
     private static void SettingValue(SOItem _pSOItem, EffectContext _pCtx)
     {

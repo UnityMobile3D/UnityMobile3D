@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5fe0fbc7400f1e4bb9eadcb6751d489, type: 3}
   m_Name: ShopRedPotion
   m_EditorClassIdentifier: 
-  name: Read Postion1
+  name: "\uC911\uD615 \uD3EC\uC158"
   id: 0
   icon: {fileID: 21300000, guid: 7b3876a2b72c44540a4bbd5aaba9e506, type: 3}
   type: 0
-  sortKey: 50
   itemui: {fileID: 11400000, guid: ffa2756bf1d698748a40fbacdf876a84, type: 2}
   coin: 1500

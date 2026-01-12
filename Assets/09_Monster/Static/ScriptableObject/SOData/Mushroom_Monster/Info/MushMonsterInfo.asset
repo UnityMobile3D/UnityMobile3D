@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: MushMonsterInfo
   m_EditorClassIdentifier: 
   MonsterID: 2
+  MonsterLevel: 15
   MonsterType: 0
   DropTable: {fileID: 0}
   skillinfo:

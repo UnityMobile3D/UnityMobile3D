@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: SlimeInfo
   m_EditorClassIdentifier: 
   MonsterID: 5
+  MonsterLevel: 20
   MonsterType: 0
   DropTable: {fileID: 11400000, guid: 702b697e69218a14dac6387293aa0d2b, type: 2}
   skillinfo:

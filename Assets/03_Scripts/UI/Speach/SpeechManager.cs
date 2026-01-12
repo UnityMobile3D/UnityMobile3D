@@ -28,14 +28,17 @@ public class SpeechManager : MonoBehaviour
 
    
     public void ShowText()
-    {   
+    {
+        CameraManager.m_Instance.SmoothMove();
+
         m_pSpeechCanvas.gameObject.SetActive(true);
         m_pSpeechTyper.ShowNPCSpeech(m_pNPCSpeech);
     }
     public void ShowText(SONPCSpeech _pNPCSPeech)
     {
-        m_pSpeechCanvas.gameObject.SetActive(true);
-        m_pSpeechTyper.ShowNPCSpeech(_pNPCSPeech);
+        m_pNPCSpeech = _pNPCSPeech;
+        ShowText();
+        
     }
 
     public void ShowQuest()
@@ -73,6 +76,10 @@ public class SpeechManager : MonoBehaviour
        
         m_pNPCSpeech = null;
         m_listNPCSpeech = null;
+
+        //메인카메라로 전환
+        CameraManager.m_Instance.MainCameraMove();
+        GameManager.m_Instance.UnLockPlayer();
     }
 
     public void CloseWorldUI()

@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 083f772ff5525444e93ec2f83974f054, type: 3}
   m_Name: BeeMonsterInfo
   m_EditorClassIdentifier: 
+  MonsterID: 0
+  MonsterLevel: 1
   MonsterType: 0
   DropTable: {fileID: 11400000, guid: 6806a2572d05dc74f9cf19ade552e0f3, type: 2}
   skillinfo:

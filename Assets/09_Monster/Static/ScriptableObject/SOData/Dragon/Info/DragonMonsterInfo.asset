@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: DragonMonsterInfo
   m_EditorClassIdentifier: 
   MonsterID: 3
+  MonsterLevel: 25
   MonsterType: 1
   DropTable: {fileID: 11400000, guid: 853541c056be40241b86e6bb8394c9da, type: 2}
   skillinfo:

@@ -24,6 +24,7 @@ public class EffectContext
 public abstract class SOItemEffect : ScriptableObject
 {
     public abstract void Apply(EffectContext _tEffectCnt);
+
 }
 
 

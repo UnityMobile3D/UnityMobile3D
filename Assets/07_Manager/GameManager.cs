@@ -18,4 +18,18 @@ public class GameManager : MonoBehaviour
         m_Instance = this;
 
     }
+
+
+    public void LockPlayer()
+    {
+        if(m_pPlayer != null)
+            m_pPlayer.enabled = false;   
+    }
+
+    public void UnLockPlayer()
+    {
+        if (m_pPlayer != null)
+            m_pPlayer.enabled = true;
+    }
+
 }

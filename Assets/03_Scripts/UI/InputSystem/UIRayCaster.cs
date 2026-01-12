@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -40,6 +41,17 @@ public class UIRayCaster
         return false;
     }
 
+    public void EnableInput()
+    {
+        for (int i = 0; i < m_listRayCast.Count; ++i)
+            m_listRayCast[i].enabled = true;
+    }
+
+    public void DisableInput()
+    {
+        for (int i = 0; i < m_listRayCast.Count; ++i)
+            m_listRayCast[i].enabled = false;
+    }
 
 
 }

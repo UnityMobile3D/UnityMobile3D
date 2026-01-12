@@ -43,11 +43,14 @@ public class Item : MonoBehaviour, IPoolAble
 
     private void OnTriggerEnter(Collider other)
     {
+        //static LayerMask tPlayerMask = LayerMask.GetMask("Player");
         if(other.tag == "Player")
         {
             SOEntryUI pItemData = ItemDataManager.m_Instance.GetItemData(m_pItem.ItemID);
             if (DataService.m_Instance.TryAddData(eContainerType.Inventory, pItemData, 1) == true)
                 PushObjectPool();
+
+            QuestManager.m_Instance.UpdateQuest(eQuestType.Collect, m_pItem.ItemID, 1);
         }
     }
 

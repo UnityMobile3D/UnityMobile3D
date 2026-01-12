@@ -12,9 +12,11 @@ public class SOItem : ScriptableObject
 
     public float cooldown = 1.0f;
 
+    //아이템 기본 능력치 -> 이거 아이템 쪽으로 넘기기 (static영역)
     [SerializeField] private Values m_tBaseValues;
     public Values BaseValues => m_tBaseValues;
 
+    //사용 관련 함수
     public SOItemEffect[] EquippedEffects;
     public SOItemEffect[] ReleaseEffects;
     public SOItemEffect[] UsingEffects;

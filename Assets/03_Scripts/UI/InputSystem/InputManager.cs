@@ -148,12 +148,6 @@ public class InputManager : MonoBehaviour
 
     }
 
-    private void LateUpdate()
-    {
-
-        //디바이스 전체를 순회해서 
-    }
-
     public void BindUGUIButtonBoolean(eActionID _eID, bool _bValue)
     {
         m_pUGUIActionState.SetBoolean(_eID, _bValue);
@@ -163,5 +157,9 @@ public class InputManager : MonoBehaviour
     {
         m_pUGUIActionState.SetVector2D(_eID, _vValue);
     }
+
+
+   
+
 
 }

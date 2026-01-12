@@ -15,6 +15,8 @@ public interface IPoolAble
     void OnSpawn();          // 상태 초기화(애니/파티클 재생 등)
     void OnDespawn();        // 정리(파티클 Stop&Clear, 물리값 리셋 등)
     void PushObjectPool();
+
+    
 }
 
 public enum ePoolType

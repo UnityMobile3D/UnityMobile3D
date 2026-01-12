@@ -13,9 +13,10 @@ public class MonsterManager : MonoBehaviour
 
     [SerializeField] private AssetReferenceGameObject m_pHpBarRef = null;
     [SerializeField] private Canvas m_pWorldCanvas = null; //반환받은 UI를 어느 컨버스에 붙일지
-
+    [SerializeField] private SOGoldTable m_pGoldTable = null;
     private void Awake()
     {
+
         if(m_Instance == null)
             m_Instance = this;
         else if (m_Instance != this)
@@ -75,5 +76,12 @@ public class MonsterManager : MonoBehaviour
     public void ClearMonsters()
     {
         m_pMonsters.Clear();
+    }
+
+
+    public void DropGold(int _iMonsterLevel)
+    {
+        int iGold = m_pGoldTable.GetGold(_iMonsterLevel);
+        ShopManager.m_Instance.Add(ShopManager.eCurrency.Coin, iGold);
     }
 }

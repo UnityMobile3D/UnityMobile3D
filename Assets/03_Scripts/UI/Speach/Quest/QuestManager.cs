@@ -126,6 +126,11 @@ public class QuestManager : MonoBehaviour
 
     public Quest FindQuestAll(SOSpeechInfoUI _pQuestSpeech)
     {
+        //퀘스트가 아니라면
+        if(_pQuestSpeech.QuestInfo == null)
+            return null;
+
+        //완료한 퀘스트 인지
         long lHashCode = GetHashCode(_pQuestSpeech.QuestInfo.Type, _pQuestSpeech.QuestInfo.TargetId);
         Quest pQuest = FindCompletedQuest(lHashCode);
         if (pQuest != null)

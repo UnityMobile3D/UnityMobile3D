@@ -35,14 +35,14 @@ public class QuestChoice : MonoBehaviour
         m_listNPCSpeech = _listNPCSPeech;
 
         m_pConatiner.ClearData();
+    
         for(int i = 0; i< m_listNPCSpeech.Count; ++i)
         {
             //이미 클리어한 퀘스트인지 확인
             if(QuestManager.m_Instance.FindQuestAll(m_listNPCSpeech[i].SpeechInfo) == null)
                 m_pConatiner.AddData(m_listNPCSpeech[i].SpeechInfo);
         }
-
-        m_pConatiner.BindData();
+        
     }
 
 }

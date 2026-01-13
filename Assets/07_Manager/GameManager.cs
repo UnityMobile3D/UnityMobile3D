@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private LoadSceneHelper m_pLoadSceneHelper = null;
     [SerializeField] private Player m_pPlayer;
     public Player Player { get { return m_pPlayer; } }
 
@@ -19,7 +20,6 @@ public class GameManager : MonoBehaviour
 
     }
 
-
     public void LockPlayer()
     {
         if(m_pPlayer != null)
@@ -30,6 +30,23 @@ public class GameManager : MonoBehaviour
     {
         if (m_pPlayer != null)
             m_pPlayer.enabled = true;
+    }
+
+    public void ShowReturnUI()
+    {
+        m_pLoadSceneHelper.gameObject.SetActive(true);
+    }
+ 
+    public void ResetPlayer()
+    {
+        ObjectInfo pPlayerInfo = m_pPlayer.PlayerInfo;
+        pPlayerInfo.RestHP();
+        pPlayerInfo.RestMP();
+
+        HealthManager.m_Instance.UpdateHP();
+        HealthManager.m_Instance.UpdateMP();
+
+        m_pPlayer.gameObject.SetActive(true);
     }
 
 }

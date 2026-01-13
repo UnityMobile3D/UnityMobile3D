@@ -21,7 +21,10 @@ public class ObjectInfo : MonoBehaviour
     {
         maxHp += _value;
     }
-
+    public void RestHP()
+    {
+        hp = maxHp;
+    }
    
 
     public int HP => hp;
@@ -34,9 +37,6 @@ public class ObjectInfo : MonoBehaviour
     public int MP => mp;
     public int MaxMp => maxMp;
 
-    [Header("Speed")]
-    [SerializeField] private int speed;
-    [SerializeField] private int maxSpeed;
     public void AddMP(int _value)
     {
         mp += _value;
@@ -45,6 +45,16 @@ public class ObjectInfo : MonoBehaviour
         else if (mp <= 0)
             mp = 0;
     }
+    public void RestMP()
+    {
+        mp = maxMp;
+    }
+
+
+    [Header("Speed")]
+    [SerializeField] private int speed;
+    [SerializeField] private int maxSpeed;
+   
 
 
     public int Speed => speed;

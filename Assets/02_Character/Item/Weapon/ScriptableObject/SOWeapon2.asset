@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 799b9cf2a83bf2a48a1acf7bb741836d, type: 3}
   m_Name: SOWeapon2
   m_EditorClassIdentifier: 
-  ItemID: 0
+  ItemID: 9
   Level: 0
   cooldown: 1
   m_tBaseValues:
@@ -29,4 +29,5 @@ MonoBehaviour:
     m_AssetGUID: 7c422020cdb65644ea2f6490ff963ccd
     m_SubObjectName: 
     m_SubObjectType: 
+    m_SubObjectGUID: 
     m_EditorAssetChanged: 0

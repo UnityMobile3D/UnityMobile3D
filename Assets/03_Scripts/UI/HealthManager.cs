@@ -48,7 +48,7 @@ public class HealthManager : MonoBehaviour
             StopCoroutine(m_pUpdateHPCoroutine);
 
         // 현재 UI fillAmount에서 목표 비율까지 보간
-        m_pUpdateHPCoroutine = StartCoroutine(LerpHP(m_pHealthImage.fillAmount, fHPRatio, m_pPlayerStatus.HP,
+        m_pUpdateHPCoroutine = StartCoroutine(Lerp(m_pHealthImage.fillAmount, fHPRatio, m_pPlayerStatus.HP,
             m_pHealthImage, m_pHealthText));
     }
 
@@ -64,12 +64,12 @@ public class HealthManager : MonoBehaviour
             StopCoroutine(m_pUpdateMPCoroutine);
 
         // 현재 UI fillAmount에서 목표 비율까지 보간
-        m_pUpdateMPCoroutine = StartCoroutine(LerpHP(m_pMPImage.fillAmount, fMPRatio, m_pPlayerStatus.MP,
+        m_pUpdateMPCoroutine = StartCoroutine(Lerp(m_pMPImage.fillAmount, fMPRatio, m_pPlayerStatus.MP,
             m_pMPImage, m_pMPText));
     }
 
 
-    private IEnumerator LerpHP(float _fCurRatio, float _fGoalRatio, float _fCurValue , Image _pImage, TextMeshProUGUI _pText)
+    private IEnumerator Lerp(float _fCurRatio, float _fGoalRatio, float _fCurValue , Image _pImage, TextMeshProUGUI _pText)
     {
         // 바로 점프해야 할 정도로 아주 작은 차이면 그냥 세팅
         if (Mathf.Approximately(_fCurRatio, _fGoalRatio))

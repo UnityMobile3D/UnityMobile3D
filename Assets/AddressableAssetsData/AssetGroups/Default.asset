@@ -52,6 +52,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6d8786213ebd9fb409399182ae21705a
+    m_Address: Assets/02_Character/Item/etc/Shield.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 98c1e720430463643a2b744a19d910cb
     m_Address: Assets/09_Monster/Static/ScriptableObject/SOData/Dragon/AttackObject/Attack2/BossFireBall.prefab
     m_ReadOnly: 0

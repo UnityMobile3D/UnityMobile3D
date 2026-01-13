@@ -36,6 +36,7 @@ public class Player : MonoBehaviour , IHealth
     private NavMeshAgent _agent;
    
     private SkillRunner       _skillRunner; 
+    private Collider          _collider;
     public Rigidbody RigidBody => _rigidbody;
     public Animator  Animator  => _animator;
     public SkillRunner SkillRunner => _skillRunner;
@@ -70,6 +71,7 @@ public class Player : MonoBehaviour , IHealth
         _rigidbody = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
         _agent = GetComponent<NavMeshAgent>();
+        _collider = GetComponent<Collider>();
         _playerInfo = GetComponent<ObjectInfo>();
         _skillRunner = GetComponent<SkillRunner>();
 
@@ -229,7 +231,24 @@ public class Player : MonoBehaviour , IHealth
         transform.rotation = _pNextPos.rotation;
     }
   
-    public void HIT(bool _bDown = false)
+    private void DEAD()
+    {
+        _hit = true;
+        RESETAGENT();
+
+        _animator.SetTrigger("dead");
+        _collider.enabled = false;
+    }
+
+    public void ENDDEAD()
+    {
+        _hit = false;
+        _collider.enabled = true;
+
+        gameObject.SetActive(false);
+        GameManager.m_Instance.ShowReturnUI();
+    }
+    private void HIT(bool _bDown = false)
     {
         _hit = true;
 
@@ -242,6 +261,7 @@ public class Player : MonoBehaviour , IHealth
         if(_skillRunner.RunSkill != null)
             _skillRunner.CancelSkill();
     }
+
     public void ENDHIT()
     {
         _hit = false;
@@ -311,11 +331,18 @@ public class Player : MonoBehaviour , IHealth
         if (m_pHitEvent?.Invoke(_pAttackInfo) == false)
             return;
 
-        HIT();
-
-        knockback(_pAttackInfo);
-
         DamageManager.m_Instance.Damaged(_playerInfo, _pAttackInfo);
+
+        if (_playerInfo.HP <= 0)
+            DEAD();
+        else
+        {
+            HIT();
+            knockback(_pAttackInfo);
+        }
+
+
+
 
     }
     public void Heal(int _iAmount)

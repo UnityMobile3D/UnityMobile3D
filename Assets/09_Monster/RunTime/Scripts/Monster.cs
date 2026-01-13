@@ -277,7 +277,7 @@ public class Monster : MonoBehaviour, IHealth, IPoolAble
             return;
 
         ItemDataManager.m_Instance.Drop(pDropTable, transform.position);
-        MonsterManager.m_Instance.DropGold(m_SOMonsterInfo.MonsterID);
+        MonsterManager.m_Instance.DropGold(m_SOMonsterInfo.MonsterLevel);
         QuestManager.m_Instance.UpdateQuest(eQuestType.Kill, m_SOMonsterInfo.MonsterID, 1);
     }
 

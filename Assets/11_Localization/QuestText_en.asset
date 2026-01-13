@@ -34,6 +34,14 @@ MonoBehaviour:
     m_Localized: Killing 2 stone monsters
     m_Metadata:
       m_Items: []
+  - m_Id: 2721397571031040
+    m_Localized: blacksmith's shield
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2721401534648320
+    m_Localized: Let's get rid of the mushroom monster and get 2 blacksmith shields
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -51,6 +51,14 @@ MonoBehaviour:
     m_Key: NPCQuest_Monster11
     m_Metadata:
       m_Items: []
+  - m_Id: 2677607875448832
+    m_Key: NPCQuest_Item0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2677617425879040
+    m_Key: NPCQuest_Item1
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

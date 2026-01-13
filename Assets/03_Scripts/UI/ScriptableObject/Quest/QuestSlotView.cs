@@ -28,8 +28,6 @@ public class QuestSlotView : SlotView
         else
         {
             m_pIcon.enabled = true;
-            string str = m_pSOQuest.SpeechTitle.GetLocalizedString();
-            string str2 = m_pSOQuest.SpeechDescription.GetLocalizedString();
             m_pTextMeshProUGUI.text = m_pSOQuest.SpeechTitle.GetLocalizedString();
         }
     }

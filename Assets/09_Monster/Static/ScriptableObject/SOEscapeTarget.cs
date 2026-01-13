@@ -62,7 +62,6 @@ public class SOEscapeTarget : SONode
                     {
                         _pBB.AnimBridge.SetRun(true);
                         _pBB.Agent.SetDestination(tHit.position);
-                        Debug.Log("도망감");
                         return STATE.SUCCESS;
                     }
                 }

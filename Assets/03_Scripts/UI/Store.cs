@@ -34,19 +34,11 @@ public class Store : BaseUI, IContainer
     }
 
 
-    private void Start()
+    private void OnEnable()
     {
         update_coin();
     }
-    private void Update()
-    {
-
-    }
-
-    private void OnDisable()
-    {
-        //m_pPlayerInterface.
-    }
+  
     private void close_tap()
     {
         //레이까지 제거하기 위해서

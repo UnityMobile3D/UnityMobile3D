@@ -214,7 +214,7 @@ public class Container : ButtonUI
             pCategoryData.m_ListData[_iIdx] = _pSOEntryUI;
         }
      
-   
+        
         BindData(_iCategoryIdx);
 
         --pCategoryData.m_iCurrentRemnantData;
@@ -360,7 +360,8 @@ public class Container : ButtonUI
         List<SOEntryUI> listData = m_listCategoryData[_iCategoryData].m_ListData;
         for(int i = 0; i<listData.Count; ++i)
             listData[i] = null;
-        
+
+        m_listCategoryData[_iCategoryData].m_iCurrentRemnantData = listData.Count;
         BindData(_iCategoryData);
     }
 

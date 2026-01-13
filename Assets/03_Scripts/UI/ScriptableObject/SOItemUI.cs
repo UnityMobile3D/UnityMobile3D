@@ -17,6 +17,7 @@ public class SOItemUI : SOEntryUI , IItemUI
     {
         None,
         ConsumeItem,
+        Quest,
     }
 
     [SerializeField] private eItemType itemtype;

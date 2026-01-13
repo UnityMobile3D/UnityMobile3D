@@ -16,6 +16,7 @@ MonoBehaviour:
     m_AssetGUID: c9e30e1e40e5f6a47aa6053500404e37
     m_SubObjectName: 
     m_SubObjectType: 
+    m_SubObjectGUID: 
     m_EditorAssetChanged: 0
   labelnames: []
   poolentries:
@@ -30,4 +31,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f1377e3060e75c9489e496efdc880326, type: 2}
   - {fileID: 11400000, guid: 5155e13df952be9459ba9556aa8a2203, type: 2}
   - {fileID: 11400000, guid: 23bc6f21b841d784ebf37d15e845b332, type: 2}
+  - {fileID: 11400000, guid: 3544f1b2253d6784b874bfc15d99d167, type: 2}
   extraassets: []

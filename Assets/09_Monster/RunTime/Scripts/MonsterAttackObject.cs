@@ -40,8 +40,9 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
 
     private uint m_iCreateCount = 0;
     private string m_strSpawnKey = string.Empty;
-        
 
+    [SerializeField] private SOAudio m_pSKillAudio;
+    [SerializeField] private SOAudio m_pSKillHitAudio;
     public void Awake()
     {
         m_pRigidbody = GetComponent<Rigidbody>();
@@ -50,6 +51,9 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
 
     public void OnSpawn()
     {
+        if (m_pSKillAudio != null)
+            SoundManager.m_Instance.PlaySfx(m_pSKillAudio, transform);
+
         m_iCreateCount = 1;
         m_iCurAttackCount = 0;
     }
@@ -172,12 +176,14 @@ public class MonsterAttackObject : MonoBehaviour, IPoolAble
             if (check_attack_count() == false)
                 return;
             
+         
             Vector3 vAttackerPos = transform.position;
             if (m_bNearAttack == true)  
                 vAttackerPos = m_pOwner.transform.position;
 
             m_pAttackInfo.HitPoint = vAttackerPos;
             m_pAttackInfo.HitPoint.y = 0.0f;
+            m_pAttackInfo.HitSound = m_pSKillHitAudio;
 
             other.GetComponent<IHealth>().TakeDamage(m_pAttackInfo);
 

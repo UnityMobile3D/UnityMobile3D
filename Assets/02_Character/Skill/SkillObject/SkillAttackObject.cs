@@ -22,6 +22,9 @@ public class SkillAttackObject : SkillObject
 
     private AttackInfo m_pAttackInfo = null;
 
+    [SerializeField] private SOAudio m_pSKillAudio = null;
+    [SerializeField] private SOAudio m_pSKillHitAudio = null;
+
     protected override void Awake()
     {
         base.Awake();
@@ -36,6 +39,9 @@ public class SkillAttackObject : SkillObject
             StartAttack();
         else
             EndAttack();
+
+        if (m_pSKillAudio != null)
+            SoundManager.m_Instance.PlaySfx(m_pSKillAudio, transform);
     }
     public override void OnDespawn()
     {
@@ -98,6 +104,9 @@ public class SkillAttackObject : SkillObject
 
         if ((m_pSkill.Option.targetingProfile.TargetLayers.value & (1 << other.gameObject.layer)) != 0)
         {
+            if (check_attack_count() == false)
+                return;
+
             Vector3 vHitPoint = other.ClosestPoint(transform.position);
             Vector3 vAttackerPos = transform.position;
 
@@ -107,10 +116,10 @@ public class SkillAttackObject : SkillObject
             m_pAttackInfo.HitPoint = vHitPoint;
             m_pAttackInfo.HitPoint.y = 0.0f;
             m_pAttackInfo.AttackerPosition = vAttackerPos;
+            m_pAttackInfo.HitSound = m_pSKillHitAudio;
 
             other.GetComponent<IHealth>()?.TakeDamage(m_pAttackInfo);
 
-           
             StartEffect(vHitPoint);
             
         }

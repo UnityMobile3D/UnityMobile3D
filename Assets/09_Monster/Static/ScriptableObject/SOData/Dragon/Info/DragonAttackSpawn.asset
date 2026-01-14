@@ -12,15 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba810cf42923aa047b553311ad9459c1, type: 3}
   m_Name: DragonAttackSpawn
   m_EditorClassIdentifier: 
+  SpawnPoint: 0
   SpawnPlayerPos: 0
   SpawnCurPos: 1
+  SpawnRandomPos: 0
   PlayerDir: 1
-  SpawnDiff: 2
+  SpawnDiff: 1.2
   LifeTime: 0.1
   AttackDir: {x: 0, y: 0, z: 0}
   SpawnPos: {x: 0, y: 0, z: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   SOPoolEntry: {fileID: 11400000, guid: 0160dc8e172d5ea40968ed78e77d0f32, type: 2}
-  EndFrameSpawn:
-    SpawnObject: {fileID: 0}
-    Offset: {x: 0, y: 0, z: 0}
+  EndFrameSpawnSkill:
+    SkillOption: {fileID: 0}
+    SpawnOption: {fileID: 0}

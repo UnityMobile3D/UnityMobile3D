@@ -73,32 +73,35 @@ public class GameSceneManager : MonoBehaviour
         await UnLoadScene();
         m_pLoadingOverlay.SetProgress(0.2f);
 
-        //한 프레임 동안 처리할 시간
-        List<Task> listTask = new List<Task>();
-        for(int i = 0; i<pSceneLoadData.labelnames.Count; ++i)
-            listTask.Add(LoadLabel(pSceneLoadData.labelnames[i], _tCT));
-
-        for (int i = 0; i < pSceneLoadData.poolentries.Count; ++i)
-            listTask.Add(ObjectPoolManager.m_Instance.LoadObject(pSceneLoadData.poolentries[i]));
-
-        System.GC.Collect();
-        while (Task.WhenAll(listTask).IsCompleted == false)
-        {
-            m_pLoadingOverlay.SetProgress(0.5f); 
-            await Task.Yield();
-        }
+        
         //await Task.WhenAll(listTask);
 
         //single로 한다면 자동으로 이전 씬 해제
         var pResultHandle = _pNextScenePortal.NextScene.LoadSceneAsync(LoadSceneMode.Single);
         while (pResultHandle.IsDone == false)
         {
-            m_pLoadingOverlay.SetProgress(0.5f + pResultHandle.PercentComplete * 0.5f);
+            m_pLoadingOverlay.SetProgress(0.2f + pResultHandle.PercentComplete * 0.5f);
             await Task.Yield();
         }
+        System.GC.Collect();
         m_tCurScene = pResultHandle.Result;
         //m_tCurScene = await pResultHandle.Task;
 
+        //한 프레임 동안 처리할 시간
+        List<Task> listTask = new List<Task>();
+        for (int i = 0; i < pSceneLoadData.labelnames.Count; ++i)
+            listTask.Add(LoadLabel(pSceneLoadData.labelnames[i], _tCT));
+
+        for (int i = 0; i < pSceneLoadData.poolentries.Count; ++i)
+            listTask.Add(ObjectPoolManager.m_Instance.LoadObject(pSceneLoadData.poolentries[i]));
+
+        Task pLoadTask = Task.WhenAll(listTask);
+        while (pLoadTask.IsCompleted == false)
+        {
+            m_pLoadingOverlay.SetProgress(0.7f + pResultHandle.PercentComplete * 0.3f);
+            await Task.Yield();
+        }
+        SoundManager.m_Instance.PlayBgm(pSceneLoadData.BGM);
 
         FindPortal(_pNextScenePortal.ePortalID);
 

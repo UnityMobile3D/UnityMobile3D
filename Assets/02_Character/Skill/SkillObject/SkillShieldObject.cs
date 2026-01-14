@@ -9,8 +9,16 @@ public class SkillShieldObject : SkillObject
 
     private float m_fDefendValue = 10;
     private float m_fCurDefend = 0;
+
+     
+    [SerializeField] private SOAudio m_pSkillAudio = null;
+    [SerializeField] private SOAudio m_pDefendAudio = null;
+
     public override void OnSpawn()
     {
+        if (m_pSkillAudio != null)
+            SoundManager.m_Instance.PlaySfx(m_pSkillAudio, transform);
+
         m_bIsSkillActive = true;
         base.OnSpawn();
     }
@@ -49,6 +57,9 @@ public class SkillShieldObject : SkillObject
     {
         m_iCurShielCount += 1;
         m_fCurDefend += _pAttackInfo.Damage;
+
+        if(m_pDefendAudio != null)
+            SoundManager.m_Instance.PlaySfx(m_pDefendAudio, transform);
 
         if(m_fCurDefend > m_fDefendValue || m_iCurShielCount > m_iShielCount)
         {

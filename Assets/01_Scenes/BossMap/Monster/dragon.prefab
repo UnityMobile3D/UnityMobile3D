@@ -1957,12 +1957,14 @@ MonoBehaviour:
     AttackDir: {x: 0, y: 0, z: 0}
     Agent: {fileID: 0}
     AnimBridge: {fileID: 0}
+    ObjectInfo: {fileID: 0}
     Attacking: 0
     SpawnObjects: []
   m_SOMonsterInfo: {fileID: 11400000, guid: 217df672c310c2744b571fd87cae0625, type: 2}
   m_listPoint:
   - ePointType: 1
     pTrasnform: {fileID: 8346865925031816687}
+  m_pMonsterHPBar: {fileID: 0}
 --- !u!114 &820250917459767465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2010,6 +2012,10 @@ MonoBehaviour:
   Dead:
     Name: Dead
     ParamName: Dead
+    IsOn: 0
+  Defend:
+    Name: Defend
+    ParamName: Defend
     IsOn: 0
 --- !u!195 &8568683031049240669
 NavMeshAgent:

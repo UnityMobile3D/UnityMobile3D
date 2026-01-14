@@ -6,6 +6,7 @@ using UnityEngine.AddressableAssets;
 [CreateAssetMenu(menuName = "Load/SceneLoad")]
 public class SOSceneLoadData : ScriptableObject
 {
+    public SOAudio BGM;
     public AssetReference CurrentScene;
     public List<string> labelnames;
     public List<SOPoolEntry> poolentries;      

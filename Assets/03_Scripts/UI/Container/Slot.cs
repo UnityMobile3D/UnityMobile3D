@@ -42,7 +42,8 @@ public class Slot : ButtonUI
     private Color m_cOriginalColor = Color.white;                         // 원래 색
     [SerializeField] private Color m_cHighlightColor = Color.white * 2;   // 밝게 만들 색
     [SerializeField] private float m_fDuration = 0.5f;                    // 깜빡이는 전체 시간
-  
+
+    [SerializeField] protected SOAudio m_pUsingAudio = null;
     override protected void Awake()
     {
         base.Awake();
@@ -133,7 +134,8 @@ public class Slot : ButtonUI
 
     public virtual void Using()
     {
-        
+        if (m_pUsingAudio != null)
+            SoundManager.m_Instance.PlaySfx(m_pUsingAudio, null);
     }
 
     public override void OnPointerEnter(PointerEventData e)

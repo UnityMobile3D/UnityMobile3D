@@ -44,6 +44,8 @@ public class ButtonUI : BaseUI,
     [SerializeField] private PED onEndDrag;
     [SerializeField] private PED onClick;
 
+    [SerializeField] private SOAudio m_pClickAudio;
+    [SerializeField] private SOAudio m_pDownAudio;
     protected override void Awake()
     {
         base.Awake();
@@ -67,6 +69,8 @@ public class ButtonUI : BaseUI,
 
     virtual public void OnPointerDown(PointerEventData e)
     {
+        if (m_pDownAudio != null)
+            SoundManager.m_Instance.PlaySfx(m_pDownAudio,null);
         onDown?.Invoke();
         OnDownEvt?.Invoke();
 
@@ -102,6 +106,8 @@ public class ButtonUI : BaseUI,
     }
     virtual public void OnPointerClick(PointerEventData e)
     {
+        if (m_pClickAudio != null)
+            SoundManager.m_Instance.PlaySfx(m_pClickAudio, null);
         onClick?.Invoke();
         OnClickEvt?.Invoke();
     }

@@ -12,6 +12,8 @@ public class AttackInfo
     public Vector3 AttackerPosition;
     public Vector3 HitPoint;
     public bool Down;
+
+    public SOAudio HitSound = null;
 }
 
 public interface IHealth

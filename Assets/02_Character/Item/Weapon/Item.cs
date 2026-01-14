@@ -14,6 +14,8 @@ public class Item : MonoBehaviour, IPoolAble
 
     private int m_iPushPoolCount = 1;
     [SerializeField] private bool m_bDontDestroy = false;
+
+    [SerializeField] private SOAudio m_pGetItemAudio = null;
     public void OnSpawn()
     {
         m_fCurTime = 0.0f;
@@ -51,6 +53,9 @@ public class Item : MonoBehaviour, IPoolAble
                 PushObjectPool();
 
             QuestManager.m_Instance.UpdateQuest(eQuestType.Collect, m_pItem.ItemID, 1);
+
+            if (m_pGetItemAudio != null)
+                SoundManager.m_Instance.PlaySfx(m_pGetItemAudio, null);
         }
     }
 

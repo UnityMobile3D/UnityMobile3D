@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 126d0d3f3c61ae545ac803b28a3a5ee6, type: 3}
   m_Name: TownMap
   m_EditorClassIdentifier: 
+  BGM: {fileID: 11400000, guid: fc4912705bd083b43abc04fb609da57e, type: 2}
   CurrentScene:
     m_AssetGUID: c850ee8c3b14cc8459e7e186857cf567
     m_SubObjectName: 
     m_SubObjectType: 
+    m_SubObjectGUID: 
     m_EditorAssetChanged: 0
   labelnames: []
   poolentries: []

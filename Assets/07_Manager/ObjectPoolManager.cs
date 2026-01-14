@@ -90,7 +90,9 @@ public class ObjectPoolManager : MonoBehaviour
             GameObject pGameObject = GameObject.Instantiate(pPrefab);
             pGameObject.SetActive(false);
 
-            pGameObject.transform.SetParent(gameObject.transform);
+            if (_pPoolEntry.type == ePoolType.Global)
+                pGameObject.transform.SetParent(gameObject.transform);
+          
             pBucket.pool.Enqueue(pGameObject);
         }
 

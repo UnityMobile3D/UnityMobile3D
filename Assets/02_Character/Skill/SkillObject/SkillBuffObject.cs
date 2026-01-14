@@ -12,8 +12,12 @@ public class SkillBuffObject : SkillObject
     private List<SOItemEffect> m_listLifeTimeEffects = null;
 
     private bool m_bWhileLifeApply = false;
+
+    [SerializeField] private SOAudio m_pSkillAudio = null;
     public override void OnSpawn()
     {
+        if (m_pSkillAudio != null)
+            SoundManager.m_Instance.PlaySfx(m_pSkillAudio, transform);
         m_bIsSkillActive = true;
         base.OnSpawn();
     }

@@ -23,6 +23,7 @@ public class SlotView : ButtonUI
     public SOEntryUI SOEntryUI { get => m_pTargetSO; }
     public int SlotIdx { get => m_iSlotIdx; }
 
+        
     public void Init(Container _pContainer)
     {
         m_pContainer = _pContainer;

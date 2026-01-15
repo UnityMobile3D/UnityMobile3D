@@ -72,8 +72,11 @@ MonoBehaviour:
     m_AssetGUID: 
     m_SubObjectName: 
     m_SubObjectType: 
+    m_SubObjectGUID: 
     m_EditorAssetChanged: 0
   m_fLifeTime: 10
   m_fAttackTime: 0
   m_fEndAttackTime: 3.4028235e+38
   m_iAttackCount: 1
+  m_pSKillAudio: {fileID: 0}
+  m_pSKillHitAudio: {fileID: 11400000, guid: d502ff3ea66ffda40ac1d378ff67bd98, type: 2}

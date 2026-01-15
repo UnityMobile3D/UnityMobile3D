@@ -28713,10 +28713,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b51374034ee26549a2161689c3a47b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_pHitEffectRef:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
   m_fLifeTime: 2.5
   m_fAttackTime: 0
   m_fEndAttackTime: 3.4028235e+38
   m_iAttackCount: 1
+  m_pSKillAudio: {fileID: 11400000, guid: 076a330fae63405479cffb3165faa922, type: 2}
+  m_pSKillHitAudio: {fileID: 11400000, guid: d502ff3ea66ffda40ac1d378ff67bd98, type: 2}
 --- !u!1 &7006865611691869639
 GameObject:
   m_ObjectHideFlags: 0

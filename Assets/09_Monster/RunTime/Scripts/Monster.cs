@@ -206,6 +206,9 @@ public class Monster : MonoBehaviour, IHealth, IPoolAble
             Hit();
 
             knockback(_pAttackInfo);
+
+            if (_pAttackInfo.HitSound != null)
+                SoundManager.m_Instance.PlaySfx(_pAttackInfo.HitSound, transform);
         }
 
         m_pMonsterHPBar?.UpdateHPBar(m_pMonsterInfo.HP, m_pMonsterInfo.MaxHp);

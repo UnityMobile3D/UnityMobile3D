@@ -483,6 +483,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 150950038}
   m_pCountBadgeText: {fileID: 1368383667}
 --- !u!222 &29169308
@@ -1254,12 +1256,15 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pCheckUI: {fileID: 1762508574}
   m_pIcon: {fileID: 1838149853}
   m_eUIType: 8
   m_iSlotIdx: 0
   m_cHighlightColor: {r: 1, g: 1, b: 1, a: 1}
   m_fDuration: 0.5
+  m_pUsingAudio: {fileID: 0}
   m_pSOSkill: {fileID: 0}
   m_eSkillType: 2
 --- !u!114 &102148786
@@ -1990,12 +1995,15 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pCheckUI: {fileID: 1623381263}
   m_pIcon: {fileID: 1870570992}
   m_eUIType: 8
   m_iSlotIdx: 0
   m_cHighlightColor: {r: 2, g: 2, b: 2, a: 2}
   m_fDuration: 0.5
+  m_pUsingAudio: {fileID: 0}
   m_pSOSkill: {fileID: 0}
   m_eSkillType: 3
 --- !u!1 &112172244
@@ -2422,7 +2430,6 @@ RectTransform:
   - {fileID: 1158300529}
   - {fileID: 1573261306}
   - {fileID: 804328528}
-  - {fileID: 1884095267}
   m_Father: {fileID: 802116573}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -3129,6 +3136,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 159439374}
   m_pCountBadgeText: {fileID: 0}
 --- !u!222 &159439376
@@ -3500,6 +3509,12 @@ PrefabInstance:
       propertyPath: m_eEquipType
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7723447028641236343, guid: 36d611b66b538b4488a1662db16fee46,
+        type: 3}
+      propertyPath: m_pClickAudio
+      value: 
+      objectReference: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890,
+        type: 2}
     - target: {fileID: 7765994738812190989, guid: 36d611b66b538b4488a1662db16fee46,
         type: 3}
       propertyPath: m_Color.a
@@ -4053,6 +4068,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 11400000, guid: 3efb0a7099ee5694289eefece8e41633, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &197269186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4427,6 +4444,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pContainerView: {fileID: 216103093}
   m_pContentView: {fileID: 775965069}
   m_listCategoryData:
@@ -4660,6 +4679,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!1 &257052309
 GameObject:
   m_ObjectHideFlags: 0
@@ -4817,6 +4838,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 1676672581}
   m_pCountBadgeText: {fileID: 0}
   m_pNameText: {fileID: 779828140}
@@ -5246,6 +5269,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
+  m_pDownAudio: {fileID: 0}
   m_pText: {fileID: 1863253617}
   m_pPositiveText: {fileID: 933350455}
   m_pPositiveButton: {fileID: 933350457}
@@ -5360,6 +5385,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 272415407}
   m_pCountBadgeText: {fileID: 0}
 --- !u!222 &272415409
@@ -5674,6 +5701,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 1397251477}
   m_pCountBadgeText: {fileID: 1117161196}
 --- !u!222 &306291289
@@ -7474,6 +7503,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 433334442}
   m_pCountBadgeText: {fileID: 0}
 --- !u!114 &433334442
@@ -7594,6 +7625,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 1164574488}
   m_pCountBadgeText: {fileID: 0}
   m_pNameText: {fileID: 1096523296}
@@ -8109,6 +8142,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &492948126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8573,6 +8608,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 1499978343}
   m_pCountBadgeText: {fileID: 1545520285}
 --- !u!222 &542012215
@@ -8735,6 +8772,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 557202265}
   m_pCountBadgeText: {fileID: 0}
 --- !u!114 &557202265
@@ -11291,6 +11330,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 1215783463}
   m_pCountBadgeText: {fileID: 0}
   m_pNameText: {fileID: 261995563}
@@ -11681,6 +11722,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 11400000, guid: 3efb0a7099ee5694289eefece8e41633, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &574086940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12213,6 +12256,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 1142117230}
   m_pCountBadgeText: {fileID: 0}
   m_pNameText: {fileID: 1040650235}
@@ -12470,6 +12515,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &617489648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12691,6 +12738,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 623049480}
   m_pCountBadgeText: {fileID: 0}
 --- !u!222 &623049482
@@ -12897,6 +12946,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 632438527}
   m_pCountBadgeText: {fileID: 0}
 --- !u!114 &632438527
@@ -13014,6 +13065,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!1 &647606354
 GameObject:
   m_ObjectHideFlags: 0
@@ -13171,6 +13224,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 2039790877}
   m_pCountBadgeText: {fileID: 652253405}
 --- !u!222 &651219041
@@ -13679,6 +13734,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 1484045293}
   m_pCountBadgeText: {fileID: 72659489}
 --- !u!222 &675703273
@@ -13769,6 +13826,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 331284573}
   m_pCountBadgeText: {fileID: 0}
   m_pNameText: {fileID: 960513465}
@@ -14707,6 +14766,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  m_pClickAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &721073872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16013,6 +16074,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 772956993}
   m_pCountBadgeText: {fileID: 0}
 --- !u!222 &772956995
@@ -17014,6 +17077,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  m_pClickAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &804328530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17339,6 +17404,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!1 &860956119
 GameObject:
   m_ObjectHideFlags: 0
@@ -17416,6 +17483,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &860956122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18074,6 +18143,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &909986754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18189,6 +18260,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &917095588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18402,6 +18475,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!1 &935557121
 GameObject:
   m_ObjectHideFlags: 0
@@ -18492,6 +18567,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  m_pClickAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &935557124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18819,6 +18896,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 108734984}
   m_pCountBadgeText: {fileID: 143848516}
 --- !u!222 &969890631
@@ -18908,6 +18987,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 1439007888}
   m_pCountBadgeText: {fileID: 198981889}
 --- !u!222 &980571463
@@ -19387,81 +19468,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1012424552}
   m_CullTransparentMesh: 1
---- !u!1 &1012519811
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1012519812}
-  - component: {fileID: 1012519814}
-  - component: {fileID: 1012519813}
-  m_Layer: 5
-  m_Name: IconCollapse
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1012519812
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1012519811}
-  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1884095267}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 10, y: 20}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1012519813
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1012519811}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.8962264, g: 0.6262692, b: 0.29169634, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b72b9c6e8bdeb3347a6c3e9b5273364b, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1012519814
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1012519811}
-  m_CullTransparentMesh: 0
 --- !u!1 &1014201812
 GameObject:
   m_ObjectHideFlags: 0
@@ -19803,6 +19809,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 5266607}
   m_pCountBadgeText: {fileID: 1321955363}
 --- !u!222 &1031226122
@@ -20026,6 +20034,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &1031955191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20143,6 +20153,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 706732670}
   m_pCountBadgeText: {fileID: 682129138}
 --- !u!222 &1033708421
@@ -20560,12 +20572,15 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pCheckUI: {fileID: 860956121}
   m_pIcon: {fileID: 280540938}
   m_eUIType: 8
   m_iSlotIdx: 0
   m_cHighlightColor: {r: 1, g: 1, b: 1, a: 1}
   m_fDuration: 0.5
+  m_pUsingAudio: {fileID: 0}
   m_pSOSkill: {fileID: 11400000, guid: 2e01c34e1e2297e4fa3a6dd33111b706, type: 2}
   m_eSkillType: 1
 --- !u!114 &1051149365
@@ -21356,6 +21371,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 1101667103}
   m_pCountBadgeText: {fileID: 0}
 --- !u!222 &1101667105
@@ -21455,6 +21472,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  m_pClickAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &1107205029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21780,6 +21799,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 1118787964}
   m_pCountBadgeText: {fileID: 0}
 --- !u!114 &1118787964
@@ -22234,6 +22255,12 @@ PrefabInstance:
       propertyPath: m_eEquipType
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7723447028641236343, guid: 36d611b66b538b4488a1662db16fee46,
+        type: 3}
+      propertyPath: m_pClickAudio
+      value: 
+      objectReference: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890,
+        type: 2}
     - target: {fileID: 7765994738812190989, guid: 36d611b66b538b4488a1662db16fee46,
         type: 3}
       propertyPath: m_Color.a
@@ -22650,6 +22677,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 53533062}
   m_pCountBadgeText: {fileID: 1449778489}
 --- !u!222 &1149647196
@@ -23171,6 +23200,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!1 &1175661748
 GameObject:
   m_ObjectHideFlags: 0
@@ -23445,6 +23476,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 1185619969}
   m_pCountBadgeText: {fileID: 0}
 --- !u!114 &1185619969
@@ -23644,6 +23677,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 689669729}
   m_pCountBadgeText: {fileID: 1350801719}
 --- !u!222 &1192400224
@@ -23733,6 +23768,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 1953868681}
   m_pCountBadgeText: {fileID: 161739453}
 --- !u!222 &1194321096
@@ -23845,19 +23882,9 @@ MonoBehaviour:
       m_Calls: []
   onClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Container, Assembly-CSharp
-        m_MethodName: OnSelect
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
 --- !u!114 &1197762026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24787,6 +24814,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 1156232361}
   m_pCountBadgeText: {fileID: 2141099230}
 --- !u!222 &1235604345
@@ -25002,12 +25031,15 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pCheckUI: {fileID: 917095587}
   m_pIcon: {fileID: 1675722322}
   m_eUIType: 16
   m_iSlotIdx: 0
   m_cHighlightColor: {r: 1, g: 1, b: 1, a: 1}
   m_fDuration: 0.5
+  m_pUsingAudio: {fileID: 0}
   m_pSOItem: {fileID: 0}
   m_eItemType: 1
   m_pCountBadge: {fileID: 2106243068}
@@ -25461,6 +25493,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pContainerView: {fileID: 1288751749}
   m_pContentView: {fileID: 235475852}
   m_listCategoryData:
@@ -26048,6 +26082,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &1303491704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26700,6 +26736,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 399890296}
   m_pCountBadgeText: {fileID: 0}
   m_pNameText: {fileID: 1031796336}
@@ -26968,6 +27006,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &1350829663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27592,6 +27632,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 2127081722}
   m_pCountBadgeText: {fileID: 185923261}
 --- !u!222 &1393754414
@@ -28422,6 +28464,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 1837962856}
   m_pCountBadgeText: {fileID: 173949372}
 --- !u!222 &1437863187
@@ -28615,6 +28659,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 1441714899}
   m_pCountBadgeText: {fileID: 0}
 --- !u!222 &1441714901
@@ -29000,6 +29046,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 11400000, guid: 3efb0a7099ee5694289eefece8e41633, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &1453023360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29117,6 +29165,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 1284524215}
   m_pCountBadgeText: {fileID: 107209509}
 --- !u!222 &1462303519
@@ -29550,6 +29600,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 1965275880}
   m_pCountBadgeText: {fileID: 1687602980}
 --- !u!222 &1481280378
@@ -30439,6 +30491,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 1838320570}
   m_pCountBadgeText: {fileID: 0}
   m_pNameText: {fileID: 1775496362}
@@ -30560,6 +30614,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 673503360}
   m_pCountBadgeText: {fileID: 765449615}
 --- !u!222 &1542611215
@@ -31004,6 +31060,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 1557132738}
   m_pCountBadgeText: {fileID: 0}
 --- !u!222 &1557132740
@@ -31255,6 +31313,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 11400000, guid: 3efb0a7099ee5694289eefece8e41633, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &1571013329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31561,12 +31621,15 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pCheckUI: {fileID: 2092610371}
   m_pIcon: {fileID: 1847692583}
   m_eUIType: 8
   m_iSlotIdx: 0
   m_cHighlightColor: {r: 1, g: 1, b: 1, a: 1}
   m_fDuration: 0.5
+  m_pUsingAudio: {fileID: 0}
   m_pSOSkill: {fileID: 0}
   m_eSkillType: 2
 --- !u!114 &1573984665
@@ -31947,6 +32010,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &1623381264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32288,6 +32353,12 @@ PrefabInstance:
       propertyPath: m_eEquipType
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7723447028641236343, guid: 36d611b66b538b4488a1662db16fee46,
+        type: 3}
+      propertyPath: m_pClickAudio
+      value: 
+      objectReference: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890,
+        type: 2}
     - target: {fileID: 7765994738812190989, guid: 36d611b66b538b4488a1662db16fee46,
         type: 3}
       propertyPath: m_Color.a
@@ -32689,6 +32760,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 1678823056}
   m_pCountBadgeText: {fileID: 0}
 --- !u!222 &1678823058
@@ -32778,6 +32851,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pContainerView: {fileID: 1680451998}
   m_pContentView: {fileID: 1543517099}
   m_listCategoryData:
@@ -33149,6 +33224,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 1300847417}
   m_pCountBadgeText: {fileID: 0}
   m_pNameText: {fileID: 331601984}
@@ -33715,6 +33792,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!1 &1743692120
 GameObject:
   m_ObjectHideFlags: 0
@@ -33867,6 +33946,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &1762508575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34164,6 +34245,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 1802950928}
   m_pCountBadgeText: {fileID: 0}
 --- !u!114 &1802950928
@@ -34283,6 +34366,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 1569749746}
   m_pCountBadgeText: {fileID: 790230137}
 --- !u!222 &1803998135
@@ -35246,6 +35331,12 @@ PrefabInstance:
       propertyPath: m_eEquipType
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 7723447028641236343, guid: 36d611b66b538b4488a1662db16fee46,
+        type: 3}
+      propertyPath: m_pClickAudio
+      value: 
+      objectReference: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890,
+        type: 2}
     - target: {fileID: 7765994738812190989, guid: 36d611b66b538b4488a1662db16fee46,
         type: 3}
       propertyPath: m_Color.a
@@ -35658,127 +35749,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1877091728}
   m_CullTransparentMesh: 1
---- !u!1 &1884095266
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1884095267}
-  - component: {fileID: 1884095270}
-  - component: {fileID: 1884095269}
-  - component: {fileID: 1884095268}
-  m_Layer: 5
-  m_Name: ButtonCollapse
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &1884095267
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1884095266}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1012519812}
-  m_Father: {fileID: 135208075}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -56.4, y: 0.39996338}
-  m_SizeDelta: {x: 32, y: 32}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1884095268
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1884095266}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 1884095269}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &1884095269
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1884095266}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.8980392, g: 0.627451, b: 0.29411766, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 04d207d34845c4f0f9b36b9c050cd158, type: 3}
-  m_Type: 1
-  m_PreserveAspect: 1
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 2.6
---- !u!222 &1884095270
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1884095266}
-  m_CullTransparentMesh: 0
 --- !u!1 &1897904526
 GameObject:
   m_ObjectHideFlags: 0
@@ -35977,6 +35947,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pContainerView: {fileID: 1910445384}
   m_pContentView: {fileID: 2010355069}
   m_listCategoryData:
@@ -36151,6 +36123,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  m_pClickAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &1920718893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36612,6 +36586,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 346800730}
   m_pCountBadgeText: {fileID: 1516626055}
 --- !u!222 &1937200131
@@ -37271,6 +37247,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 11400000, guid: 3efb0a7099ee5694289eefece8e41633, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &1958472144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37463,6 +37441,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &1965659853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37744,6 +37724,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &1985756351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38850,6 +38832,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pIcon: {fileID: 2053324427}
   m_pCountBadgeText: {fileID: 0}
 --- !u!222 &2053324429
@@ -39295,6 +39279,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  m_pClickAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &2070709384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39424,6 +39410,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
   m_pContainerView: {fileID: 2087197837}
   m_pContentView: {fileID: 794208934}
   m_listCategoryData:
@@ -39604,6 +39592,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
+  m_pDownAudio: {fileID: 0}
 --- !u!114 &2092610372
 MonoBehaviour:
   m_ObjectHideFlags: 0

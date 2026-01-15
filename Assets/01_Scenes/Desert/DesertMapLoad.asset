@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 126d0d3f3c61ae545ac803b28a3a5ee6, type: 3}
   m_Name: DesertMapLoad
   m_EditorClassIdentifier: 
+  BGM: {fileID: 11400000, guid: 09fcdb8fc355e79468b3afc63eb6157d, type: 2}
   CurrentScene:
     m_AssetGUID: 53f5a0914b195b74abc2fb43a9e2ce22
     m_SubObjectName: 
     m_SubObjectType: 
+    m_SubObjectGUID: 
     m_EditorAssetChanged: 0
   labelnames: []
   poolentries:

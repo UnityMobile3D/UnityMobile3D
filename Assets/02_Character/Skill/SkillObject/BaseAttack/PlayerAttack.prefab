@@ -50,10 +50,13 @@ MonoBehaviour:
     m_AssetGUID: 05609566f0df27848962c113cb77d33c
     m_SubObjectName: 
     m_SubObjectType: 
+    m_SubObjectGUID: 
     m_EditorAssetChanged: 0
   m_fStartAttackTime: 0
   m_fEndAttackTime: 3.4028235e+38
   m_iAttackCount: 1
+  m_pSKillAudio: {fileID: 11400000, guid: b2f8fc6605067704d8f683d030c730ce, type: 2}
+  m_pSKillHitAudio: {fileID: 11400000, guid: d502ff3ea66ffda40ac1d378ff67bd98, type: 2}
 --- !u!136 &8684334194708850311
 CapsuleCollider:
   m_ObjectHideFlags: 0

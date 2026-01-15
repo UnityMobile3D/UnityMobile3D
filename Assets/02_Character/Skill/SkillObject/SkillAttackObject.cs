@@ -24,11 +24,14 @@ public class SkillAttackObject : SkillObject
 
     [SerializeField] private SOAudio m_pSKillAudio = null;
     [SerializeField] private SOAudio m_pSKillHitAudio = null;
-
+    private int m_iSfxIdx = -1;
     protected override void Awake()
     {
         base.Awake();
         m_pAttackInfo = new AttackInfo();
+
+        if (m_pSKillAudio != null && m_iSfxIdx != -1)
+            SoundManager.m_Instance.StopSfx(m_iSfxIdx);
     }
 
     public override void OnSpawn()
@@ -41,7 +44,7 @@ public class SkillAttackObject : SkillObject
             EndAttack();
 
         if (m_pSKillAudio != null)
-            SoundManager.m_Instance.PlaySfx(m_pSKillAudio, transform);
+            m_iSfxIdx = SoundManager.m_Instance.PlaySfx(m_pSKillAudio, transform);
     }
     public override void OnDespawn()
     {
@@ -152,7 +155,7 @@ public class SkillAttackObject : SkillObject
         m_bIsSkillActive = false;
     }
 
-    private void StartEffect(Vector3 _vPoint)
+    private void StartEffect(in Vector3 _vPoint)
     {
         if(m_pHitEffectRef == null)
             return;

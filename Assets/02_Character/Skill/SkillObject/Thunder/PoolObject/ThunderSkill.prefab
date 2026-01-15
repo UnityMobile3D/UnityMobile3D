@@ -34175,10 +34175,13 @@ MonoBehaviour:
     m_AssetGUID: 9e59038de397032448cf9b329c247777
     m_SubObjectName: 
     m_SubObjectType: 
+    m_SubObjectGUID: 
     m_EditorAssetChanged: 0
   m_fStartAttackTime: 0.6
   m_fEndAttackTime: 3.4028235e+38
   m_iAttackCount: 1
+  m_pSKillAudio: {fileID: 11400000, guid: 238a70e545a2e074ea7ea4e366d91a7b, type: 2}
+  m_pSKillHitAudio: {fileID: 11400000, guid: d502ff3ea66ffda40ac1d378ff67bd98, type: 2}
 --- !u!1 &2666447442243371192
 GameObject:
   m_ObjectHideFlags: 0

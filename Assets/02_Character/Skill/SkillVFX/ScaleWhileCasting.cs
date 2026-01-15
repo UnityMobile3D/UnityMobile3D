@@ -22,23 +22,33 @@ public class ScaleWhileCasting : MonoBehaviour, IChargeEvent //, ChargeEvent
     [SerializeField] private PED m_pCompleteEvent;
     [SerializeField] private PED m_pStartEvent;
 
-    
+    [SerializeField] private SOAudio m_pChargeAudio = null;
+    [SerializeField] private SOAudio m_pChargeEndAudio = null;
+    private int m_iSrcIdx = -1;
     public void StartEvent()
     {
         m_fCurTime = 0.0f;
         transform.localScale = m_vStartScale;
 
         m_pStartEvent?.Invoke();
+
+        if (m_pChargeAudio != null)
+            m_iSrcIdx = SoundManager.m_Instance.PlaySfx(m_pChargeAudio, transform);
     }
 
     public void EndEvent()
     {
         m_pCompleteEvent?.Invoke();
+        if (m_pChargeEndAudio != null)
+            SoundManager.m_Instance.PlaySfx(m_pChargeEndAudio, transform);
+        if (m_iSrcIdx != -1)
+            SoundManager.m_Instance.StopSfx(m_iSrcIdx);
     }
 
     private void OnDisable()
     {
         transform.localScale = m_vStartScale;
+
     }
     public void UpdateEvent(float _fRatio)
     {

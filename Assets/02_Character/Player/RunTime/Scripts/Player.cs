@@ -339,6 +339,9 @@ public class Player : MonoBehaviour , IHealth
         {
             HIT();
             knockback(_pAttackInfo);
+
+            if (_pAttackInfo.HitSound != null)
+                SoundManager.m_Instance.PlaySfx(_pAttackInfo.HitSound, transform);
         }
 
 

@@ -4867,6 +4867,7 @@ MonoBehaviour:
       Int: 40
       Float: 0
       Vector4: {x: 0, y: 0, z: 0, w: 0}
+  m_pSkillAudio: {fileID: 11400000, guid: 424669e3253e2724287ba75fe68552f7, type: 2}
 --- !u!1 &4803058298309682201
 GameObject:
   m_ObjectHideFlags: 0

@@ -221,6 +221,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
   m_pIcon: {fileID: 0}
   m_pCountBadgeText: {fileID: 0}
 --- !u!114 &-809796083579530172

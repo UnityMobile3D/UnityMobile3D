@@ -75,12 +75,14 @@ public class SoundManager : MonoBehaviour
         m_pBgmSource.clip = null;
     }
 
-    public void PlaySfx(SOAudio _pAudio, Transform _pTransform)
+    public int PlaySfx(SOAudio _pAudio, Transform _pTransform)
     {
         if (_pAudio == null || _pAudio.Clips.Count == 0)
-            return;
+            return -1;
 
-        AudioSource pSrc = GetNextSfxSource();
+        int iSrcIdx = GetNextSfxSourceIdx();
+
+        AudioSource pSrc = m_listSfxSource[iSrcIdx];
 
         int iClipIdx = Random.Range(0, _pAudio.Clips.Count);
         pSrc.clip = _pAudio.Clips[iClipIdx];
@@ -98,18 +100,27 @@ public class SoundManager : MonoBehaviour
             pSrc.spatialBlend = 0.0f;
 
         pSrc.Play();
+
+        return iSrcIdx;
+    }
+    public void StopSfx(int _iSrcIdx)
+    {
+        if (_iSrcIdx >= m_iSfxPoolCount || _iSrcIdx < 0)
+            return;
+
+        m_listSfxSource[_iSrcIdx].Stop();
     }
 
-    private AudioSource GetNextSfxSource()
+    private int GetNextSfxSourceIdx()
     {
         if (m_listSfxSource.Count == 0)
-            return null;
+            return -1;
 
-        AudioSource src = m_listSfxSource[m_iSfxIndex];
+        int iClipIdx = m_iSfxIndex;
         ++m_iSfxIndex;
         if (m_iSfxIndex >= m_listSfxSource.Count)
             m_iSfxIndex = 0;
 
-        return src;
+        return iClipIdx;
     }
 }

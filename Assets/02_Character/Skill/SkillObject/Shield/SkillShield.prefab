@@ -24353,3 +24353,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_fLifeTime: 10
+  m_pSkillAudio: {fileID: 11400000, guid: 424669e3253e2724287ba75fe68552f7, type: 2}
+  m_pDefendAudio: {fileID: 11400000, guid: 4b4d4fdf32830c448a3a3cda8133ba25, type: 2}

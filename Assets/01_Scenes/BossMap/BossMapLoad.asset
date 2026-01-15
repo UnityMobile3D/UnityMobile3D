@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 126d0d3f3c61ae545ac803b28a3a5ee6, type: 3}
   m_Name: BossMapLoad
   m_EditorClassIdentifier: 
+  BGM: {fileID: 11400000, guid: feb26aa96031eb542a86e682b6216823, type: 2}
   CurrentScene:
     m_AssetGUID: c9e30e1e40e5f6a47aa6053500404e37
     m_SubObjectName: 

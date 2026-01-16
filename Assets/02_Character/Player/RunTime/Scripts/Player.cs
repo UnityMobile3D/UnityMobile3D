@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,13 +35,12 @@ public class Player : MonoBehaviour , IHealth
     private Rigidbody   _rigidbody;
     private Animator    _animator;
     private NavMeshAgent _agent;
-   
+    private CinemachineImpulseSource _impulseSource;
     private SkillRunner       _skillRunner; 
     private Collider          _collider;
     public Rigidbody RigidBody => _rigidbody;
     public Animator  Animator  => _animator;
     public SkillRunner SkillRunner => _skillRunner;
-
     public NavMeshAgent Agent => _agent;
 
     [SerializeField] private ObjectInfo _playerInfo;
@@ -74,7 +74,7 @@ public class Player : MonoBehaviour , IHealth
         _collider = GetComponent<Collider>();
         _playerInfo = GetComponent<ObjectInfo>();
         _skillRunner = GetComponent<SkillRunner>();
-
+        _impulseSource = GetComponent<CinemachineImpulseSource>();
         _agent.speed = _playerInfo.Speed;
         // Animator 세팅
         _animator = GetComponentInChildren<Animator>();
@@ -331,7 +331,7 @@ public class Player : MonoBehaviour , IHealth
         if (m_pHitEvent?.Invoke(_pAttackInfo) == false)
             return;
 
-        DamageManager.m_Instance.Damaged(_playerInfo, _pAttackInfo);
+        DamageManager.m_Instance.PlayerDamaged(_playerInfo, _pAttackInfo);
 
         if (_playerInfo.HP <= 0)
             DEAD();
@@ -340,6 +340,7 @@ public class Player : MonoBehaviour , IHealth
             HIT();
             knockback(_pAttackInfo);
 
+            _impulseSource.GenerateImpulse();
             if (_pAttackInfo.HitSound != null)
                 SoundManager.m_Instance.PlaySfx(_pAttackInfo.HitSound, transform);
         }

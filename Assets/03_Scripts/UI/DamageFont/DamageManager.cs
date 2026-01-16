@@ -27,6 +27,13 @@ public class DamageManager : MonoBehaviour
 
         ShowDamageFont(_pTarget.transform.position, iDamage);
 
+        //HealthManager.m_Instance.UpdateHP();
+    }
+
+    public void PlayerDamaged(ObjectInfo _pTarget, AttackInfo _attackInfo)
+    {
+        Damaged(_pTarget, _attackInfo);
+        CameraManager.m_Instance.DamagedPostProcess();
         HealthManager.m_Instance.UpdateHP();
     }
 

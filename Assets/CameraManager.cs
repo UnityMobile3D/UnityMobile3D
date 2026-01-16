@@ -2,7 +2,9 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
+using UnityEngine.Rendering;
 using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class CameraManager : MonoBehaviour
@@ -34,6 +36,8 @@ public class CameraManager : MonoBehaviour
 
     private Coroutine m_pSmoothPathCoroutine = null;
 
+    [Header("postprocess")]
+    [SerializeField] DamageScreenFx m_pDamagePostProcess= null;
     public void Awake()
     {
         if(m_Instance != null)
@@ -112,6 +116,10 @@ public class CameraManager : MonoBehaviour
         }
     }
 
+    public void DamagedPostProcess()
+    {
+        m_pDamagePostProcess?.PlayHitVignette();
+    }
     public void MainCameraMove()
     {
        

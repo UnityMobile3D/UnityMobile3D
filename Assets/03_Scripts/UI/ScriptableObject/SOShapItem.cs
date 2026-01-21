@@ -4,7 +4,7 @@ using UnityEngine;
 
 [CreateAssetMenu(menuName = "UIData/Catalog/ShapItem UI", fileName = "ShapItemUI")]
 
-public class SOShapItem : SOEntryUI
+public class SOShopItem : SOEntryUI
 {
     [SerializeField] private SOEntryUI itemui;
     public SOEntryUI ItemUI => itemui;

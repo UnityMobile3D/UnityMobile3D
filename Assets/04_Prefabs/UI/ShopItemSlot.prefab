@@ -142,8 +142,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Red Potionffe
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: baef1a2c0faef324cab5607e2f910942, type: 2}
+  m_sharedMaterial: {fileID: -7375835556939287114, guid: baef1a2c0faef324cab5607e2f910942,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -444,7 +445,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4038284371600268250}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -510,7 +511,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bRaycast: 1
-  m_eActionID: 0
+  m_pActionBind: {fileID: 0}
   m_pTextMeshProUGUI: {fileID: 0}
   onEnter:
     m_PersistentCalls:
@@ -536,6 +537,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
   m_pIcon: {fileID: 550838898197615345}
   m_pCountBadgeText: {fileID: 0}
   m_pNameText: {fileID: 7513304534190086619}

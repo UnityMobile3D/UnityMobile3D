@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 using static System.Net.Mime.MediaTypeNames;
-using eSkillType = SOSkillUI.eSkillType;
+using eSkillType = SkillRunner.eSkillType;
 using eUIType = SOEntryUI.eUIType;
 using Image = UnityEngine.UI.Image;
 
@@ -21,9 +21,9 @@ public class Slot : ButtonUI
     protected IContainer m_pOwner = null;
     [SerializeField] protected ButtonUI m_pCheckUI = null;
 
+    private Image m_pSlotIcon = null;
     protected Image m_pCheckUIImage = null;
     [SerializeField] private Image m_pIcon = null;
-
     protected CoolDownView m_pCoolDownView = null;
 
     [Header("Slot Type")]
@@ -34,24 +34,38 @@ public class Slot : ButtonUI
     protected bool m_bSlotActive = true;
     public bool IsActiveSlot { get => m_bSlotActive; }
 
-    protected bool m_bCanUse = true;
-    public bool IsCanUse { get => m_bCanUse;}
-
     [SerializeField] protected int m_iSlotIdx;
     public int SlotIdx { get => m_iSlotIdx; }
 
-    //빼기 버튼 항상 넣어두고 +버튼 없이 그냥 스킬 누르고 빈 슬롯에 넣어주는 형식으로
+    [Header("Touch")]
+    private Coroutine m_pLightCoroutine = null;
+    private Color m_cOriginalColor = Color.white;                         // 원래 색
+    [SerializeField] private Color m_cHighlightColor = Color.white * 2;   // 밝게 만들 색
+    [SerializeField] private float m_fDuration = 0.5f;                    // 깜빡이는 전체 시간
+
+    [SerializeField] protected SOAudio m_pUsingAudio = null;
     override protected void Awake()
     {
         base.Awake();
 
-        //m_pCheckUI.SetRaycast(false);
-        m_pCheckUIImage = m_pCheckUI.GetComponent<Image>();
-        m_pCheckUIImage.enabled = false;
+        m_pSlotIcon = GetComponent<Image>();
+        if(m_pSlotIcon != null)
+            m_cOriginalColor = m_pSlotIcon.color;
 
         m_pOwner = GetComponentInParent<IContainer>();
 
         m_iUIType = (uint)m_eUIType;
+
+        if (m_pCheckUI != null)
+        {
+            m_pCheckUIImage = m_pCheckUI.GetComponent<Image>();
+            m_pCheckUIImage.enabled = false;
+        }
+    }
+
+    protected virtual void Start()
+    {
+        
     }
 
     private void OnDestroy()
@@ -63,9 +77,17 @@ public class Slot : ButtonUI
       
     }
 
+    public virtual void Init()
+    {
+        m_iUIType = (uint)m_eUIType;
+    }
     public virtual void Bind(SOEntryUI _pSOTarget)
     {
         m_pSOTarget = _pSOTarget;
+
+
+        if (m_pIcon == null)
+            return;
 
         if(m_pSOTarget == null)
         {
@@ -83,13 +105,17 @@ public class Slot : ButtonUI
     }
     public void ActiveSlot()
     {
-        //m_pCheckUI.SetRaycast(true);
+        if (m_pCheckUIImage == null)
+            return;
+
         m_pCheckUIImage.enabled = true;
     }
 
     public void UnActiveSlot()
     {
-        //m_pCheckUI.SetRaycast(false);
+        if (m_pCheckUIImage == null)
+            return;
+
         m_pCheckUIImage.enabled = false;
     }
 
@@ -98,20 +124,33 @@ public class Slot : ButtonUI
         return m_iUIType;
     }
 
-
-    public override void OnPointerClick(PointerEventData e)
+    public override void OnPointerDown(PointerEventData e)
     {
         if (m_pSOTarget == null)
             return;
 
-        InputManager.m_Instance.BindUGUIButtonBoolean(ActionID, true);
+        base.OnPointerDown(e);
     }
 
     public virtual void Using()
     {
-        
+        if (m_pUsingAudio != null)
+            SoundManager.m_Instance.PlaySfx(m_pUsingAudio, null);
     }
 
+    public override void OnPointerEnter(PointerEventData e)
+    {
+        if(m_pSlotIcon != null)
+        {
+            if (m_pLightCoroutine != null)
+                StopCoroutine(m_pLightCoroutine);
+
+            m_pSlotIcon.color = m_cOriginalColor;
+            m_pLightCoroutine = StartCoroutine(LightingSlot());
+        }
+
+        base.OnPointerEnter(e);
+    }
 
     public void SetCoolDownView(CoolDownView _pCoolDownView)
     {
@@ -128,19 +167,38 @@ public class Slot : ButtonUI
 
     public void SetUse(bool _bCanUse)
     {
-        m_bCanUse = _bCanUse;
-        
-        if(m_bCanUse == false)
+        if(_bCanUse == false)
             m_pIcon.color = Color.gray;
         else
             m_pIcon.color = Color.white;
     }
 
-   
-
     public void SetSlotIdx(int _iIdx){m_iSlotIdx = _iIdx;}  
         
+    private IEnumerator LightingSlot()
+    {
+        float fTime = 0.0f;
+        float fHalf = m_fDuration * 0.5f;
 
+        while (fTime < m_fDuration)
+        {
+            fTime += Time.unscaledDeltaTime;   // UI면 보통 unscaled 많이 씀
+
+            float fRatio;
+            if (fTime <= fHalf)
+                fRatio = fTime / fHalf;// 처음 절반: 원래색 -> 하이라이트
+        
+            else
+                fRatio = 1.0f - ((fTime - fHalf) / fHalf); // 나머지 절반: 하이라이트 -> 원래색
+
+            m_pSlotIcon.color = Color.Lerp(m_cOriginalColor, m_cHighlightColor, fRatio);
+
+            yield return null;
+        }
+
+        // 끝나면 원래 색으로 고정
+        m_pSlotIcon.color = m_cOriginalColor;
+    }
 }
 
 

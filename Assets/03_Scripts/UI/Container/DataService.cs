@@ -1,7 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -54,13 +57,14 @@ public class DataService : MonoBehaviour
     //2. 데이터 이동(인벤->장비, 인벤->상점, 인벤->버리기)
     //3. 데이터 검색(아이템, 스킬)
 
-    private static DataService m_instance = null;
     [SerializeField] private List<BaseUI> m_listContainerObj;
     private List<IContainer> m_listContainer = new List<IContainer>();
 
     [SerializeField] private GameObject m_pPlayerInfo = null;
     //아이엠 등록 (null가능 유니티 인스펙터에서 확인 불가)
     private SlotRef? m_pTargetSlot = null;
+
+    [SerializeField] private List<SOEquipUI> m_listPlayerStartEquip = new();
 
     //public void RegisterData()
     //등동된 데이터 Container로 가져오기
@@ -84,36 +88,54 @@ public class DataService : MonoBehaviour
 
         // 최초 인스턴스 등록
         m_Instance = this;
-        DontDestroyOnLoad(gameObject); // 선택: 씬 전환에도 유지
-
-        //정적 메서드 + 캐시된 델리게이트: 1회만 할당,
-        m_listContainer.Sort(CompareByType);
-
+        DontDestroyOnLoad(gameObject); // 선택: 씬 전환에도 유지  
     }
 
     private void Start()
     {
+        Init();
+        //정적 메서드 + 캐시된 델리게이트: 1회만 할당,
+        m_listContainer.Sort(CompareByType);
+
         for (int i = 0; i < m_listContainer.Count; ++i)
             m_listContainer[i].Init();
+
+        //플레이더 데이터 미리 셋팅
+        StartCoroutine(waitPoolAndEquiped());
+
     }
 
-    private void OnValidate()
+    private void Init()
     {
         m_listContainer.Clear();
 
-        for (int i = 0; i< m_listContainerObj.Count; ++i)
+        for (int i = 0; i < m_listContainerObj.Count; ++i)
         {
             if (m_listContainerObj[i] == null)
                 continue;
 
             IContainer IContain = m_listContainerObj[i].GetComponent<IContainer>();
             if (IContain == null)
+            {
+#if UNITY_EDITOR
                 Undo.DestroyObjectImmediate(m_listContainerObj[i]);
+#else
+                Destroy(m_listContainerObj[i]);
+#endif
+            }
             else
                 m_listContainer.Add(IContain);
         }
     }
 
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        Init();
+    }
+#endif
+
+   
     public bool StartPickData(IContainer _pFrom, SOEntryUI _pEntryUI, int _iFromIdx, int _iAmount, int _iCategoryIdx = 0)
     {
         if (_pEntryUI == null)
@@ -147,6 +169,13 @@ public class DataService : MonoBehaviour
             return false;
 
         return pTo.AddData(pTargetData.Data, pTargetData.Amount, _iToCategoryIdx);
+    }
+
+    public bool TryAddData(eContainerType _eToType, SOEntryUI _pEntryUI, int _iAmount)
+    {
+        IContainer pTo = GetContainer(_eToType);
+
+        return pTo.AddData(_pEntryUI, _iAmount);
     }
 
     //요청한 인덱스에 넣기
@@ -240,5 +269,21 @@ public class DataService : MonoBehaviour
     {
         IContainer IContain = GetContainer(_eType);
         IContain.SetVisible(_bEnable);
+    }
+
+
+
+
+    //처음 캐릭터 장비를 셋팅할 때 오브젝트 풀에서(비동기) 무기 오브젝트가 전부 로드되지 않을 수 있음
+    private IEnumerator waitPoolAndEquiped()
+    {
+        yield return new WaitUntil(() => ObjectPoolManager.m_Instance != null);
+        yield return new WaitUntil(() => ObjectPoolManager.CompletedLoad == true);
+
+        for (int i = 0; i < m_listPlayerStartEquip.Count; ++i)
+        {
+            SOEquipUI pEquip = m_listPlayerStartEquip[i];
+            m_listContainer[(int)eContainerType.Equipment].AddData(pEquip, 1);
+        }
     }
 }

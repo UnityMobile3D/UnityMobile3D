@@ -347,7 +347,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bRaycast: 1
-  m_eActionID: 0
+  m_pActionBind: {fileID: 0}
   m_pTextMeshProUGUI: {fileID: 0}
   onEnter:
     m_PersistentCalls:
@@ -1002,7 +1002,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bRaycast: 1
-  m_eActionID: 0
+  m_pActionBind: {fileID: 0}
   m_pTextMeshProUGUI: {fileID: 0}
   onEnter:
     m_PersistentCalls:
@@ -1379,7 +1379,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bRaycast: 1
-  m_eActionID: 0
+  m_pActionBind: {fileID: 0}
   m_pTextMeshProUGUI: {fileID: 0}
   onEnter:
     m_PersistentCalls:
@@ -1849,7 +1849,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bRaycast: 1
-  m_eActionID: 0
+  m_pActionBind: {fileID: 0}
   m_pTextMeshProUGUI: {fileID: 0}
   onEnter:
     m_PersistentCalls:
@@ -2956,7 +2956,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bRaycast: 1
-  m_eActionID: 0
+  m_pActionBind: {fileID: 0}
   m_pTextMeshProUGUI: {fileID: 0}
   onEnter:
     m_PersistentCalls:
@@ -3898,7 +3898,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bRaycast: 1
-  m_eActionID: 0
+  m_pActionBind: {fileID: 0}
   m_pTextMeshProUGUI: {fileID: 0}
   onEnter:
     m_PersistentCalls:
@@ -5110,7 +5110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bRaycast: 1
-  m_eActionID: 0
+  m_pActionBind: {fileID: 0}
   m_pTextMeshProUGUI: {fileID: 0}
   onEnter:
     m_PersistentCalls:
@@ -5366,7 +5366,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bRaycast: 1
-  m_eActionID: 0
+  m_pActionBind: {fileID: 0}
   m_pTextMeshProUGUI: {fileID: 0}
   onEnter:
     m_PersistentCalls:

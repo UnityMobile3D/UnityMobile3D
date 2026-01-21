@@ -19,10 +19,8 @@ public class ButtonUI : BaseUI,
     //UGUI 포인터 이벤트는 Monobehaviour update전에 이벤트 발생
 
     //만약 InputManager와 병합한다면
-    [SerializeField] private eActionID m_eActionID = eActionID.None;
-    public eActionID ActionID { get => m_eActionID; }
-    bool m_bIsBindingInputAction = false;
-    public bool IsBindingInputAction { get => m_bIsBindingInputAction; }
+   
+    [SerializeField] protected BindInputAction m_pActionBind = null;
 
     public TextMeshProUGUI m_pTextMeshProUGUI;
 
@@ -46,14 +44,15 @@ public class ButtonUI : BaseUI,
     [SerializeField] private PED onEndDrag;
     [SerializeField] private PED onClick;
 
+    [SerializeField] private SOAudio m_pClickAudio;
+    [SerializeField] private SOAudio m_pDownAudio;
     protected override void Awake()
     {
         base.Awake();
 
-        if (m_eActionID != eActionID.None)
-            m_bIsBindingInputAction = true;
 
         m_pTextMeshProUGUI = GetComponentInChildren<TextMeshProUGUI>();
+        m_pActionBind = GetComponent<BindInputAction>();
     }
    
     virtual public void OnPointerEnter(PointerEventData e)
@@ -70,14 +69,22 @@ public class ButtonUI : BaseUI,
 
     virtual public void OnPointerDown(PointerEventData e)
     {
+        if (m_pDownAudio != null)
+            SoundManager.m_Instance.PlaySfx(m_pDownAudio,null);
         onDown?.Invoke();
         OnDownEvt?.Invoke();
+
+        if (m_pActionBind != null)
+            m_pActionBind.Action();
     }
 
     virtual public void OnPointerUp(PointerEventData e)
     {
         onUp?.Invoke();
         OnUpEvt?.Invoke();
+
+        if (m_pActionBind != null)
+            m_pActionBind.Release();
     }
 
     virtual public void OnBeginDrag(PointerEventData e)
@@ -99,9 +106,9 @@ public class ButtonUI : BaseUI,
     }
     virtual public void OnPointerClick(PointerEventData e)
     {
-      
+        if (m_pClickAudio != null)
+            SoundManager.m_Instance.PlaySfx(m_pClickAudio, null);
         onClick?.Invoke();
         OnClickEvt?.Invoke();
-        //Debug.Log("Button Clicked");
     }
 }

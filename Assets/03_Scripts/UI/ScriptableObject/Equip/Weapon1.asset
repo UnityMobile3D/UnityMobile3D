@@ -12,11 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f915fa26efd7d454f9ddc08690f63e68, type: 3}
   m_Name: Weapon1
   m_EditorClassIdentifier: 
-  name: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: GUID:01d86f8c109675a499eb81e90c4c79f6
+    m_TableEntryReference:
+      m_KeyId: 720468414464
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   id: 65
   icon: {fileID: 21300000, guid: c0ea4b6e528e7fe4aa6cdc94d38691a1, type: 3}
   type: 24
-  sortKey: 0
-  cooldown: 0
-  level: 5
+  itemdata: {fileID: 11400000, guid: 1035a33cdbec48245a1266b200efc5df, type: 2}
   equiptype: 4
+  references:
+    version: 2
+    RefIds: []

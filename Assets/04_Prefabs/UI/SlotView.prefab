@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bRaycast: 1
-  m_eActionID: 0
+  m_pActionBind: {fileID: 0}
   m_pTextMeshProUGUI: {fileID: 0}
   onEnter:
     m_PersistentCalls:
@@ -87,6 +87,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
   m_pIcon: {fileID: 5365069975077579025}
   m_pCountBadgeText: {fileID: 7824958287270498067}
 --- !u!1 &1410229900967899119

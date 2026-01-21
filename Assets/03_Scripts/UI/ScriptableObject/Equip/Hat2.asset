@@ -12,11 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f915fa26efd7d454f9ddc08690f63e68, type: 3}
   m_Name: Hat2
   m_EditorClassIdentifier: 
-  name: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: GUID:01d86f8c109675a499eb81e90c4c79f6
+    m_TableEntryReference:
+      m_KeyId: 731331661824
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   id: 60
   icon: {fileID: 21300000, guid: 69b6fac54bf33d94f8b56a037beeb7bf, type: 3}
   type: 24
-  sortKey: 0
-  cooldown: 0
-  level: 5
+  itemdata: {fileID: 11400000, guid: 4cdf2cd42f19fec45a39d326a52b2835, type: 2}
   equiptype: 1
+  references:
+    version: 2
+    RefIds: []

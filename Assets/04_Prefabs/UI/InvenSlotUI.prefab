@@ -90,6 +90,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bRaycast: 1
+  m_pActionBind: {fileID: 0}
+  m_pTextMeshProUGUI: {fileID: 0}
   onEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -114,7 +116,10 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
-  m_pCountBadge: {fileID: 7401679099207673257}
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
+  m_pIcon: {fileID: 0}
+  m_pCountBadgeText: {fileID: 0}
 --- !u!1 &8322640445877671047
 GameObject:
   m_ObjectHideFlags: 0

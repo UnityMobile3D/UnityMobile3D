@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
+
 
 [CreateAssetMenu(menuName = "UIData/Catalog/Entry UI", fileName = "SOEntryUI")]
 public class SOEntryUI : ScriptableObject
@@ -15,12 +17,12 @@ public class SOEntryUI : ScriptableObject
         Equip = 24,
     }
 
-    [SerializeField] private string name = "";
+    [SerializeField] LocalizedString localizedName = null;
     [SerializeField] private int id;                    // 고정 키
-    [SerializeField] protected Sprite icon;               // 아이콘
+    [SerializeField] protected Sprite icon;             // 아이콘
     [SerializeField] private eUIType type;
-    [SerializeField] private int sortKey = 0;           // 정렬 우선순위(작을수록 앞)
-    [SerializeField] private float cooldown;            // 쿨타임
+
+    private string name = "";
 
     protected uint hashCode = (uint)eUIType.None;
 
@@ -28,9 +30,23 @@ public class SOEntryUI : ScriptableObject
     public int Id => id;
     public Sprite Icon => icon;
     public eUIType Type => type;
-    public int SortKey => sortKey;
 
-    public float Cooldown => cooldown;
+
+    private void OnEnable()
+    {
+        if (localizedName == null)
+            return;
+
+        localizedName.StringChanged += OnNameChanged;
+    }
+
+    private void OnDisable()
+    {
+        if (localizedName == null)
+            return;
+
+        localizedName.StringChanged -= OnNameChanged;
+    }
 
     public virtual uint GetUIHashCode()
     {
@@ -42,5 +58,10 @@ public class SOEntryUI : ScriptableObject
     {
         uint iHashCode = (uint)type;
         return iHashCode;
+    }
+
+    private void OnNameChanged(string value)
+    {
+        name = value;
     }
 }

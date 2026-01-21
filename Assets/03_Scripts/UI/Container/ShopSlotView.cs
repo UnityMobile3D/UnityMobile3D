@@ -16,8 +16,8 @@ public class ShopSlotView : SlotView
     {
         BindData(_pEntryUI, _iSlotIdx);
 
-        SOShapItem pShapItem = _pEntryUI as SOShapItem;
-        update_coin(pShapItem);
+        SOShopItem pShopItem = _pEntryUI as SOShopItem;
+        update_coin(pShopItem);
     }
 
     override public void OnBeginDrag(PointerEventData e)
@@ -46,17 +46,17 @@ public class ShopSlotView : SlotView
         }
     }
 
-    private void update_coin(SOShapItem _pShapData)
+    private void update_coin(SOShopItem _pShopData)
     {
-        if(_pShapData == null)
+        if(_pShopData == null)
         {
             m_pNameText.text = "";
             m_pCoinText.SetText("0");
         }
         else
         {
-            m_pNameText.text = _pShapData.Name;
-            m_pCoinText.SetText("{0}", _pShapData.Coin); ;
+            m_pNameText.text = _pShopData.Name;
+            m_pCoinText.SetText("{0}", _pShopData.Coin); ;
         }
     }
 

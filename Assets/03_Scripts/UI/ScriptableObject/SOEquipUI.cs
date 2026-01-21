@@ -5,28 +5,15 @@ using static SOItemUI;
 
 [CreateAssetMenu(menuName = "UIData/Catalog/Equip UI", fileName = "SOEntryUI")]
 
-public class SOEquipUI : SOEntryUI
+
+public class SOEquipUI : SOEntryUI, IItemUI
 {
-    public enum eEquipType
-    {
-        None,
-        Hat,
-        Top,
-        Shoes,
-        Weapon,
-    }
 
-    [SerializeField] private uint level;
+    [SerializeField] private SOItem itemdata;
     [SerializeField] private eEquipType equiptype;
-    //[SerializeField] private SOItemEffect[] effects;
-    [SerializeField] private Values basevalues;
-
-    //기본 정적 효과 값, (만약 크리티컬이나 이런 회복량 증가가 있다면 기본(정적) + 증가값(동적) 으로 효과 적용 
-    public Values BaseValues => basevalues;
-    //public SOItemEffect[] Effects => effects;
-    public uint Level => level;
     public eEquipType EquipType => equiptype;
 
+    public SOItem ItemData => itemdata;
 
     public override uint GetUIHashCode()
     {

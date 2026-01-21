@@ -16,6 +16,7 @@ public class Store : BaseUI, IContainer
 
     public void Init()
     {
+        m_pItemContainer.SetParent(this);
         m_pItemContainer.Build();
     }
     public void SetVisible(bool _bOn)
@@ -33,23 +34,16 @@ public class Store : BaseUI, IContainer
     }
 
 
-    private void Start()
+    private void OnEnable()
     {
-        m_pCoinText.SetText("{0}", ShopManager.m_Instance.Get(ShopManager.eCurrency.Coin)); 
+        update_coin();
     }
-    private void Update()
-    {
-
-    }
-
-    private void OnDisable()
-    {
-        //m_pPlayerInterface.
-    }
+  
     private void close_tap()
     {
         //레이까지 제거하기 위해서
         gameObject.SetActive(false);
+        m_pItemContainer.ClearTarget();
     }
   
 
@@ -59,19 +53,25 @@ public class Store : BaseUI, IContainer
         if (pTarget == null)
             return;
 
-        SOShapItem pShapItem = pTarget.SOEntryUI as SOShapItem;
+        SOShopItem pShapItem = pTarget.SOEntryUI as SOShopItem;
         if (pShapItem != null)
         {
            //데이터 매니저에서 플레이어 코인 값 가져오기 가져왔다면 비교 후 DataService를 통해서 전달
-           if(ShopManager.m_Instance.Spend(ShopManager.eCurrency.Coin, pShapItem.Coin))
+           if(ShopManager.m_Instance.Spend(ShopManager.eCurrency.Coin, pShapItem.Coin) == true)
            {
                 DataService.m_Instance.StartPickData(this, pShapItem.ItemUI, pTarget.SlotIdx, 1);
 
                 DataService.m_Instance.TryAddData(eContainerType.Inventory);
 
                 m_pItemContainer.ClearTarget();
+
+                update_coin();
            }
         }
+    }
+    private void update_coin()
+    {
+        m_pCoinText.SetText("{0}", ShopManager.m_Instance.Get(ShopManager.eCurrency.Coin));
     }
 
 

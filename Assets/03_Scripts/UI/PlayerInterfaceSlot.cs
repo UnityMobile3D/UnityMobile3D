@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public class PlayerInterfaceSlot : BaseUI, IContainer
 {
     [SerializeField] private SlotContainer m_pSlotContainer = null;
@@ -11,12 +9,25 @@ public class PlayerInterfaceSlot : BaseUI, IContainer
 
     [SerializeField] private eContainerType m_eContainerType = eContainerType.Interface; // ← 인스펙터에 드롭다운으로 보임
     public eContainerType ContainerType { get => m_eContainerType; }
-    
+
+    public static int SLOT_SIZE = 5;
+
+    public void OnValidate()
+    {
+        SLOT_SIZE = m_pSlotContainer.SlotList.Count;
+    }
+    protected override void Awake()
+    {
+        base.Awake();
+
+        m_pSlotContainer.Init();
+    }
+
+    //IContainer 구현
     public void Init()
     {
-
+        //m_pSlotContainer.Init();
     }
-    //IContainer 구현
 
     public void SetVisible(bool _bOn)
     {
@@ -54,6 +65,13 @@ public class PlayerInterfaceSlot : BaseUI, IContainer
 
     public bool AddData(SOEntryUI _pSOData, int _iAmount, int _iCategoryIdx = 0)
     {
+        if (m_hashItemCount.TryGetValue(_pSOData.Id, out int iAmount) == true)
+        {
+            m_hashItemCount[_pSOData.Id] += _iAmount;
+            m_pSlotContainer.UpdateItemCount(m_hashItemCount[_pSOData.Id]);
+            return true;
+        }
+
         return false;
     }
 

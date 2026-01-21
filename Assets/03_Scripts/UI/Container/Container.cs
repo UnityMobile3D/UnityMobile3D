@@ -2,7 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
+
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -14,9 +18,9 @@ public class CategoryData
 {
     public List<SOEntryUI> m_ListData = new List<SOEntryUI>();
 
-    [SerializeField] private bool m_bCanDuplication = true; //중복 허용할지(장비 템 창, 스킬 창)
-   
     public int m_iCurrentRemnantData = 0;
+
+    [SerializeField] private bool m_bCanDuplication = true; //중복 허용할지(장비 템 창, 스킬 창)
     public bool IsCanDuplication => m_bCanDuplication;
     public bool IsFull => m_iCurrentRemnantData <= 0;
     public int m_iCategoryIdx = 0;
@@ -78,7 +82,6 @@ public class Container : ButtonUI
     private RectTransform m_pFrameRectTrasnform;
     private Image m_pFrameImage;
 
-    
     [Header("SLOT")]
     [SerializeField] private int m_iSlotColCount = 3;
     [SerializeField] private int m_iSlotRowCount = 2;
@@ -150,14 +153,25 @@ public class Container : ButtonUI
                     Conatiner
      *////////////////////////////////////
 
-    private SOEntryUI find_data_idx(int _iDataIdx, int _iCategoryIdx = 0)
-    {
-        CategoryData pCategoryData = GetCategoryData(_iCategoryIdx);
+    //빈공간 없이 정렬
+   public void SortData()
+   {
+        for(int i = 1; i<m_listView.Count; ++i)
+        {
+            SlotView pTarget = m_listView[i];
+            if (pTarget.SOEntryUI == null)
+                continue;
 
-        if(pCategoryData == null)
-            return null;
+            int pre = i - 1;
+            while (pre >= 0 && m_listView[pre].SOEntryUI != null)
+            {
+                int iSwapIdx = pre;
+                --pre;
+            }
 
-        return pCategoryData.m_ListData[_iDataIdx];
+            m_listView[pre].Bind(pTarget.SOEntryUI, pre);
+            m_listView[i].Bind(null, i);
+        }
     }
 
     public bool DeleteData(int _iDataIdx, int _iCategoryIdx = 0)
@@ -204,7 +218,7 @@ public class Container : ButtonUI
             pCategoryData.m_ListData[_iIdx] = _pSOEntryUI;
         }
      
-   
+        
         BindData(_iCategoryIdx);
 
         --pCategoryData.m_iCurrentRemnantData;
@@ -213,10 +227,9 @@ public class Container : ButtonUI
     }
   
 
+    //에디터에서 가장 처음에 실행
     public void Build()
     {
-        m_IOwner = GetComponentInParent<IContainer>();
-
         clear_data();
 
         m_pRectMask = GetComponent<RectMask2D>();
@@ -324,10 +337,9 @@ public class Container : ButtonUI
         m_vContaninerSize.x = vStep.x * m_iColCount;
         m_vContaninerSize.y = vStep.y * iRowSize;
 
-
     }
 
-    public void BindData(int _iCategoryIdx)
+    public void BindData(int _iCategoryIdx = 0)
     {
         List<SOEntryUI> pListData = GetListData(_iCategoryIdx);
         if (pListData == null)
@@ -347,9 +359,27 @@ public class Container : ButtonUI
         }
     }
   
+    public void ClearData(int _iCategoryData = 0)
+    {
+        List<SOEntryUI> listData = m_listCategoryData[_iCategoryData].m_ListData;
+        for(int i = 0; i<listData.Count; ++i)
+            listData[i] = null;
+
+        m_listCategoryData[_iCategoryData].m_iCurrentRemnantData = listData.Count;
+        BindData(_iCategoryData);
+    }
+
     public void ChanageSelect()
     {
         m_bOnSelect = !m_bOnSelect;
+    }
+    public void OnSelect()
+    {
+        m_bOnSelect =true;
+    }
+    public void OffSelect()
+    {
+        m_bOnSelect =false;
     }
 
     /*/////////////////////////////////////
@@ -449,7 +479,11 @@ public class Container : ButtonUI
         {
             if(m_pContentView.GetChild(i).gameObject.GetComponent<SlotView>())
             {
+#if UNITY_EDITOR
                 Undo.DestroyObjectImmediate(m_pContentView.GetChild(i).gameObject);
+#else
+    Destroy(m_pContentView.GetChild(i).gameObject);
+#endif
             }
         }
 
@@ -530,9 +564,14 @@ public class Container : ButtonUI
 
     public int GetCount(SOEntryUI _pEntryUI)
     {
+        if (m_IOwner == null)
+            return -1;
         int iAmount = m_IOwner.GetDataAmount(_pEntryUI, m_iCurrentCategoryIdx);
         return iAmount;
     }
 
-    
+    public void SetParent(IContainer _IContainer)
+    {
+        m_IOwner = _IContainer;
+    }
 }

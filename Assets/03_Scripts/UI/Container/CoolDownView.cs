@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +15,9 @@ public class CoolDownView : MonoBehaviour
 
     private float m_fMaxCoolTime = 0f;
     private float m_fCurCoolTime = 0f;
+
+    private bool m_bDone = true;
+    public bool IsDone { get => m_bDone; }
 
     private void Awake()
     {
@@ -50,18 +52,6 @@ public class CoolDownView : MonoBehaviour
     }
 
 
-    private void Update()
-    {
-        //GC가 돌아가지 않게 코루틴을 쓰지않고 
-        //따로 스킬 매니저에서 현재 쿨타임을 넘겨주지 않는다면 여기서 쿨타임을 계산
-        //만약 넘겨준다면 UpdateCoolTime에서 받기
-        if(m_pOwner.IsCanUse == false)
-        {
-            m_fCurCoolTime += Time.deltaTime;
-            UpdateCoolTime(m_fCurCoolTime);
-        }
-    }
-
     private void create_overlay()
     {
         Transform pOverlay = transform.Find(m_sOverlayName);
@@ -95,21 +85,34 @@ public class CoolDownView : MonoBehaviour
         }
     }
 
-    public void UpdateCoolTime(float _fCoolTime)
+    public bool UpdateCoolTime(float _fCoolTime)
     {
+        m_fCurCoolTime += _fCoolTime;
+
         float m_fRatio = m_fCurCoolTime / m_fMaxCoolTime;
 
         m_pOverlayImage.fillAmount = 1.0f - m_fRatio;
         if (m_pOverlayImage.fillAmount <= 0.0f)
         {
             m_fCurCoolTime = 0.0f;
+            m_bDone = true;
             m_pOwner.SetUse(true);
+            return true;
         }
+
+        return false;
     }
     public void SetCoolTime(float _fTime)
     {
         m_fCurCoolTime = 0.0f;
         m_fMaxCoolTime = _fTime;
+        m_pOverlayImage.fillAmount = 0.0f;
+    }
+
+    public void ResetCoolTime()
+    {
+        m_fCurCoolTime = 0.0f;
+        m_bDone = false;
         m_pOverlayImage.fillAmount = 0.0f;
     }
 

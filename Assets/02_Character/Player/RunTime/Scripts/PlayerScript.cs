@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using Game.Common;
 using System.Text.RegularExpressions;
-using Game.Skill;
 
 public class PlayerScript : MonoBehaviour
 {

@@ -11,19 +11,18 @@ using System.Linq;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.InputSystem.Utilities;
-using UnityEditor.Playables;
-
+using InputType = InputManager.InputType;
 public class TouchTracker 
 {
 
     //private Dictionary<int, tTrack> m_hashTrack = new Dictionary<int, tTrack>();
     List<bool> m_listTouchOverUI = Enumerable.Repeat(false, 10).ToList();
 
-    private const float m_fTapMaxTime = 0.2f;  // ÅÇ ÃÖ´ë Áö¼Ó½Ã°£
-    private const float m_fTapMaxMove = 3.0f;   // ÅÇ Çã¿ë ÀÌµ¿·®
-    private const float m_fLongPressTime = 0.45f; // ·ÕÇÁ·¹½º ÃÖ¼Ò ½Ã°£
-    private const float m_fSwipeMinDist = 5.0f;   // ½º¿ÍÀÌÇÁ ÃÖ¼Ò °Å¸®
-    private const float m_fDragStartDist = 1.0f;   // µå·¡±× ½ÃÀÛ °Å¸®
+    private const float m_fTapMaxTime = 0.2f;  // íƒ­ ìµœëŒ€ ì§€ì†ì‹œê°„
+    private const float m_fTapMaxMove = 3.0f;   // íƒ­ í—ˆìš© ì´ë™ëŸ‰
+    private const float m_fLongPressTime = 0.45f; // ë¡±í”„ë ˆìŠ¤ ìµœì†Œ ì‹œê°„
+    private const float m_fSwipeMinDist = 5.0f;   // ìŠ¤ì™€ì´í”„ ìµœì†Œ ê±°ë¦¬
+    private const float m_fDragStartDist = 1.0f;   // ë“œë˜ê·¸ ì‹œì‘ ê±°ë¦¬
 
 
     public void UpdateTouchPhase(ref ReadOnlyArray<Touch> _listTouch,
@@ -31,28 +30,28 @@ public class TouchTracker
     {
         _listResultTouch.Clear();
 
-        foreach (var tTouch in _listTouch)
+        for(int i = 0; i< _listTouch.Count; ++i)
         {
-            switch(tTouch.phase)
+            switch (_listTouch[i].phase)
             {
                 case TouchPhase.Began:
-                    began_touch(tTouch, _pRayCaster);
+                    began_touch(_listTouch[i], _pRayCaster);
                     break;
-    
+
                 case TouchPhase.Moved:
                 case TouchPhase.Stationary:
-                    moved_touch(in tTouch, _listResultTouch);
+                    moved_touch(_listTouch[i], _listResultTouch);
                     break;
-    
+
                 case TouchPhase.Ended:
                 case TouchPhase.Canceled:
-                    ended_touch(in tTouch, _listResultTouch);
+                    ended_touch(_listTouch[i], _listResultTouch);
                     break;
             }
-
         }
+        
 
-        //Æä¾î°¡ ¹Ù²îÁö ¾Ê°Ô °¡Àå Ã³À½ 2°³¸¦ ¿ì¼±À¸·Î Á¤·ÄÇØ¼­
+        //í˜ì–´ê°€ ë°”ë€Œì§€ ì•Šê²Œ ê°€ì¥ ì²˜ìŒ 2ê°œë¥¼ ìš°ì„ ìœ¼ë¡œ ì •ë ¬í•´ì„œ
         if (_listTouch.Count >= 2)
         {
             int iFirstID = 0;
@@ -73,19 +72,20 @@ public class TouchTracker
     }
 
 
-    private void add_touch_event(List<tTouchEvent> _listTouchEvent, in string _strStateType, 
-             in Vector2 _vDelta , float _fValue, bool _bOverUI, /*Test*/ int _iID)
+    private void add_touch_event(List<tTouchEvent> _listTouchEvent, InputType _eInputType, 
+              Vector2 _vDelta , Vector2 _vDeltaDrag, float _fValue, bool _bOverUI, /*Test*/ int _iID)
     {
         _listTouchEvent.Add(new tTouchEvent
         {
-            strType = _strStateType,
+            eInputType = _eInputType,
             vDelta = _vDelta,
-            fValue = _fValue, 
+            vDeltaDrag = _vDeltaDrag,
+            fValue = _fValue,
             bOverUI = _bOverUI
         });
 
-        Debug.Log($"ID {_iID} Å¸ÀÔ {_strStateType} °ª : {_fValue} " +
-            $"ÀÌµ¿·® : {_vDelta} UI {_bOverUI}" );
+        Debug.Log($"ID {_iID} íƒ€ì… {_eInputType.ToString()} ê°’ : {_fValue} " +
+            $"ì´ë™ëŸ‰ : {_vDelta} UI {_bOverUI}" );
     }
 
     private void track_multi_touch(List<tTouchEvent> _listTouchEvent, in Touch _tFirstTouch, in Touch _tSecondTouch)
@@ -93,32 +93,14 @@ public class TouchTracker
         int iFirstID = _tFirstTouch.finger.index;
         int iSecondID = _tSecondTouch.finger.index;
 
-        //¿©±â ¹Ù²Ù±â _tTouch·Î¸¸À¸·Îµµ ÃæºĞ TackÀ» ¾È¾²°í List<bool> °ªÀ¸·Î overUi¸¸ °Ë»ç
-        float fCurDist = (_tFirstTouch.screenPosition - _tSecondTouch.screenPosition).magnitude;                //ÇöÀç µÎ ¼Õ°¡¶ô °Å¸®
-        float fStartDist = (_tFirstTouch.startScreenPosition - _tSecondTouch.startScreenPosition).magnitude;    //½ÃÀÛ µÎ ¼Õ°¡¶ô °Å¸®
-        float fScale = fCurDist / fStartDist;                                                       //ÇÉÄ¡ ½ºÄÉÀÏ º¯È­
+        float fCurDist = (_tFirstTouch.screenPosition - _tSecondTouch.screenPosition).magnitude;                //í˜„ì¬ ë‘ ì†ê°€ë½ ê±°ë¦¬
+        float fStartDist = (_tFirstTouch.startScreenPosition - _tSecondTouch.startScreenPosition).magnitude;    //ì‹œì‘ ë‘ ì†ê°€ë½ ê±°ë¦¬
+        float fScale = fCurDist / fStartDist;                                                                   //í•€ì¹˜ ìŠ¤ì¼€ì¼ ë³€í™”
 
-        add_touch_event(_listTouchEvent, "pinch", 
-            /*(pFirst.vLastPos + pSecond.vLastPos) * 0.5f,*/ Vector2.zero, fScale,
+        add_touch_event(_listTouchEvent, InputType.Pinch, 
+             Vector2.zero, Vector2.zero, fScale,
             m_listTouchOverUI[iFirstID] && m_listTouchOverUI[iSecondID], iFirstID | iSecondID);
 
-        //Vector2 vStartVector = pSecond.vStartPos - pFirst.vStartPos;        //½ÃÀÛ ½Ã µÎ ¼Õ°¡¶ô ÅÍÄ¡ÇÑ ÁöÁ¡ º¤ÅÍ
-        //Vector2 vCurVector = pSecond.vLastPos - pFirst.vLastPos;            //ÇöÀç µÎ ¼Õ°¡¶ô ÅÍÄ¡ÇÑ ÁöÁ¡ º¤ÅÍ
-        //
-        //
-        //float fStartAngle = Mathf.Atan2(vStartVector.y, vStartVector.x) * Mathf.Rad2Deg; //½ÃÀÛ °¢µµ ¶óµğ¾È¿¡¼­ µğ±×¸®·Î
-        //float fCurAngle = Mathf.Atan2(vCurVector.y, vCurVector.x) * Mathf.Rad2Deg; //ÇöÀç °¢µµ ¶óµğ¾È¿¡¼­ µğ±×¸®·Î
-        //float fRotateDelta = Mathf.DeltaAngle(fStartAngle, fCurAngle); //È¸Àü º¯È­·®(µµ ´ÜÀ§)
-
-        //_listTouchEvent.Add(new tTouchEvent
-        //{
-        //    strType = "rotate",
-        //    iPointerIDA = pFirst.iID,
-        //    iPointerIDB = pSecond.iID,
-        //    vPos = (pFirst.vLastPos + pSecond.vLastPos) * 0.5f, //Áß°£ ÁöÁ¡
-        //    fValue = fRotateDelta, //ÇÉÄ¡ ½ºÄÉÀÏ º¯È­
-        //    bOverUI = pFirst.bOverUI || pSecond.bOverUI
-        //});
     }
 
     private void moved_touch(in Touch _tTouch, List<tTouchEvent> _listTouchEvent)
@@ -127,20 +109,20 @@ public class TouchTracker
         if (m_listTouchOverUI[iID] == true)
             return;
 
-        //°ú°Å¿¡ ÀÖµé¾î¿Ô´ø ÅÍÄ¡½Ã°£°ú ºñ±³
+        //ê³¼ê±°ì— ìˆë“¤ì–´ì™”ë˜ í„°ì¹˜ì‹œê°„ê³¼ ë¹„êµ
         float fDeltaTime = (float)(_tTouch.time - _tTouch.startTime);
-        Vector2 vDeltaDist = _tTouch.screenPosition - _tTouch.startScreenPosition;
-
-        if (fDeltaTime >= m_fLongPressTime && vDeltaDist.magnitude < m_fDragStartDist)
+        Vector2 vDist = _tTouch.screenPosition - _tTouch.startScreenPosition;
+      
+        if (fDeltaTime >= m_fLongPressTime && vDist.magnitude < m_fDragStartDist)
         {
-            add_touch_event(_listTouchEvent, "stay",
-                Vector2.zero, fDeltaTime, m_listTouchOverUI[iID], iID);
+            add_touch_event(_listTouchEvent, InputType.Stay,
+                Vector2.zero, _tTouch.delta, fDeltaTime, m_listTouchOverUI[iID], iID);
         }
 
-        else if (vDeltaDist.magnitude >= m_fDragStartDist) //ÀÏÁ¤°Å¸® ÀÌ»ó ÀÌµ¿ µå·¡±×
+        else if (vDist.magnitude >= m_fDragStartDist) //ì¼ì •ê±°ë¦¬ ì´ìƒ ì´ë™ ë“œë˜ê·¸
         {
-            add_touch_event(_listTouchEvent, "drag",
-                vDeltaDist, fDeltaTime, m_listTouchOverUI[iID], iID);
+            add_touch_event(_listTouchEvent, InputType.Drag,
+                vDist, _tTouch.delta, fDeltaTime, m_listTouchOverUI[iID], iID);
         }
     }
 
@@ -154,20 +136,20 @@ public class TouchTracker
         }
 
         float fDeltaTime = (float)(_tTouch.time - _tTouch.startTime);
-        Vector2 vDeltaDist = _tTouch.screenPosition - _tTouch.startScreenPosition;
+        Vector2 vDist = _tTouch.screenPosition - _tTouch.startScreenPosition;
 
-        //ÂªÀº ½Ã°£, ÀûÀº ÀÌµ¿·®
-        if (fDeltaTime <= m_fTapMaxTime && vDeltaDist.magnitude < m_fTapMaxMove)                 
+        //ì§§ì€ ì‹œê°„, ì ì€ ì´ë™ëŸ‰
+        if (fDeltaTime <= m_fTapMaxTime && vDist.magnitude < m_fTapMaxMove)                 
         {
-            add_touch_event(_listTouchEvent, "tap",
-                Vector2.zero, fDeltaTime, m_listTouchOverUI[iID], iID);
+            add_touch_event(_listTouchEvent, InputType.Tap,
+               _tTouch.screenPosition, Vector2.zero, fDeltaTime, m_listTouchOverUI[iID], iID);
         }
 
-        //Å« ÀÌµ¿·®
-        else if (vDeltaDist.magnitude >= m_fSwipeMinDist) //½º¿ÍÀÌÇÁ ÀÎ½Ä
+        //í° ì´ë™ëŸ‰
+        else if (vDist.magnitude >= m_fSwipeMinDist) //ìŠ¤ì™€ì´í”„ ì¸ì‹
         {
-            add_touch_event(_listTouchEvent, "swipe", 
-                vDeltaDist, fDeltaTime, m_listTouchOverUI[iID], iID);
+            add_touch_event(_listTouchEvent, InputType.Swipe,
+                vDist, _tTouch.delta, fDeltaTime, m_listTouchOverUI[iID], iID);
         }
 
         m_listTouchOverUI[iID] = false; 

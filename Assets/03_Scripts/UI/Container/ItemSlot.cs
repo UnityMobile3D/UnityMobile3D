@@ -16,25 +16,33 @@ public class ItemSlot : Slot
 
     public SOItemUI SOItem { get => m_pSOItem; }
 
-    public List<AdditionalEffect> m_listEffect = new List<AdditionalEffect>();
+    private EffectContext m_pItemEquipContext = new EffectContext();
 
     protected override void Awake()
     {
         base.Awake();
         m_pCheckUI.OnClickEvt += selete_item_slot;
 
-        m_iUIType |= (uint)m_eItemType << 16;
+        m_iUIType |= (uint)m_eItemType << (int)SOEntryUI.eUIType.Item;
     }
+
+    public override void Init()
+    {
+        base.Init();
+        m_iUIType |= (uint)m_eItemType << (int)SOEntryUI.eUIType.Item;
+    }
+   
 
     public override void Bind(SOEntryUI _pSOTarget)
     {
+       
         base.Bind(_pSOTarget);
 
         if (_pSOTarget != null)
         {
             m_pSOItem = _pSOTarget as SOItemUI;
-            SetCoolTime(m_pSOItem.Cooldown);
-            update_count();
+            SetCoolTime(m_pSOItem.ItemData.cooldown);
+            UpdateCount();
         } 
         else
         {
@@ -45,33 +53,33 @@ public class ItemSlot : Slot
 
     public override void Using()
     {
-        if (m_bCanUse == false)
+        if (m_pSOItem == null)
             return;
-
-        m_bCanUse = false;
-        //InputManager.m_Instance.BindUGUIButtonBoolean(ActionID, true);
-
+        
         int iConsumeCount = 1;
 
         //데이터 사용 후 인덱스 업데이트
         if (m_pOwner?.Consume(m_iSlotIdx, iConsumeCount) == false)
-        {
             Bind(null);
-        }
 
-        update_count();
+        
+        ItemEffectRunner.ApplyEffectUsing(m_pSOItem.ItemData, m_pItemEquipContext);
 
-        ItemEffectRunner.UsingItem(m_pSOItem, null, null, m_listEffect);
+        UpdateCount();
     }
     private void selete_item_slot()
     {
         DataService.m_Instance.TryDropDataAndSwap(m_pOwner, SlotIdx);
     }
 
-    private void update_count()
+    public void UpdateCount(int _iAmount = 0)
     {
-        int iCount = m_pOwner?.GetDataAmount(m_pSOTarget) ?? 0;
-     
+        int iCount = 0;
+        if(_iAmount > 0)
+            iCount = _iAmount;
+        else
+            iCount = m_pOwner?.GetDataAmount(m_pSOTarget) ?? 0;
+
         bool bShow = iCount > 1; // 1개 이하면 보통 표기 안 함
         if (bShow)
         {
@@ -83,9 +91,5 @@ public class ItemSlot : Slot
 
     }
 
-    private void update_count(int _iCount)
-    {
-
-    }
 }
 

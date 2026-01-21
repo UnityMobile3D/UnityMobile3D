@@ -34,7 +34,6 @@ public class Inventory : BaseUI, IContainer
     Dictionary<uint, CategoryData> m_hashCategoryData = new Dictionary<uint, CategoryData>();
 
     //Test
-    [SerializeField] private SOEntryUI[] m_arrTestData;
 
     [SerializeField] private Color m_pBaseColor;
 
@@ -43,6 +42,8 @@ public class Inventory : BaseUI, IContainer
 
     public void Init()
     {
+        m_pInevenContainer.SetParent(this);
+
         int testValue = -1;
         for (int i = 0; i < m_pInevenContainer.CategoryCount; ++i)
         {
@@ -62,7 +63,9 @@ public class Inventory : BaseUI, IContainer
             }
         }
 
-        m_pInevenContainer.BindData(0);
+
+        m_pInevenContainer.Build();
+
     }
 
     public void SetVisible(bool _bOn)
@@ -75,7 +78,6 @@ public class Inventory : BaseUI, IContainer
         
         m_pInevenContainer.OnSelectEvt += select;
 
-        m_pInevenContainer.Build();
 
         button_option();
 
@@ -115,8 +117,6 @@ public class Inventory : BaseUI, IContainer
     {
         uint iUITypeCode = _pData.GetUITypeCode();
     }
-
-    
 
     private void select()
     {
@@ -161,7 +161,7 @@ public class Inventory : BaseUI, IContainer
         //데이터 서비스에서 지금 눌린 데이터 참조
         DataService.m_Instance.StartPickData(this, pTargetView.SOEntryUI, pTargetView.SlotIdx, iCount);
 
-        //인터페이스 매니저를 만들어서 해당 클래스에게 요청하는 식으로 변경
+        m_pEquipSlotContainer.UnActiveSlot();
         m_pEquipSlotContainer.ActiveSlot(pTargetView.SOEntryUI.GetUIHashCode());
     }
 
@@ -178,7 +178,39 @@ public class Inventory : BaseUI, IContainer
 
     private void auto_equipped()
     {
+        int iEquipIdx = m_pInevenContainer.GetCategoryIdx(eUIType.Equip);
+        List<SOEntryUI> listEquip = m_pInevenContainer.GetListData(iEquipIdx); //인벤토리 장비
+        List<Slot> listCurrentEquip = m_pEquipSlotContainer.SlotList; //현재 장비
+        
+        for(int i = 0; i<listEquip.Count; ++i)
+        {
+            if (listEquip[i] == null)
+                continue;
 
+            SOEquipUI pEquipUI = listEquip[i] as SOEquipUI;
+            for(int j = 0; j<listCurrentEquip.Count; ++j)
+            {
+                EquipSlot pEquipSlot = listCurrentEquip[j] as EquipSlot;
+
+                if (pEquipUI == null || pEquipSlot == null)
+                {
+                    Debug.LogError("장비 인벤토리에 다른 아이템이 들어가있음");
+                    return;
+                }
+
+                if(pEquipSlot.GetSlotHashCode() == pEquipUI.GetUIHashCode())
+                {
+                    uint iCurrentLev = pEquipSlot.SOEquip == null ? 0 : pEquipSlot.SOEquip.ItemData.Level;
+                    uint iEquipLev = pEquipUI.ItemData.Level;
+                    //현재 끼고있는 장비보다 레벨이 높다면
+                    if (iEquipLev > iCurrentLev)
+                    {
+                        DataService.m_Instance.StartPickData(this, pEquipUI, i, 1, iEquipIdx);
+                        DataService.m_Instance.TryDropDataAndSwap(eContainerType.Equipment, pEquipSlot.SlotIdx);
+                    }
+                }
+            }
+        }
     }
 
     private void button_option()
@@ -269,6 +301,10 @@ public class Inventory : BaseUI, IContainer
         }
         else
         {
+            //들어왔을 때 아이템이 슬롯 인터페이스에 있는지 확인
+            if (DataService.m_Instance.TryAddData(eContainerType.Interface, _pSOData, _iAmount) == true)
+                return true;
+
             return m_pInevenContainer.AddData(_pSOData, iCategoryIdx);
         }
     }
@@ -297,9 +333,14 @@ public class Inventory : BaseUI, IContainer
     {
         //1.만약 바꾸는거라면 슬롯에 있는 데이터를 다시 인벤토리에 넣어야함
         //2.컨테이너에서 중복으로 감시하기 때문에 거기서 반환 값을 통해서 감시하기 굳이 인벤토리에서도 있는지 체크하지말기
-        int iDataId = m_pInevenContainer.GetTargetSlot().SOEntryUI.Id;
-        m_hashItemCount.Remove((uint)iDataId);
+        SOEntryUI pTargetData = m_pInevenContainer.GetDataIdx(_iDataIdx, _iCategoryIdx);
+        if (pTargetData == null)
+            return false;
 
+        if (m_hashItemCount.ContainsKey((uint)pTargetData.Id) == false)
+            return false;
+
+        m_hashItemCount.Remove((uint)pTargetData.Id);
         m_pInevenContainer.DeleteData(_iDataIdx, _iCategoryIdx);
         m_pInevenContainer.ClearTarget();
         return true;

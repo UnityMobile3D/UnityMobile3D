@@ -127,7 +127,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bRaycast: 1
-  m_eActionID: 0
+  m_pActionBind: {fileID: 0}
+  m_pTextMeshProUGUI: {fileID: 0}
   onEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -152,11 +153,17 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 11400000, guid: 02b7390dabbddbf4ca61d2680e0d5890, type: 2}
   m_pCheckUI: {fileID: 2723639680995588981}
   m_pIcon: {fileID: 7765994738812190989}
   m_eUIType: 24
   m_iSlotIdx: 0
-  m_pSOEquip: {fileID: 0}
+  m_cHighlightColor: {r: 2, g: 2, b: 2, a: 2}
+  m_fDuration: 0.5
+  m_pUsingAudio: {fileID: 0}
+  m_pEquip: {fileID: 0}
+  m_pPreEquip: {fileID: 0}
   m_eEquipType: 4
 --- !u!1 &5608009821200464008
 GameObject:
@@ -247,7 +254,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bRaycast: 1
-  m_eActionID: 0
+  m_pActionBind: {fileID: 0}
+  m_pTextMeshProUGUI: {fileID: 0}
   onEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -272,6 +280,8 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls: []
+  m_pClickAudio: {fileID: 0}
+  m_pDownAudio: {fileID: 0}
 --- !u!1 &6205060304544659761
 GameObject:
   m_ObjectHideFlags: 0

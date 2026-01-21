@@ -4,19 +4,33 @@ using UnityEngine.InputSystem.EnhancedTouch;
 
 public static class InitializeInput
 {
-    // ¾À ·Îµå Àü¿¡ °¡Àå ¸ÕÀú ½ÇÇà
+    // ì”¬ ë¡œë“œ ì „ì— ê°€ì¥ ë¨¼ì € ì‹¤í–‰
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     static void Init()
     {
-        // 1) ¿¡µğÅÍ/PC¿¡¼­ °¡»ó ÅÍÄ¡ µğ¹ÙÀÌ½º°¡ ¾øÀ¸¸é »ı¼º
+        // 1) ì—ë””í„°/PCì—ì„œ ê°€ìƒ í„°ì¹˜ ë””ë°”ì´ìŠ¤ê°€ ì—†ìœ¼ë©´ ìƒì„±
         if (Touchscreen.current == null)
-            InputSystem.AddDevice<Touchscreen>(); 
+            InputSystem.AddDevice<Touchscreen>();
 
-        // 2) EnhancedTouch ÆÄÀÌÇÁ¶óÀÎ + ¸¶¿ì½º¡æÅÍÄ¡ ½Ã¹Ä ON
+        EnableInput();
+    }
+
+    public static void DisableInput()
+    {
+        EnhancedTouchSupport.Disable();
+#if UNITY_EDITOR || UNITY_STANDALONE
+        TouchSimulation.Disable();
+#endif
+    }
+
+    public static void EnableInput()
+    {
+        // 2) EnhancedTouch íŒŒì´í”„ë¼ì¸ + ë§ˆìš°ìŠ¤â†’í„°ì¹˜ ì‹œë®¬ ON
         EnhancedTouchSupport.Enable();
 
 #if UNITY_EDITOR || UNITY_STANDALONE
-        TouchSimulation.Enable();        // ¿¡µğÅÍ/PC: ¸¶¿ì½º=½Ì±ÛÅÍÄ¡
+        TouchSimulation.Enable();        // ì—ë””í„°/PC: ë§ˆìš°ìŠ¤=ì‹±ê¸€í„°ì¹˜
 #endif
+
     }
 }

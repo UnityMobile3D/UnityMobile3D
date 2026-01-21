@@ -13,29 +13,28 @@ public class SkillTree : BaseUI, IContainer
 
     [SerializeField] private SlotContainer m_pSlotContainer;
 
-    //그냥 static canvas에서 slot 관리 여기서 slotManager에 SO를 던져주면 거기서 해당 슬롯 SkillType에 맞는 슬롯 활성화
     [SerializeField] private eContainerType m_eContainerType = eContainerType.SkillTree; // ← 인스펙터에 드롭다운으로 보임
     public eContainerType ContainerType { get => m_eContainerType; }
 
     public void Init()
     {
+        m_pSkillContainer.SetParent(this);
         m_pSkillContainer.Build();
     }
 
     public void SetVisible(bool _bOn)
     {
+        m_pSkillContainer.ClearTarget();
         gameObject.SetActive(_bOn);
+
     }
     protected override void Awake()
     {
         base.Awake();
 
-        //close selete 함수 바인딩
-        m_pCloseButton.OnUpEvt += close_tap;
-
+       
         //컨테이너에서 스킬 눌렸다면 가져올 수 있게
         m_pSkillContainer.OnSelectEvt += select_skill;
-
     }
 
     private void Update()
@@ -45,13 +44,11 @@ public class SkillTree : BaseUI, IContainer
 
     private void OnDisable()
     {
-        //m_pPlayerInterface.
+        m_pSlotContainer.UnActiveSlot();
     }
-    private void close_tap()
+    public void CloseTap()
     {
-        //레이까지 제거하기 위해서
-        gameObject.SetActive(false);
-        
+        gameObject.SetActive(false);   
     }
     private void select_skill()
     {
@@ -63,6 +60,7 @@ public class SkillTree : BaseUI, IContainer
         DataService.m_Instance.StartPickData(this, pTargetView.SOEntryUI, pTargetView.SlotIdx, 1);
 
         //인터페이스 매니저를 만들어서 해당 클래스에게 요청하는 식으로 변경
+        m_pSlotContainer.UnActiveSlot();
         m_pSlotContainer.ActiveSlot(pTargetView.SOEntryUI.GetUIHashCode());
     }
 

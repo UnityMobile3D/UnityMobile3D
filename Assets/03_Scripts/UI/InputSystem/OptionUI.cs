@@ -7,7 +7,7 @@ public class OptionUI : MonoBehaviour
 
     [SerializeField] private ButtonUI m_pSkillButton = null;
     [SerializeField] private ButtonUI m_pInfoButton = null;
-    [SerializeField] private ButtonUI m_pShopButton = null;
+    [SerializeField] private ButtonUI m_pQuestButton = null;
 
     [SerializeField] private ButtonUI m_pOptionButton = null;
     [SerializeField] private GameObject m_pContent = null;
@@ -15,26 +15,33 @@ public class OptionUI : MonoBehaviour
     {
         m_pSkillButton.OnClickEvt += visible_skill;
         m_pInfoButton.OnClickEvt += visible_infop;
-        m_pShopButton.OnClickEvt += visible_infop;
+        m_pQuestButton.OnClickEvt += visivle_quest;
 
-        m_pOptionButton.OnClickEvt += () =>
-        {
-            m_pContent.SetActive(!m_pContent.activeSelf);
-        };
+        m_pOptionButton.OnClickEvt += close_content;
+
+        m_pSkillButton.OnClickEvt += close_content;
+        m_pInfoButton.OnClickEvt += close_content;
+        m_pQuestButton.OnClickEvt += close_content; 
     }
 
     
     private void visible_skill()
     {
         DataService.m_Instance.SetVisibleContainer(eContainerType.SkillTree, true);
+
     }
     private void visible_infop()
     {
         DataService.m_Instance.SetVisiblePlayerInfo(true);
     }
 
-    private void visivle_shop()
+    private void visivle_quest()
     {
-        DataService.m_Instance.SetVisibleContainer(eContainerType.Store, true);
+        QuestManager.m_Instance.SetActive(true);
+    }
+
+    private void close_content()
+    {
+        m_pContent.SetActive(!m_pContent.activeSelf);
     }
 }

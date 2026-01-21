@@ -4,7 +4,22 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/01_Scenes/Desert/DesertScene.unity
+    guid: 53f5a0914b195b74abc2fb43a9e2ce22
+  - enabled: 1
+    path: Assets/01_Scenes/Town/Town.unity
+    guid: c850ee8c3b14cc8459e7e186857cf567
+  - enabled: 1
+    path: Assets/01_Scenes/Manager.unity
+    guid: 80c2b9f6e08ed7741b456563d295e015
+  - enabled: 1
+    path: Assets/01_Scenes/BossMap/BossMap.unity
+    guid: c9e30e1e40e5f6a47aa6053500404e37
+  - enabled: 1
+    path: Assets/01_Scenes/Title/TitleScene.unity
+    guid: 4ea7d3694af46b04282ece3dae4586cb
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 63c61aac77b53c8468c925114942f48d,
       type: 2}

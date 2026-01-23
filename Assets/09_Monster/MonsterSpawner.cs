@@ -26,18 +26,28 @@ public class MonsterSpawner : MonoBehaviour
         new List<MonsterSpawnInfo>();
 
     private List<SpawnUpdate> m_listSpawnUpdate = new List<SpawnUpdate>();
-
+    private int m_iTotalSpawnCount = 0;
+    private int m_iCurSpawnCount = 0;
     private void Start()
     {
         float fNowTime = Time.time;
-        for(int i = 0; i<m_listMonsterSpawn.Count; i++)
+        m_iTotalSpawnCount = 0;
+        m_iCurSpawnCount = 0;
+
+        for (int i = 0; i<m_listMonsterSpawn.Count; i++)
+        {
             m_listSpawnUpdate.Add(new SpawnUpdate());
+            m_iTotalSpawnCount += m_listMonsterSpawn[i].SpawnOption.SpawnCount;
+        }
 
     }
 
 
     private void Update()
     {
+        if (m_iTotalSpawnCount <= m_iCurSpawnCount)
+            return;
+
         for (int i = 0; i < m_listMonsterSpawn.Count; ++i)
         {
             SpawnUpdate pCurSpawnUpdate = m_listSpawnUpdate[i];
@@ -82,6 +92,7 @@ public class MonsterSpawner : MonoBehaviour
             pMonster.SetPoolKey(_pSpawnInfo.MonsterAsset.AssetGUID);
 
             ++_pSpawnUpdate.SpawnCount;
+            ++m_iCurSpawnCount;
 
             MonsterManager.m_Instance.RegisterMonster(pMonster);
         }

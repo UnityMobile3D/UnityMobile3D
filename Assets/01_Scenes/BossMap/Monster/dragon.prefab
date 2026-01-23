@@ -1946,7 +1946,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_pBlackbard:
-    Self: {fileID: 7896138511552620902}
+    Self: {fileID: 0}
     Target: {fileID: 0}
     RunTime: 0
     DistanceToTarget: 0
@@ -1965,6 +1965,11 @@ MonoBehaviour:
   - ePointType: 1
     pTrasnform: {fileID: 8346865925031816687}
   m_pMonsterHPBar: {fileID: 0}
+  m_arrRenderer:
+  - {fileID: 2628020547226328123}
+  - {fileID: 4598487182566091054}
+  - {fileID: 3257866572099199661}
+  - {fileID: 4962224503737381908}
 --- !u!114 &820250917459767465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2051,8 +2056,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6796e4a61d49a0429f0da1fab667112, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 5
-  maxHp: 5
+  hp: 20
+  maxHp: 20
   mp: 0
   maxMp: 0
   speed: 3

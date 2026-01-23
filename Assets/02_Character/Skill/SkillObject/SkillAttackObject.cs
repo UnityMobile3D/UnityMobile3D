@@ -38,6 +38,7 @@ public class SkillAttackObject : SkillObject
     {
         base.OnSpawn();
 
+        m_iCurAttackCount = 0;
         if (m_fStartAttackTime <= 0.0f)
             StartAttack();
         else
@@ -128,10 +129,7 @@ public class SkillAttackObject : SkillObject
         }
     }
 
-    public void OnTriggerStay(Collider other)
-    {
-        
-    }
+
 
     private bool check_attack_count()
     {

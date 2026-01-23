@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpawnCount: 1
   FirstSpawnDelay: 0
-  SpawnTime: 30
+  SpawnTime: 5
   SpawnRadius: 2
   RandomRotation: 1
   GroupMin: 1

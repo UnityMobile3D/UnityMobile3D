@@ -22,12 +22,16 @@ public class DamageManager : MonoBehaviour
         int iDamage = (int)Random.Range(
             _attackInfo.Damage - _attackInfo.AttackVariance,
             _attackInfo.Damage + _attackInfo.AttackVariance);
+        
+        int iDefense = _pTarget.Defense <=0 ? 1 : _pTarget.Defense;
+        iDefense /= 10;
+        iDefense = iDefense <= 0 ? 1 : iDefense;
+
+        iDamage /= iDefense;
 
         _pTarget.AddHP(iDamage * -1);
 
         ShowDamageFont(_pTarget.transform.position, iDamage);
-
-        //HealthManager.m_Instance.UpdateHP();
     }
 
     public void PlayerDamaged(ObjectInfo _pTarget, AttackInfo _attackInfo)
@@ -53,8 +57,6 @@ public class DamageManager : MonoBehaviour
         if (pFont != null)
             pFont.ShowFont(_iDamage);
     }
-
-
     public void ReturnPool(GameObject _pFont)
     {
         ObjectPoolManager.m_Instance.PushObject(ePoolType.Global, m_pFontAssetRef.AssetGUID, _pFont);

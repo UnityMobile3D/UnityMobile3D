@@ -16,7 +16,7 @@ MonoBehaviour:
   Level: 1
   cooldown: 1
   m_tBaseValues:
-    Int: 0
+    Int: 10
     Float: 0
     Vector4: {x: 5, y: 0, z: 0, w: 0}
   EquippedEffects:

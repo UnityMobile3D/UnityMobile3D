@@ -77,7 +77,7 @@ public class HealthManager : MonoBehaviour
             _pImage.fillAmount = _fGoalRatio;
 
             int iHpPercent = (int)(_fGoalRatio * 100.0f);
-            _pText.text = $"{iHpPercent}% / {_fCurValue}";
+            _pText.text = $"{iHpPercent}% / {_fCurValue}%";
             yield break;
         }
 
@@ -94,7 +94,7 @@ public class HealthManager : MonoBehaviour
             _pImage.fillAmount = fRatio;
 
             int iHpPercent = (int)(_fGoalRatio * 100.0f);
-            _pText.text = $"{iHpPercent}% / {_fCurValue}";
+            _pText.text = $"{iHpPercent}% / {_fCurValue}%";
 
             yield return null;  
         }
@@ -103,7 +103,7 @@ public class HealthManager : MonoBehaviour
         _pImage.fillAmount = _fGoalRatio;
 
         int iFinalPercent = (int)(_fGoalRatio * 100.0f);
-        _pText.text = $"{iFinalPercent}% / {_fCurValue}";
+        _pText.text = $"{iFinalPercent}% / {_fCurValue}%";
 
         m_pUpdateHPCoroutine = null;
     }

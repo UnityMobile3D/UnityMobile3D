@@ -7,7 +7,7 @@ using UnityEngine.Localization;
 [CreateAssetMenu(menuName = "UIData/Catalog/Entry UI", fileName = "SOEntryUI")]
 public class SOEntryUI : ScriptableObject
 {
-    //비트로도 가능
+    //비트로도 가능 (만약 여기서 더 는다면 64비트나 128비트로)
     [System.Serializable]
     public enum eUIType
     {
@@ -30,7 +30,7 @@ public class SOEntryUI : ScriptableObject
     public int Id => id;
     public Sprite Icon => icon;
     public eUIType Type => type;
-
+    
 
     private void OnEnable()
     {

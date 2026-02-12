@@ -34,12 +34,6 @@ public class EquipSlot : Slot
         base.Init();
         m_iUIType |= (uint)m_eEquipType << (int)SOEntryUI.eUIType.Equip;
     }
-
-    protected override void Start()
-    {
-       
-    }
-
     public override void Bind(SOEntryUI _pSOTarget)
     {
         base.Bind(_pSOTarget);

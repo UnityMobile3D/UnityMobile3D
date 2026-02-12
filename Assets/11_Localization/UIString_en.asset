@@ -90,6 +90,30 @@ MonoBehaviour:
     m_Localized: System
     m_Metadata:
       m_Items: []
+  - m_Id: 2556049093791744
+    m_Localized: Stat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2556052906414080
+    m_Localized: HP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2556055544631296
+    m_Localized: MP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2556058304483328
+    m_Localized: Speed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2556061227913216
+    m_Localized: Defend
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2556064184897536
+    m_Localized: Attack
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

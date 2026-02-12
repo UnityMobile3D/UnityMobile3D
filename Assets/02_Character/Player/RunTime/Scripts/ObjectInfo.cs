@@ -3,6 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum eObjectStat
+{
+    HP,
+    MP,
+    Speed,
+    Defend,
+    Attack,
+    None,
+}
+
 public class ObjectInfo : MonoBehaviour
 {
     [Header("HP")]
@@ -98,4 +108,25 @@ public class ObjectInfo : MonoBehaviour
         if(attack >= maxAttack)
             attack = maxAttack; 
     }
+
+
+    public int GetStatValue(eObjectStat _eStat)
+    {
+        switch (_eStat)
+        {
+            case eObjectStat.HP:
+                return maxHp;
+            case eObjectStat.MP:
+                return maxMp;
+            case eObjectStat.Speed:
+                return speed;
+            case eObjectStat.Defend:
+                return defense;
+            case eObjectStat.Attack:
+                return attack;
+            default:
+                return 0;
+        }
+    }
+
 }

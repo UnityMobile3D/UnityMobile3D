@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+
 
 public class EquipmentInventory : BaseUI , IContainer
 {
@@ -13,8 +15,21 @@ public class EquipmentInventory : BaseUI , IContainer
     public eContainerType ContainerType { get => m_eContainerType; }
 
 
-    //IContainer 구현
+    [SerializeField] private List<GameObject> m_listOption = new List<GameObject>();
+    [SerializeField] private Stat m_pPlayerStat = null;
 
+    public void OnClickOptionButton(GameObject _pTarget)
+    {
+        for (int i = 0; i < m_listOption.Count; ++i)
+        {
+            if (_pTarget == m_listOption[i])
+                _pTarget.SetActive(true);
+            else
+                m_listOption[i].SetActive(false);
+        }
+    }
+
+    //IContainer 구현
     public void Init()
     {
         m_pEquipSlotContainer.Init();
@@ -86,7 +101,8 @@ public class EquipmentInventory : BaseUI , IContainer
 
         m_pEquipSlotContainer.UnActiveSlot();
 
-        // 장비 능력치 player에게 적용
+        // 장비 능력치 업데이트
+        m_pPlayerStat?.UpdateStatText();
 
         return true;
     }

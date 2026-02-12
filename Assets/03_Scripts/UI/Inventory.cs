@@ -28,6 +28,7 @@ public class Inventory : BaseUI, IContainer
     [SerializeField] private List<eUIType> m_listCategoryType;
     [SerializeField] private List<ButtonUI> m_listCategoryButton;
     [SerializeField] private List<ButtonUI> m_listOptionButton = new List<ButtonUI>();
+    [SerializeField] private Stat m_pPlayerStat = null;
 
     //인벤에서 인터페이스 , 장비창
     Dictionary<uint, int> m_hashItemCount = new Dictionary<uint, int>();
@@ -107,12 +108,7 @@ public class Inventory : BaseUI, IContainer
         }
         return -1;
     }
-    private void close_tap()
-    {
-        //레이까지 제거하기 위해서
-        gameObject.SetActive(false);
-    }
-
+  
     public void AddDataInventroy(SOEntryUI _pData, int _iAmount)
     {
         uint iUITypeCode = _pData.GetUITypeCode();
@@ -178,39 +174,45 @@ public class Inventory : BaseUI, IContainer
 
     private void auto_equipped()
     {
-        int iEquipIdx = m_pInevenContainer.GetCategoryIdx(eUIType.Equip);
-        List<SOEntryUI> listEquip = m_pInevenContainer.GetListData(iEquipIdx); //인벤토리 장비
-        List<Slot> listCurrentEquip = m_pEquipSlotContainer.SlotList; //현재 장비
-        
-        for(int i = 0; i<listEquip.Count; ++i)
+        int equipCategoryIdx = m_pInevenContainer.GetCategoryIdx(eUIType.Equip);
+        List<SOEntryUI> listEquip = m_pInevenContainer.GetListData(equipCategoryIdx);
+        List<Slot> listCurrentEquip = m_pEquipSlotContainer.SlotList;
+
+        Dictionary<int, EquipSlot> hashEquipSlot = new Dictionary<int, EquipSlot>(listCurrentEquip.Count);
+
+        for (int j = 0; j < listCurrentEquip.Count; ++j)
         {
-            if (listEquip[i] == null)
+            EquipSlot pEquipSlot = listCurrentEquip[j] as EquipSlot;
+          
+            int iSlotHash = (int)pEquipSlot.GetSlotHashCode();
+            if (hashEquipSlot.ContainsKey(iSlotHash) == false)
+                hashEquipSlot.Add(iSlotHash, pEquipSlot);
+        }
+
+        for (int i = 0; i < listEquip.Count; ++i)
+        {
+            SOEntryUI entry = listEquip[i];
+            if (entry == null)
                 continue;
 
-            SOEquipUI pEquipUI = listEquip[i] as SOEquipUI;
-            for(int j = 0; j<listCurrentEquip.Count; ++j)
+            SOEquipUI equipUI = entry as SOEquipUI;
+            int iEquipHash = (int)equipUI.GetUIHashCode();
+
+            EquipSlot pTargetSlot;
+            if (hashEquipSlot.TryGetValue(iEquipHash, out pTargetSlot) == false)
+                continue;
+
+            uint currentLev = (pTargetSlot.SOEquip == null) ? 0u : pTargetSlot.SOEquip.ItemData.Level;
+            uint equipLev = equipUI.ItemData.Level;
+
+            if (equipLev > currentLev)
             {
-                EquipSlot pEquipSlot = listCurrentEquip[j] as EquipSlot;
-
-                if (pEquipUI == null || pEquipSlot == null)
-                {
-                    Debug.LogError("장비 인벤토리에 다른 아이템이 들어가있음");
-                    return;
-                }
-
-                if(pEquipSlot.GetSlotHashCode() == pEquipUI.GetUIHashCode())
-                {
-                    uint iCurrentLev = pEquipSlot.SOEquip == null ? 0 : pEquipSlot.SOEquip.ItemData.Level;
-                    uint iEquipLev = pEquipUI.ItemData.Level;
-                    //현재 끼고있는 장비보다 레벨이 높다면
-                    if (iEquipLev > iCurrentLev)
-                    {
-                        DataService.m_Instance.StartPickData(this, pEquipUI, i, 1, iEquipIdx);
-                        DataService.m_Instance.TryDropDataAndSwap(eContainerType.Equipment, pEquipSlot.SlotIdx);
-                    }
-                }
+                // 여기서 바로 실행하면 리스트/슬롯 상태가 변할 수 있음
+                DataService.m_Instance.StartPickData(this, equipUI, i, 1, equipCategoryIdx);
+                DataService.m_Instance.TryDropDataAndSwap(eContainerType.Equipment, pTargetSlot.SlotIdx);
             }
         }
+        m_pPlayerStat?.UpdateStatText();
     }
 
     private void button_option()

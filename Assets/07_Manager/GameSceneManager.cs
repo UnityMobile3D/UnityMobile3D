@@ -70,9 +70,10 @@ public class GameSceneManager : MonoBehaviour
         m_tCurScene = pResultHandle.Result;
 
         FindPortal(_pStartScene.ePortalID);
-        
+
         SoundManager.m_Instance.PlayBgm(pSceneLoadData.BGM);
-        
+
+        NetworkManager.m_Instance.StartNet();
         m_pLoadingOverlay.CompletedLoading();
     }
 

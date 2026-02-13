@@ -11,14 +11,24 @@ using Google.Protobuf.Protocol;
 
 public class NetworkManager :MonoBehaviour
 {
-    ServerSession _session = new ServerSession();
+    ServerSession m_refSession = new ServerSession();
+
+    public static NetworkManager m_Instance = null;
+    private void Awake()
+    {
+        if (m_Instance == null)
+            m_Instance = this;
+        else if (m_Instance != this)
+            Destroy(gameObject);
+    }
 
     public void Send(ArraySegment<byte> sendBuff)
     {
-        _session.Send(sendBuff);
+        m_refSession.Send(sendBuff);
     }
 
-    private void Start()
+    
+    public void StartNet()
     {
         // DNS (Domain Name System)
         string host = Dns.GetHostName();
@@ -29,7 +39,7 @@ public class NetworkManager :MonoBehaviour
         Connector connector = new Connector();
 
         connector.Connect(endPoint,
-            () => { return _session; },
+            () => { return m_refSession; },
             1);
     }
 
@@ -40,8 +50,14 @@ public class NetworkManager :MonoBehaviour
         {
             Action<PacketSession, IMessage> handler = PacketManager.Instance.GetPacketHandler(packet.Id);
             if (handler != null)
-                handler.Invoke(_session, packet.Message);
+                handler.Invoke(m_refSession, packet.Message);
         }
+    }
+
+
+    private void OnApplicationQuit()
+    {
+        m_refSession.DisConnect();
     }
 
 }

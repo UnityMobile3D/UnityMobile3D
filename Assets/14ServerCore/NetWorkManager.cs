@@ -22,12 +22,23 @@ public class NetworkManager :MonoBehaviour
             Destroy(gameObject);
     }
 
-    public void Send(ArraySegment<byte> sendBuff)
+    public void Send(IMessage _Ipacket)
     {
-        m_refSession.Send(sendBuff);
+        string strMsgName = _Ipacket.Descriptor.Name.Replace("_", string.Empty);
+        MsgId eID = (MsgId)Enum.Parse(typeof(MsgId), strMsgName);
+
+        ushort sSize = (ushort)_Ipacket.CalculateSize();
+        byte[] arrSendBuffer = new byte[sSize + 4]; //패킷 사이즈, 패킷 아이디
+        Array.Copy(BitConverter.GetBytes((sSize + 4)), 0, arrSendBuffer, 0, sizeof(ushort));
+
+        ushort protocolId = (ushort)eID;
+        Array.Copy(BitConverter.GetBytes(protocolId), 0, arrSendBuffer, 2, sizeof(ushort));
+        Array.Copy(_Ipacket.ToByteArray(), 0, arrSendBuffer, 4, sSize);
+
+        m_refSession.Send(new ArraySegment<byte>(arrSendBuffer));
     }
 
-    
+
     public void StartNet()
     {
         // DNS (Domain Name System)
@@ -45,7 +56,7 @@ public class NetworkManager :MonoBehaviour
 
     private void Update()
     {
-        List<PacketMessage> list = PacketQueue.Instance.PopAll();
+        List<PacketMessage> list = PacketQueue.m_Instance.PopAll();
         foreach (PacketMessage packet in list)
         {
             Action<PacketSession, IMessage> handler = PacketManager.Instance.GetPacketHandler(packet.Id);

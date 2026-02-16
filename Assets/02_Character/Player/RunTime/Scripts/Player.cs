@@ -9,7 +9,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
-
+using Google.Protobuf;
+using Google.Protobuf.Protocol;
 [Serializable]
 public enum eEquipType
 {
@@ -65,6 +66,18 @@ public class Player : MonoBehaviour , IHealth
 
     public Func<AttackInfo, bool> m_pHitEvent;
 
+    //네트워크
+    private PositionInfo m_refPosInfo = new PositionInfo();
+    public PositionInfo PositionInfo { get { return m_refPosInfo; } }
+
+    private MoveDir m_refMoveDir = new MoveDir();
+    public MoveDir MoveDir { get { return m_refMoveDir; } }
+
+
+    //NetWork
+    private Coroutine m_refSendMove = null;
+    [SerializeField]
+    private float m_fSendInterval = 1.0f/15.0f;
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
@@ -94,7 +107,7 @@ public class Player : MonoBehaviour , IHealth
     // Start is called before the first frame update
     void Start()
     {
-        
+        m_refSendMove = StartCoroutine(SendMoveLoop());
     }
 
     // Update is called once per frame
@@ -163,7 +176,41 @@ public class Player : MonoBehaviour , IHealth
       
         transform.position = (transform.position + vStep);
         _animator.SetBool("isWalk", true);
-        
+
+
+        m_refPosInfo.PosX = transform.position.x;
+        m_refPosInfo.PosY = transform.position.y;
+        m_refPosInfo.PosZ = transform.position.z;
+        m_refPosInfo.MoveDir.DirX = moveDir.x;
+        m_refPosInfo.MoveDir.DirY = moveDir.y;
+        m_refPosInfo.MoveDir.DirZ = moveDir.z;
+    }
+
+    private IEnumerator SendMoveLoop()
+    {
+        WaitForSeconds refWait = new WaitForSeconds(m_fSendInterval);
+
+        while (true)
+        {
+            yield return refWait;
+
+            C_Move pkt = new C_Move();
+            pkt.PosInfo = m_refPosInfo;
+            pkt.PosInfo.PosX = transform.position.x;
+            pkt.PosInfo.PosY = transform.position.y;
+            pkt.PosInfo.PosZ = transform.position.z;
+
+            pkt.PosInfo.MoveDir = m_refMoveDir;
+            pkt.PosInfo.MoveDir.DirX = moveDir.x;
+            pkt.PosInfo.MoveDir.DirY = moveDir.y;
+            pkt.PosInfo.MoveDir.DirZ = moveDir.z;
+
+            NetworkManager.m_Instance.Send(pkt);
+
+            // 안 움직이면 굳이 안 보내도 됨
+            if (moveDir == Vector3.zero)
+                continue;
+        }
     }
 
     public void RESETAGENT()
@@ -205,6 +252,16 @@ public class Player : MonoBehaviour , IHealth
             {
                 _navRun = true;
                 _agent.SetDestination(navHit.position);
+
+
+                C_Move pkt = new C_Move();
+                pkt.PosInfo = m_refPosInfo;
+                pkt.PosInfo.PosX = navHit.position.x;
+                pkt.PosInfo.PosY = navHit.position.y;
+                pkt.PosInfo.PosZ = navHit.position.z;
+              
+                NetworkManager.m_Instance.Send(pkt);
+
             }
         }
     }
@@ -343,9 +400,6 @@ public class Player : MonoBehaviour , IHealth
             if (_pAttackInfo.HitSound != null)
                 SoundManager.m_Instance.PlaySfx(_pAttackInfo.HitSound, transform);
         }
-
-
-
 
     }
     public void Heal(int _iAmount)

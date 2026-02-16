@@ -20,7 +20,6 @@ public class GameSceneManager : MonoBehaviour
     private readonly Dictionary<string, AsyncOperationHandle<IList<Object>>> m_hashLabelValue = new();
     private SemaphoreSlim m_pSemaphore = new SemaphoreSlim(4, 4);
 
-
     private float m_fLoadRatio = 0.0f;
 
     private void Awake()

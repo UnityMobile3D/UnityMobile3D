@@ -13,7 +13,7 @@ public class PacketMessage
 
 public class PacketQueue
 {
-    public static PacketQueue Instance { get; } = new PacketQueue();
+    public static PacketQueue m_Instance { get; } = new PacketQueue();
 
     Queue<PacketMessage> _packetQueue = new Queue<PacketMessage>();
     object _lock = new object();

@@ -21057,7 +21057,7 @@ Transform:
   m_GameObject: {fileID: 1014201812}
   serializedVersion: 2
   m_LocalRotation: {x: 0.46181056, y: 0.000000066728525, z: -0.000000034742587, w: 0.8869786}
-  m_LocalPosition: {x: 20, y: 31.73, z: 21.84}
+  m_LocalPosition: {x: 13.93, y: 31.98, z: 10.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -31056,7 +31056,7 @@ Transform:
   m_GameObject: {fileID: 1466845746}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 20, y: 21.73, z: 28.84}
+  m_LocalPosition: {x: 13.93, y: 21.98, z: 17.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -31079,12 +31079,13 @@ MonoBehaviour:
   _playerInfo: {fileID: 0}
   _moveMask:
     serializedVersion: 2
-    m_Bits: 40968
+    m_Bits: 43016
   rotateTime: 0.2
   m_listEquipPoint:
   - eEquipType: 4
     EquipTransform: {fileID: 563084511}
   knockbackDamping: 5
+  m_fSendInterval: 0.06666667
 --- !u!136 &1466845749
 CapsuleCollider:
   m_ObjectHideFlags: 0

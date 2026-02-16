@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Google.Protobuf.Protocol;
 using Google.Protobuf;
+using UnityEditor.Profiling.Memory.Experimental;
 
 public class PacketHandler
 {
@@ -18,8 +19,7 @@ public class PacketHandler
     public static void S_EnterGameHandler(PacketSession _refSession,  IMessage _iPacket)
     {
         ServerSession refServerSession = _refSession as ServerSession;
-        S_EnterGame pkt = _iPacket as S_EnterGame;  
-        
+        S_EnterGame pkt = _iPacket as S_EnterGame;
     }
 
     public static void S_LeaveGameHandler(PacketSession _refSession, IMessage _iPacket)
@@ -48,8 +48,20 @@ public class PacketHandler
         S_Move pkt = _iPacket as S_Move;
     }
 
+    public static void S_OtherMoveHandler(PacketSession _refSession, IMessage _iPacket)
+    {
+        ServerSession refServerSession = _refSession as ServerSession;
+        S_Other_Move pkt = _iPacket as S_Other_Move;
+
+        if(pkt.Success == false)
+        {
+            Transform tr = GameManager.m_Instance.Player.GetComponent<Transform>();
+            PositionInfo p = pkt.PosInfo;
+            tr.position = new Vector3(p.PosX, p.PosY, p.PosZ);
+        }
+    }
 
 
-    
+
 }
 
